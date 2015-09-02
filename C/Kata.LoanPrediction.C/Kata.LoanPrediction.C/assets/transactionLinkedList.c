@@ -13,6 +13,12 @@
 
 static bool CheckAllocation(transactionNode *target);
 
+/*
+ ***************************************
+ ** Adds a new transaction node to the 
+ ** linked list.
+ ***************************************
+ */
 bool AddTransactionNode(transactionNode **root, transactionNode **head, transaction *new)
 {
     if(*root == NULL)
@@ -36,6 +42,12 @@ bool AddTransactionNode(transactionNode **root, transactionNode **head, transact
     }
 }
 
+/*
+ ***************************************
+ ** Checks the memory allocation
+ ** for the node was successful.
+ ***************************************
+ */
 static bool CheckAllocation(transactionNode *target)
 {
     if(target != NULL) return (true);

@@ -54,6 +54,12 @@ context *runningContext = NULL;
 dateTime *startDate = NULL;
 dateTime *finalDate = NULL;
 
+/*
+***************************************
+** Entry point of program. Expects 6
+** user supplied arguments.
+***************************************
+*/
 int main(int argc, const char * argv[]) {
     if(argc != EXPECTED_ARGUMENT_COUNT)
     {
@@ -73,11 +79,23 @@ int main(int argc, const char * argv[]) {
     else return (EXIT_FAILURE);
 }
 
+/*
+ ***************************************
+ ** Prints the usage directive to the 
+ ** console.
+ ***************************************
+ */
 void printUsage()
 {
     printf(USAGE_DIRECTIVE, PROGRAM_NAME, PROGRAM_NAME);
 }
 
+/*
+ ***************************************
+ ** Process the command line arguments
+ ** and bundles them in a context struct.
+ ***************************************
+ */
 context* processArguments(int argc, const char* argv[])
 {
     context* tmp = malloc(sizeof(context));
@@ -90,6 +108,13 @@ context* processArguments(int argc, const char* argv[])
     return(tmp);
 }
 
+/*
+ ***************************************
+ ** Calculates the transactions on the
+ ** loan from now to the time it will be
+ ** paid off.
+ ***************************************
+ */
 bool calculateLoan(context *runningContext, dateTime* startDate, dateTime **finalDate)
 {
     float principal = runningContext->principalAmount;
@@ -105,7 +130,8 @@ bool calculateLoan(context *runningContext, dateTime* startDate, dateTime **fina
             if((principal + monthlyInterest) <= runningContext->minRepayAmount)
             {
                 float finalRepayment = 0.0f;
-                *finalDate = startDate;
+                *finalDate = malloc(sizeof(dateTime));
+                **finalDate = *startDate;
                 principal += monthlyInterest;
                 finalRepayment = principal;
                 principal -= finalRepayment;
@@ -144,6 +170,11 @@ bool calculateLoan(context *runningContext, dateTime* startDate, dateTime **fina
     return(true);
 }
 
+/*
+ ***************************************
+ ** Calculates the interest for a day.
+ ***************************************
+ */
 float calculateDailyInterest(float principal, float interestRate)
 {
     float result = 0.0f;
@@ -151,6 +182,12 @@ float calculateDailyInterest(float principal, float interestRate)
     return(result);
 }
 
+/*
+ ***************************************
+ ** Creates a transaction struct to be
+ ** added to a linked list.
+ ***************************************
+ */
 transaction* createTransaction(const char* type, dateTime* date, float repayment, float charge, float remainPrincipal)
 {
     transaction *tmp = malloc(sizeof(transaction));
@@ -162,6 +199,13 @@ transaction* createTransaction(const char* type, dateTime* date, float repayment
     return(tmp);
 }
 
+/*
+ ***************************************
+ ** Prints the calculations to the console
+ ** and the date on which the loan
+ ** will be paid off.
+ ***************************************
+ */
 void printCalculations(dateTime *finalDate)
 {
     transactionNode *current = rootTransactionNode;
@@ -178,6 +222,11 @@ void printCalculations(dateTime *finalDate)
     printf("Loan is paid off on %s", formatDate(finalDate));
 }
 
+/*
+ ***************************************
+ ** Formats a date as a string.
+ ***************************************
+ */
 char* formatDate(dateTime *target)
 {
     char *result = malloc(sizeof(char) * 26);
