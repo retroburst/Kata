@@ -61,15 +61,15 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "189000.00"
+            argument = "1500"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "5.34"
+            argument = "30.00"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "1401.83"
+            argument = "100"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
