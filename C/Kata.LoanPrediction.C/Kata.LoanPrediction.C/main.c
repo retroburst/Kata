@@ -65,6 +65,7 @@ void processExtraRepayment(float *principal, context *runningContext, dateTime *
 char* buildOutputFilename(dateTime *startDate);
 void printOutputToFile(dateTime *currentDate, calculationOutput *output);
 void printArguments(context *runningContext);
+void processEndOfMonth(dateTime *currentDate, int *currentMonth, float *monthlyInterest, float *principal, calculationOutput *output);
 
 // variables
 transactionNode *rootTransactionNode = NULL;
@@ -168,8 +169,17 @@ calculationOutput* calculateLoan(context *runningContext, dateTime* startDate)
     // loop through dates, caculating interest daily etc
     while(true)
     {
-        processMinRepayment(&principal, runningContext, currentDate, monthlyInterest, output);
-        processExtraRepayment(&principal, runningContext, currentDate);
+        // if min repay day
+        if(currentDate->tm_mday == runningContext->minRepayDay && principal > 0.0f)
+        {
+            processMinRepayment(&principal, runningContext, currentDate, monthlyInterest, output);
+        }
+        // if extra repay day
+        if(currentDate->tm_mday == runningContext->extraRepayDay && runningContext->extraRepayAmount > 0.0f && principal > 0.0f)
+        {
+            processExtraRepayment(&principal, runningContext, currentDate);
+        }
+        
         // if principal is zero or less - we are done!
         if(principal <= 0.0f) break;
         // calculate the daily interest
@@ -185,20 +195,32 @@ calculationOutput* calculateLoan(context *runningContext, dateTime* startDate)
         // move date forward
         currentDate->tm_mday = currentDate->tm_mday + 1;
         mktime(currentDate);
+        
         // if end of month
         if(currentMonth != currentDate->tm_mon)
         {
-            // add interest charged transaction
-            principal += monthlyInterest;
-            // calculate the total interest paid
-            output->totalInterestPaid += monthlyInterest;
-            AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, monthlyInterest, principal));
-            // reset for new month
-            monthlyInterest = 0.0f;
-            currentMonth = currentDate->tm_mon;
+            processEndOfMonth(currentDate, &currentMonth, &monthlyInterest, &principal, output);
         }
     }
     return(output);
+}
+
+/*
+ ***************************************
+ ** Processes the end of month, adds
+ ** interest to the principal.
+ ***************************************
+ */
+void processEndOfMonth(dateTime *currentDate, int *currentMonth, float *monthlyInterest, float *principal, calculationOutput *output)
+{
+    // add interest charged transaction
+    *principal += *monthlyInterest;
+    // calculate the total interest paid
+    output->totalInterestPaid += *monthlyInterest;
+    AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, *monthlyInterest, *principal));
+    // reset for new month
+    *monthlyInterest = 0.0f;
+    *currentMonth = currentDate->tm_mon;
 }
 
 /*
@@ -209,7 +231,6 @@ calculationOutput* calculateLoan(context *runningContext, dateTime* startDate)
  */
 void processExtraRepayment(float *principal, context *runningContext, dateTime *currentDate)
 {
-    // if extra repay day
     if(currentDate->tm_mday == runningContext->extraRepayDay && runningContext->extraRepayAmount > 0.0f && *principal > 0.0f)
     {
         // add extra repay transaction (if amount is more than 0)
@@ -226,24 +247,20 @@ void processExtraRepayment(float *principal, context *runningContext, dateTime *
  */
 void processMinRepayment(float *principal, context *runningContext, dateTime *currentDate, float monthlyInterest, calculationOutput *output)
 {
-    // if min repay day
-    if(currentDate->tm_mday == runningContext->minRepayDay && *principal > 0.0f)
+    // add min repay transaction
+    if((*principal + monthlyInterest) <= runningContext->minRepayAmount)
     {
-        // add min repay transaction
-        if((*principal + monthlyInterest) <= runningContext->minRepayAmount)
-        {
-            float finalRepayment = 0.0f;
-            output->loanEndsDate = *currentDate;
-            *principal += monthlyInterest;
-            finalRepayment = *principal;
-            *principal -= finalRepayment;
-            AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_FINAL_REPAYMENT, currentDate, finalRepayment, monthlyInterest, *principal));
-        }
-        else
-        {
-            *principal -= runningContext->minRepayAmount;
-            AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, runningContext->minRepayAmount, 0.0f, *principal));
-        }
+        float finalRepayment = 0.0f;
+        output->loanEndsDate = *currentDate;
+        *principal += monthlyInterest;
+        finalRepayment = *principal;
+        *principal -= finalRepayment;
+        AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_FINAL_REPAYMENT, currentDate, finalRepayment, monthlyInterest, *principal));
+    }
+    else
+    {
+        *principal -= runningContext->minRepayAmount;
+        AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, runningContext->minRepayAmount, 0.0f, *principal));
     }
 }
 
