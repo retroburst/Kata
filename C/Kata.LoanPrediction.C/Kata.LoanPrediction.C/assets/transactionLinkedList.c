@@ -11,7 +11,7 @@
 #include "transactionLinkedList.h"
 #include "transaction.h"
 
-static bool CheckAllocation(transactionNode *target);
+static bool checkAllocation(transactionNode *target);
 
 /*
  ***************************************
@@ -19,12 +19,12 @@ static bool CheckAllocation(transactionNode *target);
  ** linked list.
  ***************************************
  */
-bool AddTransactionNode(transactionNode **root, transactionNode **head, transaction *new)
+bool addTransactionNode(transactionNode **root, transactionNode **head, transaction *new)
 {
     if(*root == NULL)
     {
         *root = malloc(sizeof(transactionNode));
-        if(CheckAllocation(*root) == false) return(false);
+        if(checkAllocation(*root) == false) return(false);
         (*root)->item = new;
         (*root)->next = NULL;
         *head = *root;
@@ -33,7 +33,7 @@ bool AddTransactionNode(transactionNode **root, transactionNode **head, transact
     else
     {
         transactionNode *tmp = malloc(sizeof(transactionNode));
-        if(CheckAllocation(tmp) == false) return(false);
+        if(checkAllocation(tmp) == false) return(false);
         tmp->item = new;
         tmp->next = NULL;
         (*head)->next = tmp;
@@ -44,11 +44,32 @@ bool AddTransactionNode(transactionNode **root, transactionNode **head, transact
 
 /*
  ***************************************
+ ** Frees memory used by all nodes in
+ ** the linked list.
+ ***************************************
+ */
+void freeAllNodes(transactionNode *root, transactionNode *head)
+{
+    if(root == NULL) return;
+    transactionNode *current = root;
+    transactionNode *next = NULL;
+    while(current != NULL)
+    {
+        next = current->next;
+        free(current->item);
+        free(current);
+        current = next;
+    }
+    head = NULL;
+}
+
+/*
+ ***************************************
  ** Checks the memory allocation
  ** for the node was successful.
  ***************************************
  */
-static bool CheckAllocation(transactionNode *target)
+static bool checkAllocation(transactionNode *target)
 {
     if(target != NULL) return (true);
     else {

@@ -68,6 +68,7 @@ char* buildOutputFilename(dateTime *startDate);
 void printOutputToFile(dateTime *currentDate, calculationOutput *output);
 void printArguments(context *runningContext);
 void processEndOfMonth(dateTime *currentDate, int *currentMonth, float *monthlyInterest, float *principal, calculationOutput *output);
+bool checkAllocation(void *target);
 
 // variables
 transactionNode *rootTransactionNode = NULL;
@@ -101,6 +102,10 @@ int main(int argc, const char * argv[]) {
     output = calculateLoan(runningContext);
     printCalculations(output);
     printOutputToFile(todaysDate, output);
+    // free dynamically allocated memory
+    free(runningContext);
+    free(output);
+    freeAllNodes(rootTransactionNode, headTransactionNode);
     return (EXIT_SUCCESS);
 }
 
@@ -124,6 +129,7 @@ void printUsage()
 context* processArguments(int argc, const char* argv[])
 {
     context* tmp = malloc(sizeof(context));
+    if(!checkAllocation(tmp)) return (NULL);
     strptime(argv[1], DATE_FORMAT, &tmp->startDate);
     tmp->principalAmount = (float) atof(argv[2]);
     tmp->interestRate =  (float) atof(argv[3]);
@@ -165,11 +171,13 @@ void printArguments(context *runningContext)
 calculationOutput* calculateLoan(context *runningContext)
 {
     calculationOutput* output = malloc(sizeof(calculationOutput));
+    if(!checkAllocation(output)) return (NULL);
     bool firstIteration = true;
     float principal = runningContext->principalAmount;
     float monthlyInterest = 0.0f;
     int currentMonth = runningContext->startDate.tm_mon;
     dateTime *currentDate = malloc(sizeof(dateTime));
+    if(!checkAllocation(currentDate)) return (NULL);
     *currentDate = runningContext->startDate;
     // we will calculate interest from the first of the month
     output->interestStartDate = runningContext->startDate;
@@ -225,7 +233,7 @@ void processEndOfMonth(dateTime *currentDate, int *currentMonth, float *monthlyI
     *principal += *monthlyInterest;
     // calculate the total interest paid
     output->totalInterestPaid += *monthlyInterest;
-    AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, *monthlyInterest, *principal));
+    addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, *monthlyInterest, *principal));
     // reset for new month
     *monthlyInterest = 0.0f;
     *currentMonth = currentDate->tm_mon;
@@ -243,7 +251,7 @@ void processExtraRepayment(float *principal, context *runningContext, dateTime *
     {
         // add extra repay transaction (if amount is more than 0)
         *principal -= runningContext->extraRepayAmount;
-        AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_EXTRA_REPAYMENT, currentDate, runningContext->extraRepayAmount, 0.0f, *principal));
+        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_EXTRA_REPAYMENT, currentDate, runningContext->extraRepayAmount, 0.0f, *principal));
     }
 }
 
@@ -263,12 +271,12 @@ void processMinRepayment(float *principal, context *runningContext, dateTime *cu
         *principal += monthlyInterest;
         finalRepayment = *principal;
         *principal -= finalRepayment;
-        AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_FINAL_REPAYMENT, currentDate, finalRepayment, monthlyInterest, *principal));
+        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_FINAL_REPAYMENT, currentDate, finalRepayment, monthlyInterest, *principal));
     }
     else
     {
         *principal -= runningContext->minRepayAmount;
-        AddTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, runningContext->minRepayAmount, 0.0f, *principal));
+        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, runningContext->minRepayAmount, 0.0f, *principal));
     }
 }
 
@@ -293,6 +301,7 @@ float calculateDailyInterest(float principal, float interestRate)
 transaction* createTransaction(const char* type, dateTime* date, float repayment, float charge, float remainPrincipal)
 {
     transaction *tmp = malloc(sizeof(transaction));
+    if(!checkAllocation(tmp)) return (NULL);
     tmp->transactionType = type;
     tmp->charge = charge;
     tmp->remainPrincipalAmount = remainPrincipal;
@@ -383,6 +392,7 @@ char* buildOutputFilename(dateTime *startDate)
     char *date = formatDate(startDate, DATE_FORMAT_FOR_FILENAME);
     unsigned long size = strlen(PROGRAM_NAME) + 1 + strlen(date) + 1;
     char *result = malloc(sizeof(char) * size);
+    if(!checkAllocation(result)) return (NULL);
     strcat(result, PROGRAM_NAME);
     strcat(result, ".");
     strcat(result, date);
@@ -398,6 +408,21 @@ char* buildOutputFilename(dateTime *startDate)
 char* formatDate(dateTime *target, const char *dateFormat)
 {
     char *result = malloc(sizeof(char) * 11);
+    if(!checkAllocation(result)) return (NULL);
     strftime(result, 11, dateFormat, target);
     return(result);
+}
+
+/*
+ ***************************************
+ ** Check memory was allocated as expected.
+ ***************************************
+ */
+bool checkAllocation(void *target)
+{
+    if(target != NULL) return (true);
+    else {
+        printf("Out of memory, could not allocate.");
+        return(true);
+    }
 }

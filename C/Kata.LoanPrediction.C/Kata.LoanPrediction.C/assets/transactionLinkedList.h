@@ -18,6 +18,7 @@ struct transactionNode {
     struct transactionNode *next;
 };
 typedef struct transactionNode transactionNode;
-bool AddTransactionNode(transactionNode **root, transactionNode **head, transaction *new);
+bool addTransactionNode(transactionNode **root, transactionNode **head, transaction *new);
+void freeAllNodes(transactionNode *root, transactionNode *head);
 
 #endif /* defined(__Kata_LoanPrediction_C__transactionLinkedList__) */
