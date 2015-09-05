@@ -2,7 +2,7 @@
 //  LoanCalculator.h
 //  Kata.LoanPrediction.C++
 //
-//  Created by Andrew Dowding on 3/09/2015.
+//  Created by a.j.dowding on 3/09/2015.
 //  Copyright (c) 2015 a.j.dowding. All rights reserved.
 //
 
@@ -17,12 +17,17 @@
 class LoanCalculator
 {
 public:
-    LoanCalculator(LoanContext *context);
+    LoanCalculator(LoanContext context);
     ~LoanCalculator();
-    LoanCalculationOutput* CalculateLoan();
+    LoanCalculationOutput calculateLoan();
 private:
-    LoanContext *context;
-    LoanCalculationOutput *output;
+    LoanContext context;
+    LoanCalculationOutput output;
+    void processEndOfMonth(dateTime currentDate, float &monthlyInterest, float &principal, LoanCalculationOutput &output);
+    void processExtraRepayment(float &principal, LoanContext context, dateTime currentDate, LoanCalculationOutput &output);
+    void processMinRepayment(float &principal, LoanContext context, dateTime &currentDate, float monthlyInterest, LoanCalculationOutput &output);
+    float calculateDailyInterest(float principal, float interestRate);
+    LoanTransaction createTransaction(string type, dateTime date, float repayment, float charge, float remainPrincipal);
 };
 
 #endif /* defined(__Kata_LoanPrediction_C____LoanCalculator__) */

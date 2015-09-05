@@ -2,7 +2,7 @@
 //  LoanContext.cpp
 //  Kata.LoanPrediction.C++
 //
-//  Created by Andrew Dowding on 3/09/2015.
+//  Created by a.j.dowding on 3/09/2015.
 //  Copyright (c) 2015 a.j.dowding. All rights reserved.
 //
 
@@ -24,6 +24,8 @@ LoanContext::LoanContext(dateTime startDate, dateTime targetEndDate, dateTime to
     this->extraRepaymentDay = extraRepaymentDay;
 }
 
+LoanContext::~LoanContext()
+{ }
 
 dateTime LoanContext::getStartDate()
 {
@@ -35,21 +37,83 @@ void LoanContext::setStartDate(dateTime source)
     startDate = source;
 }
 
-/*
-dateTime getTargetEndDate();
-void setTargetEndDate(dateTime source);
-dateTime getTodaysDate();
-void setTodaysDate(dateTime source);
-float getPrincipal();
-void setPricipal(float source);
-float getInterestRate();
-void setInterestRate(float source);
-float getMinRepaymentAmount();
-void setMinRepaymentAmount(float source);
-int getMinRepaymentDay();
-void setMinRepaymentDay(int source);
-float getExtraRepaymentAmount();
-void setExtraRepaymentAmount(float source);
-int getExtraRepaymentDay();
-void setExtraRepaymentDay(int source);
-*/
+
+dateTime LoanContext::getTargetEndDate()
+{
+    return(targetEndDate);
+}
+
+void LoanContext::setTargetEndDate(dateTime source)
+{
+    targetEndDate = source;
+}
+
+dateTime LoanContext::getTodaysDate()
+{
+    return(todaysDate);
+}
+
+void LoanContext::setTodaysDate(dateTime source)
+{
+    todaysDate = source;
+}
+
+float LoanContext::getPrincipal()
+{
+    return(principal);
+}
+
+void LoanContext::setPricipal(float source)
+{
+    principal = source;
+}
+
+float LoanContext::getInterestRate()
+{
+    return(interestRate);
+}
+
+void LoanContext::setInterestRate(float source)
+{
+    interestRate = source;
+}
+
+float LoanContext::getMinRepaymentAmount()
+{
+    return(minRepaymentAmount);
+}
+
+void LoanContext::setMinRepaymentAmount(float source)
+{
+    minRepaymentAmount = source;
+}
+
+int LoanContext::getMinRepaymentDay()
+{
+    return(minRepaymentDay);
+}
+
+void LoanContext::setMinRepaymentDay(int source)
+{
+    minRepaymentDay = source;
+}
+
+float LoanContext::getExtraRepaymentAmount()
+{
+    return(extraRepaymentAmount);
+}
+
+void LoanContext::setExtraRepaymentAmount(float source)
+{
+    extraRepaymentAmount = source;
+}
+
+int LoanContext::getExtraRepaymentDay()
+{
+    return(extraRepaymentDay);
+}
+
+void LoanContext::setExtraRepaymentDay(int source)
+{
+    extraRepaymentDay = source;    
+}

@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 a.j.dowding. All rights reserved.
 //
 
+//TODO: remove pointer arguments to functions where function does not change the value and a copy is not costly
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,9 +27,9 @@ const char *TX_TYPE_INTEREST_CHARGED = "Interest Charged";
 const char *TX_FINAL_REPAYMENT = "Final Repayment";
 const char *DATE_FORMAT = "%d/%m/%Y";
 const char *DATE_FORMAT_FOR_FILENAME = "%d.%m.%Y";
-const char *TRANSACTION_FORMAT_PATTERN = "%s - %-17s - Payment: $%-10.2f Charge: $%-10.2f Prinicpal: $%-10.2f\n";
+const char *TRANSACTION_FORMAT_PATTERN = "%s - %-17s - Credit: $%-10.2f Debit: $%-10.2f Prinicpal Balance: $%-10.2f\n";
 const char *LOAN_PAID_OFF_FORMAT_PATTERN = "\nLoan is paid off on %s, total interest paid from %s to %s is $%.2f.\n";
-const char *ARGUMENT_PATTERN_FORMAT = "%s\n\nToday's Date: %s\nStart Date: %s\nPrincipal: $%.2f\nInterest Rate: %.2f%%\nMin. Repayment Amount: $%.2f\nMin. Repayment Day: %d\nExtra Repayment: $%.2f\nExtra Repayment Day: %d\n\n";
+const char *OUTPUT_HEADER_PATTERN_FORMAT = "%s\n\nToday's Date: %s\nStart Date: %s\nPrincipal: $%.2f\nInterest Rate: %.2f%%\nMin. Repayment Amount: $%.2f\nMin. Repayment Day: %d\nExtra Repayment: $%.2f\nExtra Repayment Day: %d\n\n";
 
 // structs
 struct context
@@ -66,8 +68,8 @@ void processMinRepayment(float *principal, context *runningContext, dateTime *cu
 void processExtraRepayment(float *principal, context *runningContext, dateTime *currentDate);
 char* buildOutputFilename(dateTime *startDate);
 void printOutputToFile(dateTime *currentDate, calculationOutput *output);
-void printArguments(context *runningContext);
-void processEndOfMonth(dateTime *currentDate, int *currentMonth, float *monthlyInterest, float *principal, calculationOutput *output);
+void printOutputHeader(context *runningContext);
+void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *principal, calculationOutput *output);
 bool checkAllocation(void *target);
 
 // variables
@@ -98,7 +100,7 @@ int main(int argc, const char * argv[]) {
         runningContext = processArguments(argc, argv);
         runningContext->todaysDate = *todaysDate;
     }
-    printArguments(runningContext);
+    printOutputHeader(runningContext);
     output = calculateLoan(runningContext);
     printCalculations(output);
     printOutputToFile(todaysDate, output);
@@ -106,6 +108,7 @@ int main(int argc, const char * argv[]) {
     free(runningContext);
     free(output);
     freeAllNodes(rootTransactionNode, headTransactionNode);
+    free(todaysDate);
     return (EXIT_SUCCESS);
 }
 
@@ -142,13 +145,13 @@ context* processArguments(int argc, const char* argv[])
 
 /*
  ***************************************
- ** Prints the arguments provided by the
- ** user.
+ ** Prints the program name, 
+ ** arguments provided by the user etc.
  ***************************************
  */
-void printArguments(context *runningContext)
+void printOutputHeader(context *runningContext)
 {
-    printf(ARGUMENT_PATTERN_FORMAT,
+    printf(OUTPUT_HEADER_PATTERN_FORMAT,
            PROGRAM_NAME,
            formatDate(&(runningContext->todaysDate), DATE_FORMAT),
            formatDate(&(runningContext->startDate), DATE_FORMAT),
@@ -172,10 +175,10 @@ calculationOutput* calculateLoan(context *runningContext)
 {
     calculationOutput* output = malloc(sizeof(calculationOutput));
     if(!checkAllocation(output)) return (NULL);
+    dateTime nextDate;
     bool firstIteration = true;
     float principal = runningContext->principalAmount;
     float monthlyInterest = 0.0f;
-    int currentMonth = runningContext->startDate.tm_mon;
     dateTime *currentDate = malloc(sizeof(dateTime));
     if(!checkAllocation(currentDate)) return (NULL);
     *currentDate = runningContext->startDate;
@@ -209,14 +212,15 @@ calculationOutput* calculateLoan(context *runningContext)
             firstIteration = false;
         }
         // move date forward
-        currentDate->tm_mday = currentDate->tm_mday + 1;
-        mktime(currentDate);
-        
+        nextDate = *currentDate;
+        nextDate.tm_mday = nextDate.tm_mday + 1;
+        mktime(&nextDate);
         // if end of month
-        if(currentMonth != currentDate->tm_mon)
+        if(currentDate->tm_mon != nextDate.tm_mon)
         {
-            processEndOfMonth(currentDate, &currentMonth, &monthlyInterest, &principal, output);
+            processEndOfMonth(currentDate, &monthlyInterest, &principal, output);
         }
+        *currentDate = nextDate;
     }
     return(output);
 }
@@ -227,7 +231,7 @@ calculationOutput* calculateLoan(context *runningContext)
  ** interest to the principal.
  ***************************************
  */
-void processEndOfMonth(dateTime *currentDate, int *currentMonth, float *monthlyInterest, float *principal, calculationOutput *output)
+void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *principal, calculationOutput *output)
 {
     // add interest charged transaction
     *principal += *monthlyInterest;
@@ -236,7 +240,6 @@ void processEndOfMonth(dateTime *currentDate, int *currentMonth, float *monthlyI
     addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, *monthlyInterest, *principal));
     // reset for new month
     *monthlyInterest = 0.0f;
-    *currentMonth = currentDate->tm_mon;
 }
 
 /*
@@ -303,9 +306,9 @@ transaction* createTransaction(const char* type, dateTime* date, float repayment
     transaction *tmp = malloc(sizeof(transaction));
     if(!checkAllocation(tmp)) return (NULL);
     tmp->transactionType = type;
-    tmp->charge = charge;
+    tmp->debit = charge;
     tmp->remainPrincipalAmount = remainPrincipal;
-    tmp->repayment = repayment;
+    tmp->credit = repayment;
     tmp->transactionDate = *date;
     return(tmp);
 }
@@ -325,8 +328,8 @@ void printCalculations(calculationOutput *output)
         printf(TRANSACTION_FORMAT_PATTERN,
                formatDate(&(current->item->transactionDate), DATE_FORMAT),
                current->item->transactionType,
-               current->item->repayment,
-               current->item->charge,
+               current->item->credit,
+               current->item->debit,
                current->item->remainPrincipalAmount);
         current = current->next;
     }
@@ -348,7 +351,7 @@ void printOutputToFile(dateTime *currentDate, calculationOutput *output)
     char *filename = buildOutputFilename(currentDate);
     FILE *outputFile = fopen(filename, "w+");
     
-    fprintf(outputFile, ARGUMENT_PATTERN_FORMAT,
+    fprintf(outputFile, OUTPUT_HEADER_PATTERN_FORMAT,
            PROGRAM_NAME,
            formatDate(&(runningContext->todaysDate), DATE_FORMAT),
            formatDate(&(runningContext->startDate), DATE_FORMAT),
@@ -365,8 +368,8 @@ void printOutputToFile(dateTime *currentDate, calculationOutput *output)
         fprintf(outputFile, TRANSACTION_FORMAT_PATTERN,
                formatDate(&(current->item->transactionDate), DATE_FORMAT),
                current->item->transactionType,
-               current->item->repayment,
-               current->item->charge,
+               current->item->credit,
+               current->item->debit,
                current->item->remainPrincipalAmount);
         current = current->next;
     }

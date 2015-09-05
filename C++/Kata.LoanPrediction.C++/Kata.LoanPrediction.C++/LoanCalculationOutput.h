@@ -2,7 +2,7 @@
 //  LoanCalculationOutput.h
 //  Kata.LoanPrediction.C++
 //
-//  Created by Andrew Dowding on 3/09/2015.
+//  Created by a.j.dowding on 3/09/2015.
 //  Copyright (c) 2015 a.j.dowding. All rights reserved.
 //
 
@@ -20,7 +20,7 @@ class LoanCalculationOutput
 {
 public:
     LoanCalculationOutput();
-    ~ LoanCalculationOutput();
+    ~LoanCalculationOutput();
     LoanCalculationOutput(dateTime interestStartDate, dateTime loanEndsDate, float totalInterestPaid);
     dateTime getInterestStartDate();
     void setInterestStartDate(dateTime source);
@@ -28,12 +28,14 @@ public:
     void setLoanEndsDate(dateTime source);
     float getTotalInterestPaid();
     void setTotalInterestPaid(float source);
-    vector<LoanTransaction> getTransaction();
+    void addTransaction(LoanTransaction transaction);
+    const vector<LoanTransaction>* const getTransactionList();
     
 private:
     dateTime interestStartDate;
     dateTime loanEndsDate;
     float totalInterestPaid;
+    void addTransaction();
     vector<LoanTransaction> transactions;
 };
 
