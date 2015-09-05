@@ -8,6 +8,7 @@
 
 #include <time.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <iomanip>
 #include "Global.h"
@@ -23,8 +24,9 @@ using namespace std;
 void processArguments(int argc, const char* argv[], LoanContext *context);
 void printUsage();
 void formatDate(dateTime target, const char *dateFormat, char *buffer, int bufferSize);
-void printOutputHeader(LoanContext *context);
-void printCalculations(LoanCalculationOutput *output);
+void printOutputHeader(LoanContext *context, ostream& out);
+void printCalculations(LoanContext *context, LoanCalculationOutput *output, ostream& out);
+string buildOutputFilename(dateTime currentDate);
 
 int main(int argc, const char * argv[]) {
     // variables
@@ -48,11 +50,18 @@ int main(int argc, const char * argv[]) {
             processArguments(argc, argv, context);
             context->setTodaysDate(*todaysDate);
         }
-        printOutputHeader(context);
+        printOutputHeader(context, cout);
         calculator = new LoanCalculator(*context);
         output = new LoanCalculationOutput();
         *output = calculator->calculateLoan();
-        printCalculations(output);
+        printCalculations(context, output, cout);
+        
+        ofstream outFile;
+        outFile.open(buildOutputFilename(*todaysDate));
+        printOutputHeader(context, outFile);
+        printCalculations(context, output, outFile);
+        outFile.close();
+        
         delete(todaysDate);
         delete(context);
         delete(calculator);
@@ -71,51 +80,57 @@ int main(int argc, const char * argv[]) {
  ** will be paid off.
  ***************************************
  */
-void printCalculations(LoanCalculationOutput *output)
+void printCalculations(LoanContext *context, LoanCalculationOutput *output, ostream& out)
 {
     const vector<LoanTransaction> *transactions = output->getTransactionList();
-    cout.precision(2);
-    cout << fixed;
+    out.precision(2);
+    out << fixed;
+    char *interestCalcStartDateString = new char[11];
+    formatDate(output->getInterestStartDate(), DATE_FORMAT, interestCalcStartDateString, 11);
+    char *loanEndDateString = new char[11];
+    formatDate(output->getLoanEndsDate(), DATE_FORMAT, loanEndDateString, 11);
     int i=0;
     for(i=0; i < transactions->size(); i++)
     {
         LoanTransaction t = transactions->at(i);
-        char *transactionDate = new char[11];
-        formatDate(t.getDate(), DATE_FORMAT, transactionDate, 11);
+        dateTime targetEndDate = context->getTargetEndDate();
+        dateTime transactionDate = t.getDate();
+        char *transactionDateString = new char[11];
+        formatDate(transactionDate, DATE_FORMAT, transactionDateString, 11);
+        bool isTargetDate = transactionDate.tm_year == targetEndDate.tm_year && transactionDate.tm_mon == targetEndDate.tm_mon;
         
-        // todo indicate where the target end date comes if it exists in transactions
-        // targetEndDate <= transactionDate
+        if(isTargetDate) out << setw(3) << "^T ";
+        else out << setw(3) << "";
+        out << setw(11) << transactionDateString;
+        out << setw(3) << " - " << setw(17) << left << t.getType() << setw(2) << " -" << right
+                << " Credit: " << setw(8) << t.getCredit()
+                << " Debit: " << setw(8) << t.getDebit()
+                << " Balance: " << setw(10) << t.getPrincipalBalance() << endl;
         
-        cout << transactionDate  << " - " << setw(17) << t.getType() << " -"
-        << " Credit: " << setw(8) << t.getCredit()
-        << " Debit: " << setw(8) << t.getDebit()
-        << " Balance: " << setw(8) << t.getPrincipalBalance() << endl;
-        
-        //<< "Loan is paid off on " << " total interest paid from %s to %s is $%.2f.
-        
-        delete(transactionDate);
+        delete(transactionDateString);
     }
+    out << endl << "Loan is paid off on " << loanEndDateString << ", total interest paid from " << interestCalcStartDateString << " to " << loanEndDateString << " is $" << output->getTotalInterestPaid() << "." << endl;
     
-    
-    
-    /*
-    transactionNode *current = rootTransactionNode;
-    while(current != NULL)
-    {
-        printf(TRANSACTION_FORMAT_PATTERN,
-               formatDate(&(current->item->transactionDate), DATE_FORMAT),
-               current->item->transactionType,
-               current->item->credit,
-               current->item->debit,
-               current->item->remainPrincipalAmount);
-        current = current->next;
-    }
-    printf(LOAN_PAID_OFF_FORMAT_PATTERN,
-           formatDate(&(output->loanEndsDate), DATE_FORMAT),
-           formatDate(&(output->interestStartDate), DATE_FORMAT),
-           formatDate(&(output->loanEndsDate), DATE_FORMAT),
-           output->totalInterestPaid);
-     */
+    delete(interestCalcStartDateString);
+    delete(loanEndDateString);
+}
+
+/*
+ ***************************************
+ ** Builds the filename for program output.
+ ***************************************
+ */
+string buildOutputFilename(dateTime currentDate)
+{
+    char *date = new char[11];
+    formatDate(currentDate, DATE_FORMAT_FOR_FILENAME, date, 11);
+    string result;
+    result.append(PROGRAM_NAME);
+    result.append(".");
+    result.append(date);
+    result.append(".out.txt");
+    delete(date);
+    return(result);
 }
 
 /*
@@ -173,7 +188,7 @@ void formatDate(dateTime target, const char *dateFormat, char *buffer, int buffe
  ** arguments provided by the user etc.
  ***************************************
  */
-void printOutputHeader(LoanContext *context)
+void printOutputHeader(LoanContext *context, ostream& out)
 {
     char *todaysDateString = new char[11];
     formatDate(context->getTodaysDate(), DATE_FORMAT, todaysDateString, 11);
@@ -181,10 +196,10 @@ void printOutputHeader(LoanContext *context)
     formatDate(context->getStartDate(), DATE_FORMAT, startDateString, 11);
     char *targetEndDateString = new char[11];
     formatDate(context->getTargetEndDate(), DATE_FORMAT, targetEndDateString, 11);
-
-    cout.precision(2);
-    cout << fixed;
-    cout << PROGRAM_NAME
+    
+    out.precision(2);
+    out << fixed;
+    out << PROGRAM_NAME
             << "\n\nToday's Date: " << todaysDateString << endl
             << "Start Date: " << startDateString << endl
             << "Target End Date: " << targetEndDateString << endl
@@ -193,7 +208,7 @@ void printOutputHeader(LoanContext *context)
             << "Min. Repayment Amount: " << context->getMinRepaymentAmount() << endl
             << "Min. Repayment Day: " << context->getMinRepaymentDay() << endl
             << "Extra Repayment: " << context->getExtraRepaymentAmount() << endl
-            << "Extra Repayment Day: " << context->getExtraRepaymentDay() << endl;
+            << "Extra Repayment Day: " << context->getExtraRepaymentDay() << endl << endl;
     
     delete(todaysDateString);
     delete(startDateString);

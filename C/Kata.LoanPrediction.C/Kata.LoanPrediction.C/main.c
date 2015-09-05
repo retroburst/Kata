@@ -66,7 +66,7 @@ void printCalculations(calculationOutput *output);
 char* formatDate(dateTime *target, const char *dateFormat);
 void processMinRepayment(float *principal, context *runningContext, dateTime *currentDate, float monthlyInterest, calculationOutput *output);
 void processExtraRepayment(float *principal, context *runningContext, dateTime *currentDate);
-char* buildOutputFilename(dateTime *startDate);
+char* buildOutputFilename(dateTime *currentDate);
 void printOutputToFile(dateTime *currentDate, calculationOutput *output);
 void printOutputHeader(context *runningContext);
 void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *principal, calculationOutput *output);
@@ -387,12 +387,12 @@ void printOutputToFile(dateTime *currentDate, calculationOutput *output)
 
 /*
  ***************************************
- ** Formats a date as a string.
+ ** Builds the filename for program output.
  ***************************************
  */
-char* buildOutputFilename(dateTime *startDate)
+char* buildOutputFilename(dateTime *currentDate)
 {
-    char *date = formatDate(startDate, DATE_FORMAT_FOR_FILENAME);
+    char *date = formatDate(currentDate, DATE_FORMAT_FOR_FILENAME);
     unsigned long size = strlen(PROGRAM_NAME) + 1 + strlen(date) + 1;
     char *result = malloc(sizeof(char) * size);
     if(!checkAllocation(result)) return (NULL);
