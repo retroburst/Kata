@@ -10,7 +10,11 @@
 
 LoanTransaction::LoanTransaction()
 {
-    
+    date = *DATETIME_EMPTY;
+    type = *STRING_EMPTY;
+    credit = 0.0f;
+    debit = 0.0f;
+    balance = 0.0f;
 }
 
 LoanTransaction::~LoanTransaction()
@@ -18,9 +22,13 @@ LoanTransaction::~LoanTransaction()
     
 }
 
-LoanTransaction::LoanTransaction(dateTime date, string type, float credit, float debit, float principalBalance)
+LoanTransaction::LoanTransaction(dateTime date, string type, float credit, float debit, float balance)
 {
-    
+    this->date = date;
+    this->type = type;
+    this->credit = credit;
+    this-> debit = debit;
+    this->balance = balance;
 }
 
 dateTime LoanTransaction::getDate()
@@ -63,12 +71,12 @@ void LoanTransaction::setDebit(float source)
     debit = source;
 }
 
-float LoanTransaction::getPrincipalBalance()
+float LoanTransaction::getBalance()
 {
-    return(principalBalance);
+    return(balance);
 }
 
-void LoanTransaction::setPrincipleBalance(float source)
+void LoanTransaction::setBalance(float source)
 {
-    principalBalance = source;
+    balance = source;
 }

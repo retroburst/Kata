@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 a.j.dowding. All rights reserved.
 //
 
-//TODO: remove pointer arguments to functions where function does not change the value and a copy is not costly
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +15,7 @@
 // constants
 const char* PROGRAM_NAME = "Kata.LoanPrediction.C";
 const int EXPECTED_ARGUMENT_COUNT = 8;
-const char* USAGE_DIRECTIVE =  "Usage: %s startDate-{dd/mm/yyyy} principalAmount interestRate minRepayAmount "
+const char* USAGE_DIRECTIVE =  "Usage: %s startDate-{dd/mm/yyyy} balance interestRate minRepayAmount "
                                 "minRepayDay extraRepayAmount extraRepayDay\n"
                                 "Example: %s 23/12/2015 20000.00 5.74 1500.00 18 1200.00 15";
 const int NUM_DAYS_IN_YEAR = 365;
@@ -27,16 +25,16 @@ const char *TX_TYPE_INTEREST_CHARGED = "Interest Charged";
 const char *TX_FINAL_REPAYMENT = "Final Repayment";
 const char *DATE_FORMAT = "%d/%m/%Y";
 const char *DATE_FORMAT_FOR_FILENAME = "%d.%m.%Y";
-const char *TRANSACTION_FORMAT_PATTERN = "%s - %-17s - Credit: $%-10.2f Debit: $%-10.2f Prinicpal Balance: $%-10.2f\n";
+const char *TRANSACTION_FORMAT_PATTERN = "%s - %-17s - Credit: $%-10.2f Debit: $%-10.2f Balance: $%-10.2f\n";
 const char *LOAN_PAID_OFF_FORMAT_PATTERN = "\nLoan is paid off on %s, total interest paid from %s to %s is $%.2f.\n";
-const char *OUTPUT_HEADER_PATTERN_FORMAT = "%s\n\nToday's Date: %s\nStart Date: %s\nPrincipal: $%.2f\nInterest Rate: %.2f%%\nMin. Repayment Amount: $%.2f\nMin. Repayment Day: %d\nExtra Repayment: $%.2f\nExtra Repayment Day: %d\n\n";
+const char *OUTPUT_HEADER_PATTERN_FORMAT = "%s\n\nToday's Date: %s\nStart Date: %s\nBalance: $%.2f\nInterest Rate: %.2f%%\nMin. Repayment Amount: $%.2f\nMin. Repayment Day: %d\nExtra Repayment: $%.2f\nExtra Repayment Day: %d\n\n";
 
 // structs
 struct context
 {
     dateTime startDate;
     dateTime todaysDate;
-    float principalAmount;
+    float balance;
     float interestRate;
     float minRepayAmount;
     int minRepayDay;
@@ -60,16 +58,16 @@ typedef struct calculationOutput calculationOutput;
 void printUsage();
 context* processArguments(int argc, const char *argv[]);
 calculationOutput* calculateLoan(context *runningContext);
-float calculateDailyInterest(float principal, float interestRate);
-transaction* createTransaction(const char *type, dateTime *date, float repayment, float charge, float remainPrincipal);
+float calculateDailyInterest(float balance, float interestRate);
+transaction* createTransaction(const char *type, dateTime *date, float repayment, float charge, float remainBalance);
 void printCalculations(calculationOutput *output);
 char* formatDate(dateTime *target, const char *dateFormat);
-void processMinRepayment(float *principal, context *runningContext, dateTime *currentDate, float monthlyInterest, calculationOutput *output);
-void processExtraRepayment(float *principal, context *runningContext, dateTime *currentDate);
+void processMinRepayment(float *balance, context *runningContext, dateTime *currentDate, float monthlyInterest, calculationOutput *output);
+void processExtraRepayment(float *balance, context *runningContext, dateTime *currentDate);
 char* buildOutputFilename(dateTime *currentDate);
 void printOutputToFile(dateTime *currentDate, calculationOutput *output);
 void printOutputHeader(context *runningContext);
-void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *principal, calculationOutput *output);
+void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *balance, calculationOutput *output);
 bool checkAllocation(void *target);
 
 // variables
@@ -134,7 +132,7 @@ context* processArguments(int argc, const char* argv[])
     context* tmp = malloc(sizeof(context));
     if(!checkAllocation(tmp)) return (NULL);
     strptime(argv[1], DATE_FORMAT, &tmp->startDate);
-    tmp->principalAmount = (float) atof(argv[2]);
+    tmp->balance = (float) atof(argv[2]);
     tmp->interestRate =  (float) atof(argv[3]);
     tmp->minRepayAmount =  (float) atof(argv[4]);
     tmp->minRepayDay = (int) atoi(argv[5]);
@@ -155,7 +153,7 @@ void printOutputHeader(context *runningContext)
            PROGRAM_NAME,
            formatDate(&(runningContext->todaysDate), DATE_FORMAT),
            formatDate(&(runningContext->startDate), DATE_FORMAT),
-           runningContext->principalAmount,
+           runningContext->balance,
            runningContext->interestRate,
            runningContext->minRepayAmount,
            runningContext->minRepayDay,
@@ -177,7 +175,7 @@ calculationOutput* calculateLoan(context *runningContext)
     if(!checkAllocation(output)) return (NULL);
     dateTime nextDate;
     bool firstIteration = true;
-    float principal = runningContext->principalAmount;
+    float balance = runningContext->balance;
     float monthlyInterest = 0.0f;
     dateTime *currentDate = malloc(sizeof(dateTime));
     if(!checkAllocation(currentDate)) return (NULL);
@@ -189,20 +187,20 @@ calculationOutput* calculateLoan(context *runningContext)
     while(true)
     {
         // if min repay day
-        if(currentDate->tm_mday == runningContext->minRepayDay && principal > 0.0f)
+        if(currentDate->tm_mday == runningContext->minRepayDay && balance > 0.0f)
         {
-            processMinRepayment(&principal, runningContext, currentDate, monthlyInterest, output);
+            processMinRepayment(&balance, runningContext, currentDate, monthlyInterest, output);
         }
         // if extra repay day
-        if(currentDate->tm_mday == runningContext->extraRepayDay && runningContext->extraRepayAmount > 0.0f && principal > 0.0f)
+        if(currentDate->tm_mday == runningContext->extraRepayDay && runningContext->extraRepayAmount > 0.0f && balance > 0.0f)
         {
-            processExtraRepayment(&principal, runningContext, currentDate);
+            processExtraRepayment(&balance, runningContext, currentDate);
         }
         
-        // if principal is zero or less - we are done!
-        if(principal <= 0.0f) break;
+        // if balance is zero or less - we are done!
+        if(balance <= 0.0f) break;
         // calculate the daily interest
-        monthlyInterest += calculateDailyInterest(principal, runningContext->interestRate);
+        monthlyInterest += calculateDailyInterest(balance, runningContext->interestRate);
         // if this is the first iteration and we did not start on the first of the month
         // let's calculate the interest for the days back to the first
         if(firstIteration && runningContext->startDate.tm_mday != 1)
@@ -218,7 +216,7 @@ calculationOutput* calculateLoan(context *runningContext)
         // if end of month
         if(currentDate->tm_mon != nextDate.tm_mon)
         {
-            processEndOfMonth(currentDate, &monthlyInterest, &principal, output);
+            processEndOfMonth(currentDate, &monthlyInterest, &balance, output);
         }
         *currentDate = nextDate;
     }
@@ -228,16 +226,16 @@ calculationOutput* calculateLoan(context *runningContext)
 /*
  ***************************************
  ** Processes the end of month, adds
- ** interest to the principal.
+ ** interest to the balance.
  ***************************************
  */
-void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *principal, calculationOutput *output)
+void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *balance, calculationOutput *output)
 {
     // add interest charged transaction
-    *principal += *monthlyInterest;
+    *balance += *monthlyInterest;
     // calculate the total interest paid
     output->totalInterestPaid += *monthlyInterest;
-    addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, *monthlyInterest, *principal));
+    addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, *monthlyInterest, *balance));
     // reset for new month
     *monthlyInterest = 0.0f;
 }
@@ -248,13 +246,13 @@ void processEndOfMonth(dateTime *currentDate, float *monthlyInterest, float *pri
  ** current date if applicable.
  ***************************************
  */
-void processExtraRepayment(float *principal, context *runningContext, dateTime *currentDate)
+void processExtraRepayment(float *balance, context *runningContext, dateTime *currentDate)
 {
-    if(currentDate->tm_mday == runningContext->extraRepayDay && runningContext->extraRepayAmount > 0.0f && *principal > 0.0f)
+    if(currentDate->tm_mday == runningContext->extraRepayDay && runningContext->extraRepayAmount > 0.0f && *balance > 0.0f)
     {
         // add extra repay transaction (if amount is more than 0)
-        *principal -= runningContext->extraRepayAmount;
-        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_EXTRA_REPAYMENT, currentDate, runningContext->extraRepayAmount, 0.0f, *principal));
+        *balance -= runningContext->extraRepayAmount;
+        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_EXTRA_REPAYMENT, currentDate, runningContext->extraRepayAmount, 0.0f, *balance));
     }
 }
 
@@ -264,22 +262,22 @@ void processExtraRepayment(float *principal, context *runningContext, dateTime *
  ** current date if applicable.
  ***************************************
  */
-void processMinRepayment(float *principal, context *runningContext, dateTime *currentDate, float monthlyInterest, calculationOutput *output)
+void processMinRepayment(float *balance, context *runningContext, dateTime *currentDate, float monthlyInterest, calculationOutput *output)
 {
     // add min repay transaction
-    if((*principal + monthlyInterest) <= runningContext->minRepayAmount)
+    if((*balance + monthlyInterest) <= runningContext->minRepayAmount)
     {
         float finalRepayment = 0.0f;
         output->loanEndsDate = *currentDate;
-        *principal += monthlyInterest;
-        finalRepayment = *principal;
-        *principal -= finalRepayment;
-        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_FINAL_REPAYMENT, currentDate, finalRepayment, monthlyInterest, *principal));
+        *balance += monthlyInterest;
+        finalRepayment = *balance;
+        *balance -= finalRepayment;
+        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_FINAL_REPAYMENT, currentDate, finalRepayment, monthlyInterest, *balance));
     }
     else
     {
-        *principal -= runningContext->minRepayAmount;
-        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, runningContext->minRepayAmount, 0.0f, *principal));
+        *balance -= runningContext->minRepayAmount;
+        addTransactionNode(&rootTransactionNode, &headTransactionNode, createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, runningContext->minRepayAmount, 0.0f, *balance));
     }
 }
 
@@ -288,10 +286,10 @@ void processMinRepayment(float *principal, context *runningContext, dateTime *cu
  ** Calculates the interest for a day.
  ***************************************
  */
-float calculateDailyInterest(float principal, float interestRate)
+float calculateDailyInterest(float balance, float interestRate)
 {
     float result = 0.0f;
-    result = (principal * (interestRate / 100)) / NUM_DAYS_IN_YEAR;
+    result = (balance * (interestRate / 100)) / NUM_DAYS_IN_YEAR;
     return(result);
 }
 
@@ -301,13 +299,13 @@ float calculateDailyInterest(float principal, float interestRate)
  ** added to a linked list.
  ***************************************
  */
-transaction* createTransaction(const char* type, dateTime* date, float repayment, float charge, float remainPrincipal)
+transaction* createTransaction(const char* type, dateTime* date, float repayment, float charge, float remainBalance)
 {
     transaction *tmp = malloc(sizeof(transaction));
     if(!checkAllocation(tmp)) return (NULL);
     tmp->transactionType = type;
     tmp->debit = charge;
-    tmp->remainPrincipalAmount = remainPrincipal;
+    tmp->balance = remainBalance;
     tmp->credit = repayment;
     tmp->transactionDate = *date;
     return(tmp);
@@ -330,7 +328,7 @@ void printCalculations(calculationOutput *output)
                current->item->transactionType,
                current->item->credit,
                current->item->debit,
-               current->item->remainPrincipalAmount);
+               current->item->balance);
         current = current->next;
     }
     printf(LOAN_PAID_OFF_FORMAT_PATTERN,
@@ -355,7 +353,7 @@ void printOutputToFile(dateTime *currentDate, calculationOutput *output)
            PROGRAM_NAME,
            formatDate(&(runningContext->todaysDate), DATE_FORMAT),
            formatDate(&(runningContext->startDate), DATE_FORMAT),
-           runningContext->principalAmount,
+           runningContext->balance,
            runningContext->interestRate,
            runningContext->minRepayAmount,
            runningContext->minRepayDay,
@@ -370,7 +368,7 @@ void printOutputToFile(dateTime *currentDate, calculationOutput *output)
                current->item->transactionType,
                current->item->credit,
                current->item->debit,
-               current->item->remainPrincipalAmount);
+               current->item->balance);
         current = current->next;
     }
     

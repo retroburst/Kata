@@ -17,15 +17,15 @@ class LoanContext {
 public:
     LoanContext();
     ~LoanContext();
-    LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, float principal, float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay);
+    LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, float balance, float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay);
     dateTime getStartDate();
     void setStartDate(dateTime source);
     dateTime getTargetEndDate();
     void setTargetEndDate(dateTime source);
     dateTime getTodaysDate();
     void setTodaysDate(dateTime source);
-    float getPrincipal();
-    void setPricipal(float source);
+    float getBalance();
+    void setBalance(float source);
     float getInterestRate();
     void setInterestRate(float source);
     float getMinRepaymentAmount();
@@ -41,7 +41,7 @@ private:
     dateTime startDate;
     dateTime targetEndDate;
     dateTime todaysDate;
-    float principal;
+    float balance;
     float interestRate;
     float minRepaymentAmount;
     int minRepaymentDay;

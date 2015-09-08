@@ -19,7 +19,7 @@ struct transaction {
     const char *transactionType;
     float credit;
     float debit;
-    float remainPrincipalAmount;
+    float balance;
 };
 
 typedef struct transaction transaction;

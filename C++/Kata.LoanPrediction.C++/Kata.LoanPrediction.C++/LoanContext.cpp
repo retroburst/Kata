@@ -8,15 +8,20 @@
 
 #include "LoanContext.h"
 
+/*
+ ***************************************
+ ** Default constructor.
+ ***************************************
+ */
 LoanContext::LoanContext()
 { }
 
-LoanContext::LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, float principal, float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay)
+LoanContext::LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, float balance, float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay)
 {
     this->startDate = startDate;
     this->targetEndDate = targetEndDate;
     this->todaysDate = todaysDate;
-    this->principal = principal;
+    this->balance = balance;
     this->interestRate = interestRate;
     this->minRepaymentAmount = minRepaymentAmount;
     this->minRepaymentDay = minRepaymentDay;
@@ -58,14 +63,14 @@ void LoanContext::setTodaysDate(dateTime source)
     todaysDate = source;
 }
 
-float LoanContext::getPrincipal()
+float LoanContext::getBalance()
 {
-    return(principal);
+    return(balance);
 }
 
-void LoanContext::setPricipal(float source)
+void LoanContext::setBalance(float source)
 {
-    principal = source;
+    balance = source;
 }
 
 float LoanContext::getInterestRate()

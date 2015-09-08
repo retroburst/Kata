@@ -16,8 +16,6 @@
 #include "LoanCalculationOutput.h"
 #include "LoanCalculator.h"
 
-//TODO: principal should be renamed balance (as principal is just the original amout lent)
-
 using namespace std;
 
 // function prototypes
@@ -28,6 +26,11 @@ void printOutputHeader(LoanContext *context, ostream& out);
 void printCalculations(LoanContext *context, LoanCalculationOutput *output, ostream& out);
 string buildOutputFilename(dateTime currentDate);
 
+/*
+ ***************************************
+ ** Entry point for program.
+ ***************************************
+ */
 int main(int argc, const char * argv[]) {
     // variables
     dateTime *todaysDate = NULL;
@@ -89,6 +92,9 @@ void printCalculations(LoanContext *context, LoanCalculationOutput *output, ostr
     formatDate(output->getInterestStartDate(), DATE_FORMAT, interestCalcStartDateString, 11);
     char *loanEndDateString = new char[11];
     formatDate(output->getLoanEndsDate(), DATE_FORMAT, loanEndDateString, 11);
+    char *targetEndDateString = new char[11];
+    formatDate(context->getTargetEndDate(), DATE_FORMAT, targetEndDateString, 11);
+    
     int i=0;
     for(i=0; i < transactions->size(); i++)
     {
@@ -105,14 +111,18 @@ void printCalculations(LoanContext *context, LoanCalculationOutput *output, ostr
         out << setw(3) << " - " << setw(17) << left << t.getType() << setw(2) << " -" << right
                 << " Credit: " << setw(8) << t.getCredit()
                 << " Debit: " << setw(8) << t.getDebit()
-                << " Balance: " << setw(10) << t.getPrincipalBalance() << endl;
+                << " Balance: " << setw(10) << t.getBalance() << endl;
         
         delete(transactionDateString);
     }
     out << endl << "Loan is paid off on " << loanEndDateString << ", total interest paid from " << interestCalcStartDateString << " to " << loanEndDateString << " is $" << output->getTotalInterestPaid() << "." << endl;
     
+    if(output->getTargetEndDateHit()) out << endl << "Target end date of " << targetEndDateString << " was hit perfectly." << endl;
+    else out << endl << "Target end date of " << targetEndDateString << " was missed by " << output->getTargetEndDateMissedInDays() << " days." << endl;
+    
     delete(interestCalcStartDateString);
     delete(loanEndDateString);
+    delete(targetEndDateString);
 }
 
 /*
@@ -147,7 +157,7 @@ void processArguments(int argc, const char* argv[], LoanContext *context)
     strptime(argv[2], DATE_FORMAT, targetEndDate);
     context->setStartDate(*startDate);
     context->setTargetEndDate(*targetEndDate);
-    context->setPricipal((float) atof(argv[3]));
+    context->setBalance((float) atof(argv[3]));
     context->setInterestRate((float) atof(argv[4]));
     context->setMinRepaymentAmount((float) atof(argv[5]));
     context->setMinRepaymentDay((int) atoi(argv[6]));
@@ -166,7 +176,7 @@ void processArguments(int argc, const char* argv[], LoanContext *context)
 void printUsage()
 {
     cout << "Usage: " << PROGRAM_NAME << " startDate(dd/mm/yyyy) targetEndDate(dd/mm/yyyy) "
-            << "principalAmount interestRate minRepayAmount "
+            << "balance interestRate minRepayAmount "
             << "minRepayDay extraRepayAmount extraRepayDay\n"
             << "Example: " << PROGRAM_NAME << " 23/12/2015 23/12/2018 20000.00 5.74 1500.00 18 1200.00 15"
             << endl;
@@ -203,7 +213,7 @@ void printOutputHeader(LoanContext *context, ostream& out)
             << "\n\nToday's Date: " << todaysDateString << endl
             << "Start Date: " << startDateString << endl
             << "Target End Date: " << targetEndDateString << endl
-            << "Principal: " << context->getPrincipal() << endl
+            << "Balance: " << context->getBalance() << endl
             << "Interest Rate: " << context->getInterestRate() << endl
             << "Min. Repayment Amount: " << context->getMinRepaymentAmount() << endl
             << "Min. Repayment Day: " << context->getMinRepaymentDay() << endl

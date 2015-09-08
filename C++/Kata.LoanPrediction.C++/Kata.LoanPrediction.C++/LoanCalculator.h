@@ -23,11 +23,12 @@ public:
 private:
     LoanContext context;
     LoanCalculationOutput output;
-    void processEndOfMonth(dateTime currentDate, float &monthlyInterest, float &principal, LoanCalculationOutput &output);
-    void processExtraRepayment(float &principal, LoanContext context, dateTime currentDate, LoanCalculationOutput &output);
-    void processMinRepayment(float &principal, LoanContext context, dateTime &currentDate, float monthlyInterest, LoanCalculationOutput &output);
-    float calculateDailyInterest(float principal, float interestRate);
-    LoanTransaction createTransaction(string type, dateTime date, float repayment, float charge, float remainPrincipal);
+    void processEndOfMonth(dateTime currentDate, float &monthlyInterest, float &balance, LoanCalculationOutput &output);
+    void processExtraRepayment(float &balance, LoanContext context, dateTime currentDate, LoanCalculationOutput &output);
+    void processMinRepayment(float &balance, LoanContext context, dateTime &currentDate, float monthlyInterest, LoanCalculationOutput &output);
+    float calculateDailyInterest(float balance, float interestRate);
+    LoanTransaction createTransaction(string type, dateTime date, float repayment, float charge, float balance);
+    void setTargetEndDateAccuracy(dateTime actualEndDate, dateTime targetEndDate, LoanCalculationOutput &output);
 };
 
 #endif /* defined(__Kata_LoanPrediction_C____LoanCalculator__) */
