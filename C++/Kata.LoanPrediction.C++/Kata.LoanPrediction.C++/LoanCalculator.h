@@ -20,6 +20,9 @@ public:
     LoanCalculator(LoanContext context);
     ~LoanCalculator();
     LoanCalculationOutput calculateLoan();
+    void printOutputHeader(LoanContext *context, ostream& out);
+    void printCalculations(LoanContext *context, LoanCalculationOutput *output, ostream& out);
+    string buildOutputFilename(dateTime currentDate);
 private:
     LoanContext context;
     LoanCalculationOutput output;
@@ -29,6 +32,10 @@ private:
     float calculateDailyInterest(float balance, float interestRate);
     LoanTransaction createTransaction(string type, dateTime date, float repayment, float charge, float balance);
     void setTargetEndDateAccuracy(dateTime actualEndDate, dateTime targetEndDate, LoanCalculationOutput &output);
+    
+    void formatDate(dateTime target, const char *dateFormat, char *buffer, int bufferSize);
+
+    
 };
 
 #endif /* defined(__Kata_LoanPrediction_C____LoanCalculator__) */

@@ -210,5 +210,3 @@ void LoanCalculator::setTargetEndDateAccuracy(dateTime actualEndDate, dateTime t
     delete(search);
 }
 
-
-

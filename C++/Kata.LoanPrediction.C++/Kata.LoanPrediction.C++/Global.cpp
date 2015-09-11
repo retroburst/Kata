@@ -8,6 +8,14 @@
 
 #include "Global.h"
 
+/*
+ ***************************************
+ ** Compares two dates, return codes:
+ ** 0 = equal,
+ ** 1 = x > y,
+ ** -1 = x < y
+ ***************************************
+ */
 int compareDates(dateTime x, dateTime y)
 {
     if(x.tm_year > y.tm_year
