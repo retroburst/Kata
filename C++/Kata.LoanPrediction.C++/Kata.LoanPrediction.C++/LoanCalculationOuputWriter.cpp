@@ -2,7 +2,7 @@
 //  LoanCalculationOuputWriter.cpp
 //  Kata.LoanPrediction.C++
 //
-//  Created by Andrew Dowding on 11/09/2015.
+//  Created by a.j.dowding on 11/09/2015.
 //  Copyright (c) 2015 a.j.dowding. All rights reserved.
 //
 
