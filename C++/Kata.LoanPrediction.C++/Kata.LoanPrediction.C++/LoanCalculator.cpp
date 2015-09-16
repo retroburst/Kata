@@ -9,13 +9,15 @@
 #include "LoanCalculator.h"
 #include "Global.h"
 
+/*
+ ***************************************
+ ** Default constructor.
+ ***************************************
+ */
 LoanCalculator::LoanCalculator(LoanContext context)
 {
     this->context = context;
 }
-
-LoanCalculator::~LoanCalculator()
-{ }
 
 /*
  ***************************************
@@ -26,7 +28,6 @@ LoanCalculator::~LoanCalculator()
  */
 LoanCalculationOutput LoanCalculator::calculateLoan()
 {
-    // todo: calculations
     LoanCalculationOutput output;
     dateTime nextDate;
     bool firstIteration = true;

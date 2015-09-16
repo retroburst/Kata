@@ -15,11 +15,18 @@
 
 using namespace std;
 
+/*
+ ***************************************
+ ** Represents a loan transaction. An
+ ** example being an interest charged
+ ** transaction or a monthly repayment
+ ** transaction.
+ ***************************************
+ */
 class LoanTransaction
 {
 public:
     LoanTransaction();
-    ~LoanTransaction();
     LoanTransaction(dateTime date, string type, float credit, float debit, float balance);
     dateTime getDate();
     void setDate(dateTime source);

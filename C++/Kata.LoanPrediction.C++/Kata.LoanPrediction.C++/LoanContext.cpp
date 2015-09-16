@@ -21,7 +21,9 @@ LoanContext::LoanContext()
  ** Constructor.
  ***************************************
  */
-LoanContext::LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, float balance, float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay)
+LoanContext::LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate,
+                         float balance, float interestRate, float minRepaymentAmount,
+                         int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay)
 {
     this->startDate = startDate;
     this->targetEndDate = targetEndDate;
@@ -33,14 +35,6 @@ LoanContext::LoanContext(dateTime startDate, dateTime targetEndDate, dateTime to
     this->extraRepaymentAmount = extraRepaymentAmount;
     this->extraRepaymentDay = extraRepaymentDay;
 }
-
-/*
- ***************************************
- ** Destructor.
- ***************************************
- */
-LoanContext::~LoanContext()
-{ }
 
 /*
  ***************************************

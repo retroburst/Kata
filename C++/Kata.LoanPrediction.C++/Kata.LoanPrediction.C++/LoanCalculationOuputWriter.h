@@ -19,12 +19,20 @@
 #include <string>
 #include <iomanip>
 
+/*
+ ***************************************
+ ** Writes the calculation output to 
+ ** an output stream, such as the console
+ ** or a file.
+ ***************************************
+ */
 class LoanCalculationOuputWriter
 {
 public:
     LoanCalculationOuputWriter(LoanContext context, LoanCalculationOutput output, dateTime currentDate);
     void OutputConsole();
     void OutputFile();
+    
 private:
     string buildOutputFilename(dateTime currentDate);
     void printOutputHeader(LoanContext &context, ostream &out);

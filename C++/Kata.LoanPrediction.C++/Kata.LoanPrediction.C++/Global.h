@@ -30,7 +30,7 @@ static const string TX_FINAL_REPAYMENT = "Final Repayment";
 static const char *DATE_FORMAT = "%d/%m/%Y";
 static const char *DATE_FORMAT_FOR_FILENAME = "%d.%m.%Y";
 
-// functions
+// function prototypes
 int compareDates(dateTime x, dateTime y);
 
 #endif /* defined(__Kata_LoanPrediction_C____Global__) */

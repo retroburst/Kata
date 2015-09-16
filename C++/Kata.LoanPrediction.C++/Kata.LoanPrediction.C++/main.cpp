@@ -53,12 +53,14 @@ int main(int argc, const char * argv[]) {
         writer = new LoanCalculationOuputWriter(*context, *output, *todaysDate);
         writer->OutputConsole();
         writer->OutputFile();
-
+        
+        // cleanup dynamically allocated variables
         delete(todaysDate);
         delete(context);
         delete(calculator);
         delete(output);
         delete(writer);
+        
     } catch (exception ex) {
         cout << "Unhandled exception occurred. " << ex.what() << endl;
         return(EXIT_FAILURE);

@@ -16,11 +16,15 @@
 
 using namespace std;
 
+/*
+ ***************************************
+ ** Output from the loan calculator.
+ ***************************************
+ */
 class LoanCalculationOutput
 {
 public:
     LoanCalculationOutput();
-    ~LoanCalculationOutput();
     LoanCalculationOutput(dateTime interestStartDate, dateTime loanEndsDate, float totalInterestPaid, bool targetEndDateHit, int targetEndDateMissedInDays);
     dateTime getInterestStartDate();
     void setInterestStartDate(dateTime source);

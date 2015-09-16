@@ -8,7 +8,11 @@
 
 #include "LoanCalculationOuputWriter.h"
 
-
+/*
+ ***************************************
+ ** Default constructor.
+ ***************************************
+ */
 LoanCalculationOuputWriter::LoanCalculationOuputWriter(LoanContext context, LoanCalculationOutput output, dateTime todaysDate)
 {
     this->context = context;
@@ -16,12 +20,24 @@ LoanCalculationOuputWriter::LoanCalculationOuputWriter(LoanContext context, Loan
     this->todaysDate = todaysDate;
 }
 
+/*
+ ***************************************
+ ** Outputs the calculations to the
+ ** console out stream.
+ ***************************************
+ */
 void LoanCalculationOuputWriter::OutputConsole()
 {
     printOutputHeader(context, cout);
     printCalculations(context, output, cout);
 }
 
+/*
+ ***************************************
+ ** Outputs the calculations to an
+ ** output file stream.
+ ***************************************
+ */
 void LoanCalculationOuputWriter::OutputFile()
 {
     ofstream outFile;

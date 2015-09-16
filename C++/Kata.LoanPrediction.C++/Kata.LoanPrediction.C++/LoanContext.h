@@ -12,11 +12,15 @@
 #include <stdio.h>
 #include "Global.h"
 
+/*
+ ***************************************
+ ** Context information of a loan.
+ ***************************************
+ */
 class LoanContext {
-    
+
 public:
     LoanContext();
-    ~LoanContext();
     LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, float balance, float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay);
     dateTime getStartDate();
     void setStartDate(dateTime source);
