@@ -56,7 +56,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The credit.
         /// </value>
-        float Credit { get; set; }
+        public float Credit { get; set; }
 
         /// <summary>
         /// Gets or sets the debit.
@@ -64,7 +64,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The debit.
         /// </value>
-        float Debit { get; set; }
+        public float Debit { get; set; }
 
         /// <summary>
         /// Gets or sets the balance.
@@ -72,6 +72,6 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The balance.
         /// </value>
-        float Balance { get; set; }
+        public float Balance { get; set; }
     }
 }
