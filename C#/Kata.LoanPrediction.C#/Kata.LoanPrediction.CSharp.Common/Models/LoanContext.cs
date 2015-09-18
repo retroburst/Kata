@@ -14,6 +14,12 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="LoanContext"/> class.
         /// </summary>
+        public LoanContext()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoanContext"/> class.
+        /// </summary>
         /// <param name="todaysDate">The todays date.</param>
         /// <param name="startDate">The start date.</param>
         /// <param name="targetEndDate">The target end date.</param>

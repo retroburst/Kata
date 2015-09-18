@@ -47,6 +47,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kata.LoanPrediction.CSharp.Common\Kata.LoanPrediction.CSharp.Common.csproj">
+      <Project>{6a568b2c-9ce9-4e0f-99e3-dd283a2ef076}</Project>
+      <Name>Kata.LoanPrediction.CSharp.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -47,9 +47,12 @@
     <Compile Include="Calculator\LoanCalculator.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\Enumerations.cs" />
+    <Compile Include="Extensions\StringBuilderExtensions.cs" />
+    <Compile Include="Helpers\EnumerationHelpers.cs" />
     <Compile Include="Models\LoanCalculationOutput.cs" />
     <Compile Include="Models\LoanContext.cs" />
     <Compile Include="Models\LoanTransaction.cs" />
+    <Compile Include="Output\LoanCalculationOutputStreamWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

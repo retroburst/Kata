@@ -29,7 +29,7 @@
 class LoanCalculationOuputWriter
 {
 public:
-    LoanCalculationOuputWriter(LoanContext context, LoanCalculationOutput output, dateTime currentDate);
+    LoanCalculationOuputWriter(LoanContext context, LoanCalculationOutput output);
     void OutputConsole();
     void OutputFile();
     

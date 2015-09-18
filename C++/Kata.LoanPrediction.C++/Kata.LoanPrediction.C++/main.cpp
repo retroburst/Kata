@@ -50,7 +50,7 @@ int main(int argc, const char * argv[]) {
         output = new LoanCalculationOutput();
         *output = calculator->calculateLoan();
 
-        writer = new LoanCalculationOuputWriter(*context, *output, *todaysDate);
+        writer = new LoanCalculationOuputWriter(*context, *output);
         writer->OutputConsole();
         writer->OutputFile();
         

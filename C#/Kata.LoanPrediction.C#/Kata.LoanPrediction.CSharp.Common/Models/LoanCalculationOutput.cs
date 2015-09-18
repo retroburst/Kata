@@ -13,6 +13,14 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
     public class LoanCalculationOutput
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoanCalculationOutput"/> class.
+        /// </summary>
+        public LoanCalculationOutput()
+        {
+            Transactions = new List<LoanTransaction>();
+        }
+
+        /// <summary>
         /// Gets the transactions.
         /// </summary>
         /// <value>

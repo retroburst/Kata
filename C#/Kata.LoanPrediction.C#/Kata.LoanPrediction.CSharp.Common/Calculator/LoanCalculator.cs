@@ -31,7 +31,6 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
         public LoanCalculationOutput Calculate()
         {
             LoanCalculationOutput result = new LoanCalculationOutput();
-            DateTime nextDate;
             bool firstIteration = true;
             float balance = context.Balance;
             float monthlyInterest = 0.0f;
@@ -43,18 +42,22 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
             while (true)
             {
                 // if min repay day
-                if (currentDate.Day == context.MinRepaymentAmount && balance > 0.0f)
+                if (currentDate.Day == context.MinRepaymentDay && balance > 0.0f)
                 {
-                    ProcessMinRepayment(ref balance, context.MinRepaymentAmount, currentDate, monthlyInterest, result);
+                    balance = ProcessMinRepayment(balance, context.MinRepaymentAmount, currentDate, monthlyInterest, result);
                 }
                 // if extra repay day
                 if (currentDate.Day == context.ExtraRepaymentDay && context.ExtraRepaymentAmount > 0.0f && balance > 0.0f)
                 {
-                    ProcessExtraRepayment(ref balance, context.ExtraRepaymentAmount, currentDate, result);
+                    balance = ProcessExtraRepayment(balance, context.ExtraRepaymentAmount, currentDate, result);
                 }
 
                 // if balance is zero or less - we are done!
-                if (balance <= 0.0f) break;
+                if (balance <= 0.0f)
+                {
+                    result.LoanEndsDate = currentDate;
+                    break;
+                }
                 // calculate the daily interest
                 monthlyInterest += CalculateDailyInterest(balance, context.InterestRate);
                 // if this is the first iteration and we did not start on the first of the month
@@ -66,7 +69,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
                     firstIteration = false;
                 }
                 // move date forward
-                nextDate = currentDate.AddDays(1);
+                DateTime nextDate = currentDate.AddDays(1);
                 // if end of month
                 if (currentDate.Month != nextDate.Month)
                 {
@@ -104,12 +107,13 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
         /// <param name="extraRepaymentAmount">The extra repayment amount.</param>
         /// <param name="currentDate">The current date.</param>
         /// <param name="result">The result.</param>
-        private void ProcessExtraRepayment(ref float balance, float extraRepaymentAmount, DateTime currentDate, LoanCalculationOutput result)
+        private float ProcessExtraRepayment(float balance, float extraRepaymentAmount, DateTime currentDate, LoanCalculationOutput result)
         {
             // add extra repay transaction (if amount is more than 0)
             balance -= extraRepaymentAmount;
             LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.ExtraRepayment, extraRepaymentAmount, 0.0f, balance);
             result.Transactions.Add(transaction);
+            return(balance);
         }
 
         /// <summary>
@@ -120,13 +124,12 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
         /// <param name="currentDate">The current date.</param>
         /// <param name="monthlyInterest">The monthly interest.</param>
         /// <param name="result">The result.</param>
-        private void ProcessMinRepayment(ref float balance, float minRepaymentAmount, DateTime currentDate, float monthlyInterest, LoanCalculationOutput result)
+        private float ProcessMinRepayment(float balance, float minRepaymentAmount, DateTime currentDate, float monthlyInterest, LoanCalculationOutput result)
         {
             // add min repay transaction
             if ((balance + monthlyInterest) <= minRepaymentAmount)
             {
                 float finalRepayment = 0.0f;
-                result.LoanEndsDate = currentDate;
                 balance += monthlyInterest;
                 finalRepayment = balance;
                 balance -= finalRepayment;
@@ -139,6 +142,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
                 LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.MinimumRepayment, minRepaymentAmount, 0.0f, balance);
                 result.Transactions.Add(transaction);
             }
+            return (balance);
         }
 
         /// <summary>

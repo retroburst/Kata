@@ -13,11 +13,11 @@
  ** Default constructor.
  ***************************************
  */
-LoanCalculationOuputWriter::LoanCalculationOuputWriter(LoanContext context, LoanCalculationOutput output, dateTime todaysDate)
+LoanCalculationOuputWriter::LoanCalculationOuputWriter(LoanContext context, LoanCalculationOutput output)
 {
     this->context = context;
     this->output = output;
-    this->todaysDate = todaysDate;
+	this->todaysDate = context.getTodaysDate();
 }
 
 /*
@@ -64,12 +64,12 @@ void LoanCalculationOuputWriter::printCalculations(LoanContext &context, LoanCal
     formatDate(output.getLoanEndsDate(), DATE_FORMAT, loanEndDateString, 11);
     char *targetEndDateString = new char[11];
     formatDate(context.getTargetEndDate(), DATE_FORMAT, targetEndDateString, 11);
-    
+	dateTime targetEndDate = context.getTargetEndDate();
+
     int i=0;
     for(i=0; i < transactions->size(); i++)
     {
         LoanTransaction t = transactions->at(i);
-        dateTime targetEndDate = context.getTargetEndDate();
         dateTime transactionDate = t.getDate();
         char *transactionDateString = new char[11];
         formatDate(transactionDate, DATE_FORMAT, transactionDateString, 11);
