@@ -73,7 +73,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
                 // if end of month
                 if (currentDate.Month != nextDate.Month)
                 {
-                    ProcessEndOfMonth(currentDate, monthlyInterest, balance, result);
+                    balance = ProcessEndOfMonth(currentDate, monthlyInterest, balance, result);
                     // reset interest to zero
                     monthlyInterest = 0.0f;
                 }
@@ -90,7 +90,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
         /// <param name="monthlyInterest">The monthly interest.</param>
         /// <param name="balance">The balance.</param>
         /// <param name="result">The result.</param>
-        private void ProcessEndOfMonth(DateTime currentDate, float monthlyInterest, float balance, LoanCalculationOutput result)
+        private float ProcessEndOfMonth(DateTime currentDate, float monthlyInterest, float balance, LoanCalculationOutput result)
         {
             // add interest charged transaction
             balance += monthlyInterest;
@@ -98,6 +98,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
             result.TotalInterestPaid += monthlyInterest;
             LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.InterestCharged, 0.0f, monthlyInterest, balance);
             result.Transactions.Add(transaction);
+            return (balance);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
             balance -= extraRepaymentAmount;
             LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.ExtraRepayment, extraRepaymentAmount, 0.0f, balance);
             result.Transactions.Add(transaction);
-            return(balance);
+            return (balance);
         }
 
         /// <summary>
