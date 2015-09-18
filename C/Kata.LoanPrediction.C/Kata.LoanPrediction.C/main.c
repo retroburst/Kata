@@ -183,7 +183,7 @@ calculationOutput* calculateLoan(context *runningContext)
     // we will calculate interest from the first of the month
     output->interestStartDate = runningContext->startDate;
     output->interestStartDate.tm_mday = 1;
-    // loop through dates, caculating interest daily etc
+    // loop through dates, calculating interest daily etc
     while(true)
     {
         // if min repay day

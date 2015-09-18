@@ -61,15 +61,15 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "01/01/2001"
+            argument = "01/12/2001"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "1500"
+            argument = "10000"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "30.00"
+            argument = "5.50"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -81,7 +81,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "10.00"
+            argument = "100"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

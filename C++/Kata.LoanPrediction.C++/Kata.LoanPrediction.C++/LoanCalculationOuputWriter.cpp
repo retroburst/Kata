@@ -41,10 +41,12 @@ void LoanCalculationOuputWriter::OutputConsole()
 void LoanCalculationOuputWriter::OutputFile()
 {
     ofstream outFile;
-    outFile.open(buildOutputFilename(todaysDate));
+    string filename = buildOutputFilename(todaysDate);
+    outFile.open(filename);
     printOutputHeader(context, outFile);
     printCalculations(context, output, outFile);
     outFile.close();
+    cout << "Results output to file '" << filename << "'.";
 }
 
 /***************************************
@@ -87,8 +89,8 @@ void LoanCalculationOuputWriter::printCalculations(LoanContext &context, LoanCal
     }
     out << endl << "Loan is paid off on " << loanEndDateString << ", total interest paid from " << interestCalcStartDateString << " to " << loanEndDateString << " is $" << output.getTotalInterestPaid() << "." << endl;
     
-    if(output.getTargetEndDateHit()) out << endl << "Target end date of " << targetEndDateString << " was hit perfectly." << endl;
-    else out << endl << "Target end date of " << targetEndDateString << " was missed by " << output.getTargetEndDateMissedInDays() << " days." << endl;
+    if(output.getTargetEndDateHit()) out << "Target end date of " << targetEndDateString << " was hit perfectly." << endl;
+    else out << "Target end date of " << targetEndDateString << " was missed by " << output.getTargetEndDateMissedInDays() << " days." << endl;
     
     delete(interestCalcStartDateString);
     delete(loanEndDateString);

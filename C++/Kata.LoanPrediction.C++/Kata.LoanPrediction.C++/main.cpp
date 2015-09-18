@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
         writer = new LoanCalculationOuputWriter(*context, *output);
         writer->OutputConsole();
         writer->OutputFile();
-        
+    
         // cleanup dynamically allocated variables
         delete(todaysDate);
         delete(context);
