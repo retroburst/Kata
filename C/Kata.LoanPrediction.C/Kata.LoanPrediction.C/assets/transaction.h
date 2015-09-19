@@ -17,9 +17,9 @@ typedef struct tm dateTime;
 struct transaction {
     dateTime transactionDate;
     const char *transactionType;
-    float credit;
-    float debit;
-    float balance;
+    double credit;
+    double debit;
+    double balance;
 };
 
 typedef struct transaction transaction;

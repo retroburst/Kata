@@ -27,24 +27,24 @@ class LoanTransaction
 {
 public:
     LoanTransaction();
-    LoanTransaction(dateTime date, string type, float credit, float debit, float balance);
+    LoanTransaction(dateTime date, string type, double credit, double debit, double balance);
     dateTime getDate();
     void setDate(dateTime source);
     string getType();
     void setType(string source);
-    float getCredit();
-    void setCredit(float source);
-    float getDebit();
-    void setDebit(float source);
-    float getBalance();
-    void setBalance(float source);
+    double getCredit();
+    void setCredit(double source);
+    double getDebit();
+    void setDebit(double source);
+    double getBalance();
+    void setBalance(double source);
     
 private:
     dateTime date;
     string type;
-    float credit;
-    float debit;
-    float balance;
+    double credit;
+    double debit;
+    double balance;
 };
 
 #endif /* defined(__Kata_LoanPrediction_C____LoanTransaction__) */

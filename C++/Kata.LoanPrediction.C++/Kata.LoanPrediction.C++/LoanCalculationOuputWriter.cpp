@@ -147,7 +147,7 @@ void LoanCalculationOuputWriter::printOutputHeader(LoanContext &context, ostream
     << "Start Date: " << startDateString << endl
     << "Target End Date: " << targetEndDateString << endl
     << "Balance: " << context.getBalance() << endl
-    << "Interest Rate: " << context.getInterestRate() << endl
+    << "Interest Rate: " << context.getInterestRate() << "%" << endl
     << "Min. Repayment Amount: " << context.getMinRepaymentAmount() << endl
     << "Min. Repayment Day: " << context.getMinRepaymentDay() << endl
     << "Extra Repayment: " << context.getExtraRepaymentAmount() << endl

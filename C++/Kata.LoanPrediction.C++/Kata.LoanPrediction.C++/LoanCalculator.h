@@ -31,11 +31,11 @@ public:
 private:
     LoanContext context;
     LoanCalculationOutput output;
-    void processEndOfMonth(dateTime currentDate, float &monthlyInterest, float &balance, LoanCalculationOutput &output);
-    void processExtraRepayment(float &balance, float extraRepaymentAmount, dateTime currentDate, LoanCalculationOutput &output);
-    void processMinRepayment(float &balance, float minRepaymentAmount, dateTime &currentDate, float monthlyInterest, LoanCalculationOutput &output);
-    float calculateDailyInterest(float balance, float interestRate);
-    LoanTransaction createTransaction(string type, dateTime date, float repayment, float charge, float balance);
+    void processEndOfMonth(dateTime currentDate, double &monthlyInterest, double &balance, LoanCalculationOutput &output);
+    void processExtraRepayment(double &balance, double extraRepaymentAmount, dateTime currentDate, LoanCalculationOutput &output);
+    void processMinRepayment(double &balance, double minRepaymentAmount, dateTime &currentDate, double monthlyInterest, LoanCalculationOutput &output);
+    double calculateDailyInterest(double balance, double interestRate);
+    LoanTransaction createTransaction(string type, dateTime date, double repayment, double charge, double balance);
     void setTargetEndDateAccuracy(dateTime actualEndDate, dateTime targetEndDate, LoanCalculationOutput &output);
     void formatDate(dateTime target, const char *dateFormat, char *buffer, int bufferSize);
 };

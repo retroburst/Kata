@@ -17,7 +17,7 @@ LoanCalculationOutput::LoanCalculationOutput()
 {
     this->interestStartDate = *DATETIME_EMPTY;
     this->loanEndsDate = *DATETIME_EMPTY;
-    this->totalInterestPaid = 0.0f;
+    this->totalInterestPaid = 0.0;
     this->targetEndDateHit = false;
     this->targetEndDateMissedInDays = 0;
 }
@@ -27,7 +27,7 @@ LoanCalculationOutput::LoanCalculationOutput()
  ** Constructor with initial arguments.
  ***************************************
  */
-LoanCalculationOutput::LoanCalculationOutput(dateTime interestStartDate, dateTime loanEndsDate, float totalInterestPaid, bool targetEndDateHit, int targetEndDateMissedInDays)
+LoanCalculationOutput::LoanCalculationOutput(dateTime interestStartDate, dateTime loanEndsDate, double totalInterestPaid, bool targetEndDateHit, int targetEndDateMissedInDays)
 {
     this->interestStartDate = interestStartDate;
     this->loanEndsDate = loanEndsDate;
@@ -81,7 +81,7 @@ void LoanCalculationOutput::setLoanEndsDate(dateTime source)
  ** Gets the total interest paid.
  ***************************************
  */
-float LoanCalculationOutput::getTotalInterestPaid()
+double LoanCalculationOutput::getTotalInterestPaid()
 {
     return(totalInterestPaid);
 }
@@ -91,7 +91,7 @@ float LoanCalculationOutput::getTotalInterestPaid()
  ** Sets the total interest paid.
  ***************************************
  */
-void LoanCalculationOutput::setTotalInterestPaid(float source)
+void LoanCalculationOutput::setTotalInterestPaid(double source)
 {
     totalInterestPaid = source;
 }

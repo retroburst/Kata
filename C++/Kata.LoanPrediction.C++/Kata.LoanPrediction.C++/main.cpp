@@ -82,11 +82,11 @@ void processArguments(int argc, const char* argv[], LoanContext *context)
     strptime(argv[2], DATE_FORMAT, targetEndDate);
     context->setStartDate(*startDate);
     context->setTargetEndDate(*targetEndDate);
-    context->setBalance((float) atof(argv[3]));
-    context->setInterestRate((float) atof(argv[4]));
-    context->setMinRepaymentAmount((float) atof(argv[5]));
+    context->setBalance((double) atof(argv[3]));
+    context->setInterestRate((double) atof(argv[4]));
+    context->setMinRepaymentAmount((double) atof(argv[5]));
     context->setMinRepaymentDay((int) atoi(argv[6]));
-    context->setExtraRepaymentAmount((float) atof(argv[7]));
+    context->setExtraRepaymentAmount((double) atof(argv[7]));
     context->setExtraRepaymentDay((int) atoi(argv[8]));
     delete(startDate);
     delete(targetEndDate);

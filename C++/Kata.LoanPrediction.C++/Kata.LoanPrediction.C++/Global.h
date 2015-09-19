@@ -28,7 +28,7 @@ static const string TX_TYPE_EXTRA_REPAYMENT = "Extra Repayment";
 static const string TX_TYPE_INTEREST_CHARGED = "Interest Charged";
 static const string TX_FINAL_REPAYMENT = "Final Repayment";
 static const char *DATE_FORMAT = "%d/%m/%Y";
-static const char *DATE_FORMAT_FOR_FILENAME = "%d.%m.%Y";
+static const char *DATE_FORMAT_FOR_FILENAME = "%Y.%m.%d";
 
 // function prototypes
 int compareDates(dateTime x, dateTime y);

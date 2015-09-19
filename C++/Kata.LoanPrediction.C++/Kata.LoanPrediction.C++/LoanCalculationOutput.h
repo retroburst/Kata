@@ -25,13 +25,13 @@ class LoanCalculationOutput
 {
 public:
     LoanCalculationOutput();
-    LoanCalculationOutput(dateTime interestStartDate, dateTime loanEndsDate, float totalInterestPaid, bool targetEndDateHit, int targetEndDateMissedInDays);
+    LoanCalculationOutput(dateTime interestStartDate, dateTime loanEndsDate, double totalInterestPaid, bool targetEndDateHit, int targetEndDateMissedInDays);
     dateTime getInterestStartDate();
     void setInterestStartDate(dateTime source);
     dateTime getLoanEndsDate();
     void setLoanEndsDate(dateTime source);
-    float getTotalInterestPaid();
-    void setTotalInterestPaid(float source);
+    double getTotalInterestPaid();
+    void setTotalInterestPaid(double source);
     bool getTargetEndDateHit();
     void setTargetEndDateHit(bool source);
     int getTargetEndDateMissedInDays();
@@ -42,7 +42,7 @@ public:
 private:
     dateTime interestStartDate;
     dateTime loanEndsDate;
-    float totalInterestPaid;
+    double totalInterestPaid;
     bool targetEndDateHit;
     int targetEndDateMissedInDays;
     void addTransaction();

@@ -29,10 +29,9 @@ LoanCalculator::LoanCalculator(LoanContext context)
 LoanCalculationOutput LoanCalculator::calculateLoan()
 {
 	LoanCalculationOutput output;
-	dateTime nextDate;
 	bool firstIteration = true;
-	float balance = context.getBalance();
-	float monthlyInterest = 0.0f;
+	double balance = context.getBalance();
+	double monthlyInterest = 0.0;
 	dateTime currentDate = context.getStartDate();
 	// we will calculate interest from the first of the month
 	dateTime calcInterestStartDate = currentDate;
@@ -42,18 +41,22 @@ LoanCalculationOutput LoanCalculator::calculateLoan()
 	while (true)
 	{
 		// if min repay day
-		if (currentDate.tm_mday == context.getMinRepaymentDay() && balance > 0.0f)
+		if (currentDate.tm_mday == context.getMinRepaymentDay() && balance > 0.0)
 		{
 			processMinRepayment(balance, context.getMinRepaymentAmount(), currentDate, monthlyInterest, output);
 		}
 		// if extra repay day
-		if (currentDate.tm_mday == context.getExtraRepaymentDay() && context.getExtraRepaymentAmount() > 0.0f && balance > 0.0f)
+		if (currentDate.tm_mday == context.getExtraRepaymentDay() && context.getExtraRepaymentAmount() > 0.0 && balance > 0.0)
 		{
 			processExtraRepayment(balance, context.getExtraRepaymentAmount(), currentDate, output);
 		}
 
 		// if balance is zero or less - we are done!
-		if (balance <= 0.0f) break;
+		if (balance <= 0.0)
+        {
+            output.setLoanEndsDate(currentDate);
+            break;
+        }
 		// calculate the daily interest
 		monthlyInterest += calculateDailyInterest(balance, context.getInterestRate());
 		// if this is the first iteration and we did not start on the first of the month
@@ -65,7 +68,7 @@ LoanCalculationOutput LoanCalculator::calculateLoan()
 			firstIteration = false;
 		}
 		// move date forward
-		nextDate = currentDate;
+		dateTime nextDate = currentDate;
 		nextDate.tm_mday = nextDate.tm_mday + 1;
 		mktime(&nextDate);
 		// if end of month
@@ -85,15 +88,15 @@ LoanCalculationOutput LoanCalculator::calculateLoan()
  ** interest to the balance.
  ***************************************
  */
-void LoanCalculator::processEndOfMonth(dateTime currentDate, float &monthlyInterest, float &balance, LoanCalculationOutput &output)
+void LoanCalculator::processEndOfMonth(dateTime currentDate, double &monthlyInterest, double &balance, LoanCalculationOutput &output)
 {
 	// add interest charged transaction
 	balance += monthlyInterest;
 	// calculate the total interest paid
 	output.setTotalInterestPaid(output.getTotalInterestPaid() + monthlyInterest);
-	output.addTransaction(createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0f, monthlyInterest, balance));
+	output.addTransaction(createTransaction(TX_TYPE_INTEREST_CHARGED, currentDate, 0.0, monthlyInterest, balance));
 	// reset for new month
-	monthlyInterest = 0.0f;
+	monthlyInterest = 0.0;
 }
 
 /*
@@ -102,11 +105,11 @@ void LoanCalculator::processEndOfMonth(dateTime currentDate, float &monthlyInter
  ** current date if applicable.
  ***************************************
  */
-void LoanCalculator::processExtraRepayment(float &balance, float extraRepaymentAmount, dateTime currentDate, LoanCalculationOutput &output)
+void LoanCalculator::processExtraRepayment(double &balance, double extraRepaymentAmount, dateTime currentDate, LoanCalculationOutput &output)
 {
 	// add extra repay transaction (if amount is more than 0)
 	balance -= extraRepaymentAmount;
-	output.addTransaction(createTransaction(TX_TYPE_EXTRA_REPAYMENT, currentDate, extraRepaymentAmount, 0.0f, balance));
+	output.addTransaction(createTransaction(TX_TYPE_EXTRA_REPAYMENT, currentDate, extraRepaymentAmount, 0.0, balance));
 }
 
 /*
@@ -115,13 +118,12 @@ void LoanCalculator::processExtraRepayment(float &balance, float extraRepaymentA
  ** current date if applicable.
  ***************************************
  */
-void LoanCalculator::processMinRepayment(float &balance, float minRepaymentAmount, dateTime &currentDate, float monthlyInterest, LoanCalculationOutput &output)
+void LoanCalculator::processMinRepayment(double &balance, double minRepaymentAmount, dateTime &currentDate, double monthlyInterest, LoanCalculationOutput &output)
 {
 	// add min repay transaction
 	if ((balance + monthlyInterest) <= minRepaymentAmount)
 	{
-		float finalRepayment = 0.0f;
-		output.setLoanEndsDate(currentDate);
+		double finalRepayment = 0.0;
 		balance += monthlyInterest;
 		finalRepayment = balance;
 		balance -= finalRepayment;
@@ -130,7 +132,7 @@ void LoanCalculator::processMinRepayment(float &balance, float minRepaymentAmoun
 	else
 	{
 		balance -= context.getMinRepaymentAmount();
-		output.addTransaction(createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, minRepaymentAmount, 0.0f, balance));
+		output.addTransaction(createTransaction(TX_TYPE_MIN_REPAYMENT, currentDate, minRepaymentAmount, 0.0, balance));
 	}
 }
 
@@ -139,9 +141,9 @@ void LoanCalculator::processMinRepayment(float &balance, float minRepaymentAmoun
  ** Calculates the interest for a day.
  ***************************************
  */
-float LoanCalculator::calculateDailyInterest(float balance, float interestRate)
+double LoanCalculator::calculateDailyInterest(double balance, double interestRate)
 {
-	float result = 0.0f;
+	double result = 0.0;
 	result = (balance * (interestRate / 100)) / NUM_DAYS_IN_YEAR;
 	return(result);
 }
@@ -152,7 +154,7 @@ float LoanCalculator::calculateDailyInterest(float balance, float interestRate)
  ** provided values.
  ***************************************
  */
-LoanTransaction LoanCalculator::createTransaction(string type, dateTime date, float repayment, float charge, float balance)
+LoanTransaction LoanCalculator::createTransaction(string type, dateTime date, double repayment, double charge, double balance)
 {
 	LoanTransaction transaction;
 	transaction.setType(type);

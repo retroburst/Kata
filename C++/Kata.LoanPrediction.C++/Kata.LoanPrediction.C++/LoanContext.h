@@ -21,23 +21,23 @@ class LoanContext {
 
 public:
     LoanContext();
-    LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, float balance, float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay);
+    LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate, double balance, double interestRate, double minRepaymentAmount, int minRepaymentDay, double extraRepaymentAmount, int extraRepaymentDay);
     dateTime getStartDate();
     void setStartDate(dateTime source);
     dateTime getTargetEndDate();
     void setTargetEndDate(dateTime source);
     dateTime getTodaysDate();
     void setTodaysDate(dateTime source);
-    float getBalance();
-    void setBalance(float source);
-    float getInterestRate();
-    void setInterestRate(float source);
-    float getMinRepaymentAmount();
-    void setMinRepaymentAmount(float source);
+    double getBalance();
+    void setBalance(double source);
+    double getInterestRate();
+    void setInterestRate(double source);
+    double getMinRepaymentAmount();
+    void setMinRepaymentAmount(double source);
     int getMinRepaymentDay();
     void setMinRepaymentDay(int source);
-    float getExtraRepaymentAmount();
-    void setExtraRepaymentAmount(float source);
+    double getExtraRepaymentAmount();
+    void setExtraRepaymentAmount(double source);
     int getExtraRepaymentDay();
     void setExtraRepaymentDay(int source);
 
@@ -45,11 +45,11 @@ private:
     dateTime startDate;
     dateTime targetEndDate;
     dateTime todaysDate;
-    float balance;
-    float interestRate;
-    float minRepaymentAmount;
+    double balance;
+    double interestRate;
+    double minRepaymentAmount;
     int minRepaymentDay;
-    float extraRepaymentAmount;
+    double extraRepaymentAmount;
     int extraRepaymentDay;
 };
 

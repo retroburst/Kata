@@ -22,8 +22,8 @@ LoanContext::LoanContext()
  ***************************************
  */
 LoanContext::LoanContext(dateTime startDate, dateTime targetEndDate, dateTime todaysDate,
-                         float balance, float interestRate, float minRepaymentAmount,
-                         int minRepaymentDay, float extraRepaymentAmount, int extraRepaymentDay)
+                         double balance, double interestRate, double minRepaymentAmount,
+                         int minRepaymentDay, double extraRepaymentAmount, int extraRepaymentDay)
 {
     this->startDate = startDate;
     this->targetEndDate = targetEndDate;
@@ -101,7 +101,7 @@ void LoanContext::setTodaysDate(dateTime source)
  ** Get balance.
  ***************************************
  */
-float LoanContext::getBalance()
+double LoanContext::getBalance()
 {
     return(balance);
 }
@@ -111,7 +111,7 @@ float LoanContext::getBalance()
  ** Set balance.
  ***************************************
  */
-void LoanContext::setBalance(float source)
+void LoanContext::setBalance(double source)
 {
     balance = source;
 }
@@ -121,7 +121,7 @@ void LoanContext::setBalance(float source)
  ** Get interest rate.
  ***************************************
  */
-float LoanContext::getInterestRate()
+double LoanContext::getInterestRate()
 {
     return(interestRate);
 }
@@ -131,7 +131,7 @@ float LoanContext::getInterestRate()
  ** Set interest rate.
  ***************************************
  */
-void LoanContext::setInterestRate(float source)
+void LoanContext::setInterestRate(double source)
 {
     interestRate = source;
 }
@@ -141,7 +141,7 @@ void LoanContext::setInterestRate(float source)
  ** Get min. repayment amount.
  ***************************************
  */
-float LoanContext::getMinRepaymentAmount()
+double LoanContext::getMinRepaymentAmount()
 {
     return(minRepaymentAmount);
 }
@@ -151,7 +151,7 @@ float LoanContext::getMinRepaymentAmount()
  ** Set min. repayment amount.
  ***************************************
  */
-void LoanContext::setMinRepaymentAmount(float source)
+void LoanContext::setMinRepaymentAmount(double source)
 {
     minRepaymentAmount = source;
 }
@@ -181,7 +181,7 @@ void LoanContext::setMinRepaymentDay(int source)
  ** Get extra repayment amount.
  ***************************************
  */
-float LoanContext::getExtraRepaymentAmount()
+double LoanContext::getExtraRepaymentAmount()
 {
     return(extraRepaymentAmount);
 }
@@ -191,7 +191,7 @@ float LoanContext::getExtraRepaymentAmount()
  ** Set extra repayment amount.
  ***************************************
  */
-void LoanContext::setExtraRepaymentAmount(float source)
+void LoanContext::setExtraRepaymentAmount(double source)
 {
     extraRepaymentAmount = source;
 }

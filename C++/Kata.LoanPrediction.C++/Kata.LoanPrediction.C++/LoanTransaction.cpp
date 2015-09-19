@@ -17,9 +17,9 @@ LoanTransaction::LoanTransaction()
 {
     date = *DATETIME_EMPTY;
     type = *STRING_EMPTY;
-    credit = 0.0f;
-    debit = 0.0f;
-    balance = 0.0f;
+    credit = 0.0;
+    debit = 0.0;
+    balance = 0.0;
 }
 
 /*
@@ -27,7 +27,7 @@ LoanTransaction::LoanTransaction()
  ** Constructor with arguments.
  ***************************************
  */
-LoanTransaction::LoanTransaction(dateTime date, string type, float credit, float debit, float balance)
+LoanTransaction::LoanTransaction(dateTime date, string type, double credit, double debit, double balance)
 {
     this->date = date;
     this->type = type;
@@ -82,7 +82,7 @@ void LoanTransaction::setType(string source)
  ** transaction.
  ***************************************
  */
-float LoanTransaction::getCredit()
+double LoanTransaction::getCredit()
 {
     return(credit);
 }
@@ -93,7 +93,7 @@ float LoanTransaction::getCredit()
  ** transaction.
  ***************************************
  */
-void LoanTransaction::setCredit(float source)
+void LoanTransaction::setCredit(double source)
 {
     credit = source;
 }
@@ -104,7 +104,7 @@ void LoanTransaction::setCredit(float source)
  ** transaction.
  ***************************************
  */
-float LoanTransaction::getDebit()
+double LoanTransaction::getDebit()
 {
     return(debit);
 }
@@ -115,7 +115,7 @@ float LoanTransaction::getDebit()
  ** transaction.
  ***************************************
  */
-void LoanTransaction::setDebit(float source)
+void LoanTransaction::setDebit(double source)
 {
     debit = source;
 }
@@ -126,7 +126,7 @@ void LoanTransaction::setDebit(float source)
  ** transaction.
  ***************************************
  */
-float LoanTransaction::getBalance()
+double LoanTransaction::getBalance()
 {
     return(balance);
 }
@@ -137,7 +137,7 @@ float LoanTransaction::getBalance()
  ** transaction.
  ***************************************
  */
-void LoanTransaction::setBalance(float source)
+void LoanTransaction::setBalance(double source)
 {
     balance = source;
 }

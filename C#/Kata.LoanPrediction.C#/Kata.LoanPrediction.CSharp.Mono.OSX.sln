@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata.LoanPrediction.CSharp.Common.Mono.OSX", "Kata.LoanPrediction.CSharp.Common.Mono.OSX\Kata.LoanPrediction.CSharp.Common.Mono.OSX.csproj", "{889E4EEF-FBB4-4910-B60C-CD2D03BECA0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata.LoanPrediction.CSharp.Console.Mono.OSX", "Kata.LoanPrediction.CSharp.Console.Mono.OSX\Kata.LoanPrediction.CSharp.Console.Mono.OSX.csproj", "{678A9371-440B-486F-BEE9-CE8ED3049A17}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{678A9371-440B-486F-BEE9-CE8ED3049A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{678A9371-440B-486F-BEE9-CE8ED3049A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{678A9371-440B-486F-BEE9-CE8ED3049A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{678A9371-440B-486F-BEE9-CE8ED3049A17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889E4EEF-FBB4-4910-B60C-CD2D03BECA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889E4EEF-FBB4-4910-B60C-CD2D03BECA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889E4EEF-FBB4-4910-B60C-CD2D03BECA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889E4EEF-FBB4-4910-B60C-CD2D03BECA0B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Kata.LoanPrediction.CSharp.Console.Mono.OSX\Kata.LoanPrediction.CSharp.Console.Mono.OSX.csproj
+	EndGlobalSection
+EndGlobal
