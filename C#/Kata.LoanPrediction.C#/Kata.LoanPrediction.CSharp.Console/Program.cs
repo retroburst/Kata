@@ -32,17 +32,15 @@ namespace Kata.LoanPrediction.CSharp.Console
             LoanCalculationOutputStreamWriter writer = null;
             try
             {
+            	// clean the program name
+            	programName = programName.Replace(".exe",  string.Empty);
+            	// check we have the required number of arguments
                 if(args.Length != EXPECTED_ARGUMENT_COUNT)
                 {
                     PrintUsage();
                     return;
                 }
-                string outputFilename = string.Format("{0}.{1}.{2}.{3}.out.txt", 
-                    programName, 
-                    DateTime.Now.Year.ToString("0000"), 
-                    DateTime.Now.Month.ToString("00"), 
-                    DateTime.Now.Day.ToString("00"));
-
+				string outputFilename = BuildOutputFilename();
                 context = new LoanContext();
                 ProcessArguments(args, context);
                 context.TodaysDate = DateTime.Now;
@@ -94,7 +92,19 @@ namespace Kata.LoanPrediction.CSharp.Console
                    + "minRepayDay extraRepayAmount extraRepayDay\n"
                    + "Example: {0} 23/12/2015 23/12/2018 20000.00 5.74 1500.00 18 1200.00 15", programName));
         }
-
+		
+		/// <summary>
+		/// Builds the output filename.
+		/// </summary>
+		/// <returns>The output filename.</returns>
+		private static string BuildOutputFilename()
+		{
+			return(string.Format("{0}.{1}.{2}.{3}.out.txt", 
+			              programName, 
+			              DateTime.Now.Year.ToString("0000"), 
+			              DateTime.Now.Month.ToString("00"), 
+			              DateTime.Now.Day.ToString("00")));
+		}
 
     }
 }

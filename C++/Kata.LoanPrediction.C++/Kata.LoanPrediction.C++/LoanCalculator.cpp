@@ -33,6 +33,7 @@ LoanCalculationOutput LoanCalculator::calculateLoan()
 	double balance = context.getBalance();
 	double monthlyInterest = 0.0;
 	dateTime currentDate = context.getStartDate();
+    currentDate.tm_isdst = 0;
 	// we will calculate interest from the first of the month
 	dateTime calcInterestStartDate = currentDate;
 	calcInterestStartDate.tm_mday = 1;
@@ -69,8 +70,8 @@ LoanCalculationOutput LoanCalculator::calculateLoan()
 		}
 		// move date forward
 		dateTime nextDate = currentDate;
-		nextDate.tm_mday = nextDate.tm_mday + 1;
-		mktime(&nextDate);
+        nextDate.tm_isdst = 0;
+        addDay(&nextDate);
 		// if end of month
 		if (currentDate.tm_mon != nextDate.tm_mon)
 		{
@@ -196,15 +197,14 @@ void LoanCalculator::setTargetEndDateAccuracy(dateTime actualEndDate, dateTime t
 	{
 		if (searchForwards)
 		{
-			search->tm_mday = search->tm_mday + 1;
+            addDay(search);
 			daysMissed--;
 		}
 		else
 		{
-			search->tm_mday = search->tm_mday - 1;
+            minusDay(search);
 			daysMissed++;
 		}
-		mktime(search);
 	}
 	output.setTargetEndDateMissedInDays(daysMissed);
 	delete(search);

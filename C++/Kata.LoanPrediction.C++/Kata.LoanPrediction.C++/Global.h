@@ -32,5 +32,9 @@ static const char *DATE_FORMAT_FOR_FILENAME = "%Y.%m.%d";
 
 // function prototypes
 int compareDates(dateTime x, dateTime y);
+int daysInMonth(int month, int year);
+bool isLeapYear(int year);
+void addDay(dateTime *target);
+void minusDay(dateTime *target);
 
 #endif /* defined(__Kata_LoanPrediction_C____Global__) */

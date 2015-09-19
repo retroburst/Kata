@@ -37,9 +37,38 @@
     <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Calculator\LoanCalculator.cs">
       <Link>Calculator\LoanCalculator.cs</Link>
     </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Constants\Constants.cs">
+      <Link>Constants\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Constants\Enumerations.cs">
+      <Link>Constants\Enumerations.cs</Link>
+    </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Extensions\StringBuilderExtensions.cs">
+      <Link>Extensions\StringBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Helpers\EnumerationHelpers.cs">
+      <Link>Helpers\EnumerationHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Models\LoanCalculationOutput.cs">
+      <Link>Models\LoanCalculationOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Models\LoanContext.cs">
+      <Link>Models\LoanContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Models\LoanTransaction.cs">
+      <Link>Models\LoanTransaction.cs</Link>
+    </Compile>
+    <Compile Include="..\Kata.LoanPrediction.CSharp.Common\Output\LoanCalculationOutputStreamWriter.cs">
+      <Link>Output\LoanCalculationOutputStreamWriter.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Calculator\" />
+    <Folder Include="Output\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

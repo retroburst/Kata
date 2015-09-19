@@ -69,8 +69,6 @@ void printOutputToFile(dateTime *currentDate, calculationOutput *output);
 void printOutputHeader(context *runningContext);
 void processEndOfMonth(dateTime *currentDate, double *monthlyInterest, double *balance, calculationOutput *output);
 bool checkAllocation(void *target);
-void printDate(dateTime date, char *prefix);
-void printDate2(dateTime date);
 int daysInMonth(int month, int year);
 bool isLeapYear(int year);
 void addDay(dateTime *target);
@@ -103,9 +101,6 @@ int main(int argc, const char * argv[]) {
         runningContext = processArguments(argc, argv);
         runningContext->todaysDate = *todaysDate;
     }
-    printDate(runningContext->todaysDate, "DEBUG Today's date");
-    printDate(runningContext->startDate, "DEBUG Start date");
-    
     printOutputHeader(runningContext);
     output = calculateLoan(runningContext);
     printCalculations(output);
@@ -224,12 +219,7 @@ calculationOutput* calculateLoan(context *runningContext)
         // move date forward
         dateTime nextDate = *currentDate;
         nextDate.tm_isdst = 0;
-        printf("Moving the date forward 1 day from '");
-        printDate2(*currentDate); printf("'. ");
         addDay(&nextDate);
-        //mktime(&nextDate);
-        printf("Result was '"); printDate2(nextDate); printf("'.\n");
-        
         // if end of month
         if(currentDate->tm_mon != nextDate.tm_mon)
         {
@@ -444,16 +434,12 @@ bool checkAllocation(void *target)
     }
 }
 
-void printDate(dateTime date, char *prefix)
-{
-    printf("%s: %d/%d/%d\n", prefix, date.tm_mday, date.tm_mon+1, date.tm_year+1900);
-}
-
-void printDate2(dateTime date)
-{
-    printf("%d/%d/%d", date.tm_mday, date.tm_mon+1, date.tm_year+1900);
-}
-
+/*
+ ***************************************
+ ** Calculates the number of days in a
+ ** month of a particular year.
+ ***************************************
+ */
 int daysInMonth(int month, int year)
 {
     int leapYear = 0;
@@ -467,6 +453,12 @@ int daysInMonth(int month, int year)
     return(result);
 }
 
+/*
+ ***************************************
+ ** Calculates if the year is a leap 
+ ** year.
+ ***************************************
+ */
 bool isLeapYear(int year)
 {
     bool result = false;
@@ -475,6 +467,15 @@ bool isLeapYear(int year)
     return(result);
 }
 
+/*
+ ***************************************
+ ** Add a day to a date, moving the date
+ ** to the next month and year where
+ ** applicable. This was introduced as
+ ** mktime was intermittently returning
+ ** dates with a corrupted year.
+ ***************************************
+ */
 void addDay(dateTime *target)
 {
     int month = target->tm_mon + 1;
