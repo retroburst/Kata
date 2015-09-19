@@ -74,11 +74,11 @@ namespace Kata.LoanPrediction.CSharp.Console
         {
             context.StartDate = DateTime.ParseExact(args[0], Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
             context.TargetEndDate = DateTime.ParseExact(args[1], Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
-            context.Balance = float.Parse(args[2]);
-            context.InterestRate = float.Parse(args[3]);
-            context.MinRepaymentAmount = float.Parse(args[4]);
+            context.Balance = double.Parse(args[2]);
+            context.InterestRate = double.Parse(args[3]);
+            context.MinRepaymentAmount = double.Parse(args[4]);
             context.MinRepaymentDay = int.Parse(args[5]);
-            context.ExtraRepaymentAmount = float.Parse(args[6]);
+            context.ExtraRepaymentAmount = double.Parse(args[6]);
             context.ExtraRepaymentDay = int.Parse(args[7]);
         }
 

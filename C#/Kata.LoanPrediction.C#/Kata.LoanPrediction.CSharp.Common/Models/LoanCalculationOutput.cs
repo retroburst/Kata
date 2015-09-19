@@ -50,7 +50,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The total interest paid.
         /// </value>
-        public float TotalInterestPaid { get; set; }
+        public double TotalInterestPaid { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [target end date hit].

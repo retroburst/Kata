@@ -29,8 +29,8 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <param name="minRepaymentDay">The minimum repayment day.</param>
         /// <param name="extraRepaymentAmount">The extra repayment amount.</param>
         /// <param name="extraRepaymentDay">The extra repayment day.</param>
-        public LoanContext(DateTime todaysDate, DateTime startDate, DateTime targetEndDate, float balance,
-            float interestRate, float minRepaymentAmount, int minRepaymentDay, float extraRepaymentAmount,
+        public LoanContext(DateTime todaysDate, DateTime startDate, DateTime targetEndDate, double balance,
+            double interestRate, double minRepaymentAmount, int minRepaymentDay, double extraRepaymentAmount,
             int extraRepaymentDay)
         {
             TodaysDate = todaysDate;
@@ -74,7 +74,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The balance.
         /// </value>
-        public float Balance {get; set; } 
+        public double Balance {get; set; } 
         
         /// <summary>
         /// Gets or sets the interest rate.
@@ -82,7 +82,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The interest rate.
         /// </value>
-        public float InterestRate {get; set;} 
+        public double InterestRate {get; set;} 
         
         /// <summary>
         /// Gets or sets the minimum repayment amount.
@@ -90,7 +90,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The minimum repayment amount.
         /// </value>
-        public float MinRepaymentAmount {get;set;}
+        public double MinRepaymentAmount {get;set;}
         
         /// <summary>
         /// Gets or sets the minimum repayment day.
@@ -106,7 +106,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The extra repayment amount.
         /// </value>
-        public float ExtraRepaymentAmount { get; set;}
+        public double ExtraRepaymentAmount { get; set;}
         
         /// <summary>
         /// Gets or sets the extra repayment day.

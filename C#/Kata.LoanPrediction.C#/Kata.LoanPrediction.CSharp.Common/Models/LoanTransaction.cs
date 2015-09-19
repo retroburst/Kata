@@ -25,7 +25,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <param name="credit">The credit.</param>
         /// <param name="debit">The debit.</param>
         /// <param name="balance">The balance.</param>
-        public LoanTransaction(DateTime date, TransactionType type, float credit, float debit, float balance)
+        public LoanTransaction(DateTime date, TransactionType type, double credit, double debit, double balance)
         {
             Date = date;
             Type = type;
@@ -56,7 +56,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The credit.
         /// </value>
-        public float Credit { get; set; }
+        public double Credit { get; set; }
 
         /// <summary>
         /// Gets or sets the debit.
@@ -64,7 +64,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The debit.
         /// </value>
-        public float Debit { get; set; }
+        public double Debit { get; set; }
 
         /// <summary>
         /// Gets or sets the balance.
@@ -72,6 +72,6 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// <value>
         /// The balance.
         /// </value>
-        public float Balance { get; set; }
+        public double Balance { get; set; }
     }
 }
