@@ -98,7 +98,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
             result.TotalInterestPaid += monthlyInterest;
             LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.InterestCharged, 0.0f, monthlyInterest, balance);
             result.Transactions.Add(transaction);
-            return(balance);
+            return (balance);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
             balance -= extraRepaymentAmount;
             LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.ExtraRepayment, extraRepaymentAmount, 0.0f, balance);
             result.Transactions.Add(transaction);
-            return(balance);
+            return (balance);
         }
 
         /// <summary>
