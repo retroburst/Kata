@@ -2,8 +2,8 @@
 //  LoanCalculationOuputWriter.h
 //  Kata.LoanPrediction.C++
 //
-//  Created by a.j.dowding on 11/09/2015.
-//  Copyright (c) 2015 a.j.dowding. All rights reserved.
+//  Created by retroburst [Andrew D] on 11/09/2015.
+//  Copyright (c) 2015 retroburst [Andrew D]. All rights reserved.
 //
 
 #ifndef __Kata_LoanPrediction_C____LoanCalculationOuputWriter__

@@ -99,7 +99,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0630;
-				ORGANIZATIONNAME = a.j.dowding;
+				ORGANIZATIONNAME = "retroburst [Andrew D]";
 				TargetAttributes = {
 					4A33CEDA1B967EB300FA2F01 = {
 						CreatedOnToolsVersion = 6.3.2;

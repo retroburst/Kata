@@ -2,8 +2,8 @@
 //  transactionLinkedList.h
 //  Kata.LoanPrediction.C
 //
-//  Created by A.J.Dowding on 2/09/2015.
-//  Copyright (c) 2015 a.j.dowding. All rights reserved.
+//  Created by retroburst [Andrew D] on 2/09/2015.
+//  Copyright (c) 2015 retroburst [Andrew D]. All rights reserved.
 //
 
 #ifndef __Kata_LoanPrediction_C__transactionLinkedList__
