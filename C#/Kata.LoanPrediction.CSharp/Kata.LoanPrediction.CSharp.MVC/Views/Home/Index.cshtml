@@ -1,4 +1,6 @@
-﻿@model Kata.LoanPrediction.CSharp.Common.Models.LoanContext
+﻿@using Kata.LoanPrediction.CSharp.MVC.Models
+
+@model LoanContextModel
 
 @{
     ViewBag.Title = "Kata Loan Prediction C# MVC";
@@ -23,23 +25,83 @@
     **@
 
 
-@using (Html.BeginForm("CalculateLoan", "Index", FormMethod.Post))
+@using (Html.BeginForm("CalculateLoan", "Home", FormMethod.Post))
 {
     <div class="form-horizontal">
         <div class="form-group">
             @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-2 control-label" })
             <div class="col-sm-10">
-                @Html.EditorFor(m => m.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
                 @Html.ValidationMessageFor(m => m.StartDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.TargetEndDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.TargetEndDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
+                @Html.ValidationMessageFor(m => m.TargetEndDate)
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(m => m.Balance, new { @class = "col-sm-2 control-label" })
             <div class="col-sm-10">
-                @Html.EditorFor(m => m.Balance, new { htmlAttributes = new { @class = "form-control" } })
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    @Html.TextBoxFor(m => m.Balance, new { @class = "form-control" })
+                </div>
                 @Html.ValidationMessageFor(m => m.Balance)
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.InterestRate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.InterestRate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MinRepaymentAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    @Html.TextBoxFor(m => m.MinRepaymentAmount, new { @class = "form-control" })
+                </div>
+                @Html.ValidationMessageFor(m => m.MinRepaymentAmount)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MinRepaymentDay, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.MinRepaymentDay, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MinRepaymentDay)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ExtraRepaymentAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    @Html.TextBoxFor(m => m.ExtraRepaymentAmount, new { @class = "form-control" })
+                </div>
+                @Html.ValidationMessageFor(m => m.ExtraRepaymentAmount)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ExtraRepaymentDay, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.ExtraRepaymentDay, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ExtraRepaymentDay)
+            </div>
+        </div>
+
     </div>
+
+    <input type="submit" value="Calculate" />
 }

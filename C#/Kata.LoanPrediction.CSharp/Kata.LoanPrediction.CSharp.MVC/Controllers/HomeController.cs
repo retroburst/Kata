@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Kata.LoanPrediction.CSharp.MVC.Models;
 
 namespace Kata.LoanPrediction.CSharp.MVC.Controllers
 {
@@ -10,7 +11,13 @@ namespace Kata.LoanPrediction.CSharp.MVC.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return View(new LoanContextModel());
+        }
+
+        public ActionResult CalculateLoan(LoanContextModel model)
+        {
+
+            return (new EmptyResult());
         }
 
     }
