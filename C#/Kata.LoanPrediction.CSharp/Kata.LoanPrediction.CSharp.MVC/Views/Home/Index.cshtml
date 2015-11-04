@@ -1,0 +1,45 @@
+﻿@model Kata.LoanPrediction.CSharp.Common.Models.LoanContext
+
+@{
+    ViewBag.Title = "Kata Loan Prediction C# MVC";
+}
+
+<div class="jumbotron">
+    <h1>Predict when you loan will end</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+@*
+
+                context.StartDate = DateTime.ParseExact(args[0], Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
+                context.TargetEndDate = DateTime.ParseExact(args[1], Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
+                context.Balance = double.Parse(args[2]);
+                context.InterestRate = double.Parse(args[3]);
+                context.MinRepaymentAmount = double.Parse(args[4]);
+                context.MinRepaymentDay = int.Parse(args[5]);
+                context.ExtraRepaymentAmount = double.Parse(args[6]);
+                context.ExtraRepaymentDay = int.Parse(args[7]);
+
+    **@
+
+
+@using (Html.BeginForm("CalculateLoan", "Index", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(m => m.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.StartDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Balance, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(m => m.Balance, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Balance)
+            </div>
+        </div>
+    </div>
+}

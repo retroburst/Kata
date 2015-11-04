@@ -1,0 +1,15 @@
+﻿@model HandleErrorInfo
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+</head>
+<body>
+    <h1>Error: @Model.Exception.Message</h1>
+    <h2>An error occurred while processing your request in controller @Model.ControllerName, action @Model.ActionName.</h2>
+    <code>
+        @Model.Exception.StackTrace
+    </code>
+</body>
+</html>

@@ -51,63 +51,63 @@ namespace Kata.LoanPrediction.CSharp.Common.Models
         /// The todays date.
         /// </value>
         public DateTime TodaysDate { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the start date.
         /// </summary>
         /// <value>
         /// The start date.
         /// </value>
-        public DateTime StartDate { get; set; } 
-        
+        public DateTime StartDate { get; set; }
+
         /// <summary>
         /// Gets or sets the target end date.
         /// </summary>
         /// <value>
         /// The target end date.
         /// </value>
-        public DateTime TargetEndDate { get; set; } 
-        
+        public DateTime TargetEndDate { get; set; }
+
         /// <summary>
         /// Gets or sets the balance.
         /// </summary>
         /// <value>
         /// The balance.
         /// </value>
-        public double Balance {get; set; } 
-        
+        public double Balance { get; set; }
+
         /// <summary>
         /// Gets or sets the interest rate.
         /// </summary>
         /// <value>
         /// The interest rate.
         /// </value>
-        public double InterestRate {get; set;} 
-        
+        public double InterestRate { get; set; }
+
         /// <summary>
         /// Gets or sets the minimum repayment amount.
         /// </summary>
         /// <value>
         /// The minimum repayment amount.
         /// </value>
-        public double MinRepaymentAmount {get;set;}
-        
+        public double MinRepaymentAmount { get; set; }
+
         /// <summary>
         /// Gets or sets the minimum repayment day.
         /// </summary>
         /// <value>
         /// The minimum repayment day.
         /// </value>
-        public int MinRepaymentDay { get; set;} 
-                
+        public int MinRepaymentDay { get; set; }
+
         /// <summary>
         /// Gets or sets the extra repayment amount.
         /// </summary>
         /// <value>
         /// The extra repayment amount.
         /// </value>
-        public double ExtraRepaymentAmount { get; set;}
-        
+        public double ExtraRepaymentAmount { get; set; }
+
         /// <summary>
         /// Gets or sets the extra repayment day.
         /// </summary>
