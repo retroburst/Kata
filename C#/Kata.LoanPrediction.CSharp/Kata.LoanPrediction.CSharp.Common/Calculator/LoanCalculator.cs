@@ -110,10 +110,13 @@ namespace Kata.LoanPrediction.CSharp.Common.Calculator
         /// <param name="result">The result.</param>
         private double ProcessExtraRepayment(double balance, double extraRepaymentAmount, DateTime currentDate, LoanCalculationOutput result)
         {
-            // add extra repay transaction (if amount is more than 0)
-            balance -= extraRepaymentAmount;
-            LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.ExtraRepayment, extraRepaymentAmount, 0.0d, balance);
-            result.Transactions.Add(transaction);
+            if(balance >= extraRepaymentAmount)
+            {
+                // add extra repay transaction (if amount is more than 0)
+                balance -= extraRepaymentAmount;
+                LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.ExtraRepayment, extraRepaymentAmount, 0.0d, balance);
+                result.Transactions.Add(transaction);
+            }
             return (balance);
         }
 

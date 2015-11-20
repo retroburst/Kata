@@ -3,13 +3,11 @@
 @model LoanContextModel
 
 @{
-    ViewBag.Title = "Kata Loan Prediction C# MVC";
+    ViewBag.Title = null;
 }
 
 <div class="jumbotron">
-    <h1>Predict when you loan will end</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Predict when your loan will end.</h1>
 </div>
 @*
 
@@ -30,15 +28,14 @@
     <div class="form-horizontal">
         <div class="form-group">
             @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            <div class="col-sm-10 form-inline">
                 @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
                 @Html.ValidationMessageFor(m => m.StartDate)
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(m => m.TargetEndDate, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            <div class="col-sm-10 form-inline">
                 @Html.TextBoxFor(m => m.TargetEndDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
                 @Html.ValidationMessageFor(m => m.TargetEndDate)
             </div>

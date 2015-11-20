@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Kata.LoanPrediction.CSharp.MVC.Models;
+using Kata.LoanPrediction.CSharp.Common.Calculator;
+using Kata.LoanPrediction.CSharp.Common.Models;
 
 namespace Kata.LoanPrediction.CSharp.MVC.Controllers
 {
@@ -16,8 +18,9 @@ namespace Kata.LoanPrediction.CSharp.MVC.Controllers
 
         public ActionResult CalculateLoan(LoanContextModel model)
         {
-
-            return (new EmptyResult());
+            LoanCalculator calculator = new LoanCalculator(model.ToLoanContext());
+            LoanCalculationOutput output = calculator.Calculate();
+            return (View(new LoanCalculationResultsModel(model, output)));
         }
 
     }
