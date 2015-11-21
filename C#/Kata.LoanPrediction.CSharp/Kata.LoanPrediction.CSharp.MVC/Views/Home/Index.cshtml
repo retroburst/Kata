@@ -6,63 +6,61 @@
     ViewBag.Title = null;
 }
 
+<p><br /></p>
 <div class="jumbotron">
-    <h1>Predict when your loan will end.</h1>
+    <h1>Predict.</h1>
+    <p>
+        Find out when loan will end, how much interest you'll pay, what difference an extra repayment might make.
+        Sometimes you need to time when your loan will end - if you pay it off quickly you will want to avoid
+        uneccesary fees for early repayment by dragging it out some.
+        This is a code kata in C# using MVC, it is a practice solution of a common programming problem.
+    </p>
 </div>
-@*
-
-                context.StartDate = DateTime.ParseExact(args[0], Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
-                context.TargetEndDate = DateTime.ParseExact(args[1], Constants.DATE_FORMAT, CultureInfo.InvariantCulture);
-                context.Balance = double.Parse(args[2]);
-                context.InterestRate = double.Parse(args[3]);
-                context.MinRepaymentAmount = double.Parse(args[4]);
-                context.MinRepaymentDay = int.Parse(args[5]);
-                context.ExtraRepaymentAmount = double.Parse(args[6]);
-                context.ExtraRepaymentDay = int.Parse(args[7]);
-
-    **@
-
 
 @using (Html.BeginForm("CalculateLoan", "Home", FormMethod.Post))
 {
     <div class="form-horizontal">
         <div class="form-group">
-            @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10 form-inline">
+            @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-4 form-inline">
                 @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
+                @Html.ValidationMessageFor(m => m.StartDate)
+            </div>
+            <div class="col-sm-5 form-inline">
                 @Html.ValidationMessageFor(m => m.StartDate)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.TargetEndDate, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10 form-inline">
+            @Html.LabelFor(m => m.TargetEndDate, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9 form-inline">
                 @Html.TextBoxFor(m => m.TargetEndDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
                 @Html.ValidationMessageFor(m => m.TargetEndDate)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.Balance, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            @Html.LabelFor(m => m.Balance, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
                     @Html.TextBoxFor(m => m.Balance, new { @class = "form-control" })
                 </div>
-                @Html.ValidationMessageFor(m => m.Balance)
             </div>
+            <div class="col-sm-7 help-block pull-left">@Html.ValidationMessageFor(m => m.Balance)</div>
         </div>
+       
 
         <div class="form-group">
-            @Html.LabelFor(m => m.InterestRate, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            @Html.LabelFor(m => m.InterestRate, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
                 @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.InterestRate)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.MinRepaymentAmount, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            @Html.LabelFor(m => m.MinRepaymentAmount, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
                     @Html.TextBoxFor(m => m.MinRepaymentAmount, new { @class = "form-control" })
@@ -72,16 +70,16 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.MinRepaymentDay, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            @Html.LabelFor(m => m.MinRepaymentDay, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
                 @Html.TextBoxFor(m => m.MinRepaymentDay, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.MinRepaymentDay)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.ExtraRepaymentAmount, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            @Html.LabelFor(m => m.ExtraRepaymentAmount, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
                     @Html.TextBoxFor(m => m.ExtraRepaymentAmount, new { @class = "form-control" })
@@ -91,14 +89,21 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.ExtraRepaymentDay, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-10">
+            @Html.LabelFor(m => m.ExtraRepaymentDay, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
                 @Html.TextBoxFor(m => m.ExtraRepaymentDay, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.ExtraRepaymentDay)
             </div>
         </div>
 
+        <div class="form-group">
+            <div class="col-sm-3 control-label"></div>
+            <div class="col-sm-9">
+                <input type="submit" value="Calculate" class="btn btn-primary btn-lg" />
+            </div>
+        </div>
+
     </div>
 
-    <input type="submit" value="Calculate" />
+
 }

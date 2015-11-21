@@ -4,23 +4,25 @@
 @model Kata.LoanPrediction.CSharp.MVC.Models.LoanCalculationResultsModel
 
 @{
-    ViewBag.Title = "Loan Prediction Results";
+    ViewBag.Title = "Results";
 }
 
+<p><br /></p>
 <div class="jumbotron">
-    <h1>Calculations Completed.</h1>
-    <h3>Loan ends on @RazorViewHelpers.FormatDate(Model.Output.LoanEndsDate)</h3>
-    <h3>Total interest paid from @RazorViewHelpers.FormatDate(Model.Output.InterestStartDate) is @RazorViewHelpers.FormatCurrency(Model.Output.TotalInterestPaid)</h3>
-    @if (Model.Output.TargetEndDateHit)
-    {
-        <h3>Target end date @RazorViewHelpers.FormatDate(Model.Context.TargetEndDate) was hit perfectly!</h3>
-    }
-    else
-    {
-        <h3>Target end date @RazorViewHelpers.FormatDate(Model.Context.TargetEndDate) was missed by <u>@Model.Output.TargetEndDateMissedInDays</u> days!</h3>
-    }
+    <h1>Results.</h1>
+    <p>
+        Loan ends on @RazorViewHelpers.FormatDate(Model.Output.LoanEndsDate)<br />
+        Total interest paid from @RazorViewHelpers.FormatDate(Model.Output.InterestStartDate) is @RazorViewHelpers.FormatCurrency(Model.Output.TotalInterestPaid)<br />
+        @if (Model.Output.TargetEndDateHit)
+        {
+            <text>>Target end date @RazorViewHelpers.FormatDate(Model.Context.TargetEndDate) was hit perfectly!</text>
+        }
+        else
+        {
+            <text>Target end date @RazorViewHelpers.FormatDate(Model.Context.TargetEndDate) was missed by <u>@Model.Output.TargetEndDateMissedInDays</u> days!</text>
+        }
+    </p>
 </div>
-
 
 <table class="table table-striped table-bordered table-hover">
     <thead>
@@ -32,7 +34,7 @@
             <th>Balance</th>
         </tr>
     </thead>
-    @foreach(LoanTransaction transaction in Model.Output.Transactions)
+    @foreach (LoanTransaction transaction in Model.Output.Transactions)
     {
         <tr>
             <td>@RazorViewHelpers.FormatDate(transaction.Date)</td>

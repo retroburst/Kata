@@ -18,9 +18,16 @@ namespace Kata.LoanPrediction.CSharp.MVC.Controllers
 
         public ActionResult CalculateLoan(LoanContextModel model)
         {
-            LoanCalculator calculator = new LoanCalculator(model.ToLoanContext());
-            LoanCalculationOutput output = calculator.Calculate();
-            return (View(new LoanCalculationResultsModel(model, output)));
+            if (ModelState.IsValid)
+            {
+                LoanCalculator calculator = new LoanCalculator(model.ToLoanContext());
+                LoanCalculationOutput output = calculator.Calculate();
+                return (View(new LoanCalculationResultsModel(model, output)));
+            }
+            else
+            {
+                return (View("Index", model));
+            }
         }
 
     }
