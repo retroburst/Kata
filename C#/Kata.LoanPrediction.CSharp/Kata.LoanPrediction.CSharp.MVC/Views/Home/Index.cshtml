@@ -10,7 +10,7 @@
 <div class="jumbotron">
     <h1>Predict.</h1>
     <p>
-        Find out when loan will end, how much interest you'll pay, what difference an extra repayment might make.
+        Find out when your loan will end, how much interest you'll pay, what difference an extra repayment might make.
         Sometimes you need to time when your loan will end - if you pay it off quickly you will want to avoid
         uneccesary fees for early repayment by dragging it out some.
         This is a code kata in C# using MVC, it is a practice solution of a common programming problem.
@@ -26,7 +26,7 @@
                 @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
                 @Html.ValidationMessageFor(m => m.StartDate)
             </div>
-            <div class="col-sm-5 form-inline">
+            <div class="col-sm-5 form-inline pull-left">
                 @Html.ValidationMessageFor(m => m.StartDate)
             </div>
         </div>
@@ -34,6 +34,8 @@
             @Html.LabelFor(m => m.TargetEndDate, new { @class = "col-sm-3 control-label" })
             <div class="col-sm-9 form-inline">
                 @Html.TextBoxFor(m => m.TargetEndDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
+            </div>
+            <div class="col-sm-5 form-inline pull-left">
                 @Html.ValidationMessageFor(m => m.TargetEndDate)
             </div>
         </div>
@@ -46,14 +48,18 @@
                     @Html.TextBoxFor(m => m.Balance, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="col-sm-7 help-block pull-left">@Html.ValidationMessageFor(m => m.Balance)</div>
+            <div class="col-sm-7 pull-left">
+                @Html.ValidationMessageFor(m => m.Balance)
+            </div>
         </div>
-       
+
 
         <div class="form-group">
             @Html.LabelFor(m => m.InterestRate, new { @class = "col-sm-3 control-label" })
-            <div class="col-sm-9">
+            <div class="col-sm-1">
                 @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-8 pull-left">
                 @Html.ValidationMessageFor(m => m.InterestRate)
             </div>
         </div>
