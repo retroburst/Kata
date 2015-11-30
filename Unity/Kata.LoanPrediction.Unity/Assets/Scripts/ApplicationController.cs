@@ -10,6 +10,7 @@ using Kata.LoanPrediction.Unity.Common.Models;
 public class ApplicationController : MonoBehaviour
 {
 	public TowerBuilder TowerBuilder = null;
+	public CameraController CameraController = null;
 
 	// Use this for initialization
 	void Start ()
@@ -24,7 +25,7 @@ public class ApplicationController : MonoBehaviour
 		int towerLevels = groupedByMonthYear.Count ();
 		
 		List<GameObject> levels = TowerBuilder.BuildTower (towerLevels);
-		levels.Reverse ();
+		//levels.Reverse ();
 		
 		int currentLevel = 0;
 		foreach (var group in groupedByMonthYear) {
@@ -46,7 +47,7 @@ public class ApplicationController : MonoBehaviour
 			sign.SetTransactionsText (transactions);
 			currentLevel++;
 		}
-				
+		CameraController.MaxY = levels.Last().transform.position.y;	
 	}
 	
 	private string ConvertTransactionType (TransactionType target)
