@@ -14,8 +14,7 @@ public class TowerBuilder : MonoBehaviour {
 	{
 		List<GameObject> towerLevels = new List<GameObject>();
 		if(removeBeforeBuild) {
-			GameObject[] towerBlocks = GameObject.FindGameObjectsWithTag("Tower");
-			foreach(GameObject gameObject in towerBlocks) { GameObject.Destroy(gameObject); }
+			ClearTower();
 		}
 		if(levels <= 0) return (towerLevels);	
 
@@ -32,5 +31,11 @@ public class TowerBuilder : MonoBehaviour {
 		Vector3 roofPosition = new Vector3(TowerBasePosition.x, TowerBasePosition.y + ((numWallLevelsNeeded * TowerBasePrefab.transform.localScale.y) + TowerRoofPosition), TowerBasePosition.z);
 		GameObject towerRoof = (GameObject)GameObject.Instantiate(TowerRoofPrefab, roofPosition, TowerRoofPrefab.transform.rotation);
 		return(towerLevels);
+	}
+	
+	public void ClearTower()
+	{
+		GameObject[] towerBlocks = GameObject.FindGameObjectsWithTag("Tower");
+		foreach(GameObject gameObject in towerBlocks) { GameObject.Destroy(gameObject); }
 	}
 }

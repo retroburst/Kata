@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Linq;
 using System.Collections;
@@ -7,15 +8,28 @@ using Kata.LoanPrediction.Unity.Common;
 using Kata.LoanPrediction.Unity.Common.Calculator;
 using Kata.LoanPrediction.Unity.Common.Models;
 
+//TODO: save input in user prefs or serialization
+
 public class ApplicationController : MonoBehaviour
 {
 	public TowerBuilder TowerBuilder = null;
 	public CameraController CameraController = null;
-
-	// Use this for initialization
-	void Start ()
+	public InputPanelController InputPanelController = null;
+	public GameObject InputPanel = null;
+	public Text DebugText = null;
+	
+	private void Awake()
 	{
-		LoanContext context = new LoanContext (DateTime.Now, new DateTime (2007, 03, 01), new DateTime (2010, 10, 01), 186000d, 5.74d, 1280d, 1, 2000d, 18);
+		InputPanelController.BuildRequested += HandleBuildRequested;
+		TowerBuilder.ClearTower();
+		ShowInputPanel();
+	}
+
+	private void HandleBuildRequested (LoanContext context)
+	{
+		DebugText.text = string.Empty;
+		
+		//LoanContext context = new LoanContext (DateTime.Now, new DateTime (2007, 03, 01), new DateTime (2010, 10, 01), 186000d, 5.74d, 1280d, 1, 2000d, 18);
 		LoanCalculator calculator = new LoanCalculator (context);
 		LoanCalculationOutput output = calculator.Calculate ();
 		
@@ -47,7 +61,16 @@ public class ApplicationController : MonoBehaviour
 			sign.SetTransactionsText (transactions);
 			currentLevel++;
 		}
-		CameraController.MaxY = levels.Last().transform.position.y;	
+		CameraController.MaxY = levels.Last().transform.position.y - 5;	
+		HideInputPanel();
+		
+		DebugText.text = string.Format("Tower Levels: {0} / Total Interest: {1} / Loan Ends: {2}", towerLevels, output.TotalInterestPaid.ToString("c"), output.LoanEndsDate.ToShortDateString());
+	}
+	
+	// Use this for initialization
+	void Start ()
+	{
+		
 	}
 	
 	private string ConvertTransactionType (TransactionType target)
@@ -74,6 +97,20 @@ public class ApplicationController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		if(Input.GetKeyUp(KeyCode.Escape) && !InputPanel.activeInHierarchy)
+		{
+			ShowInputPanel();
+		}
+	}
 	
+	public void ShowInputPanel()
+	{
+		InputPanel.SetActive(true);
+		
+	}
+	
+	public void HideInputPanel()
+	{
+		InputPanel.SetActive(false);
 	}
 }

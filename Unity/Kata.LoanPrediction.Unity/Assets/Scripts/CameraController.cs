@@ -2,14 +2,13 @@
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
-	private Rigidbody rb = null;
-	public float Speed = 0.25f;
+	public float Speed = 0.75f;
 	public float MaxY = 100.00f;
 	public float MinY = 8.00f;
 	
 	// Use this for initialization
 	void Awake () {
-		rb = GetComponent<Rigidbody>();
+	
 	}
 	
 	void Update()
