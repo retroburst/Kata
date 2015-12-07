@@ -9,6 +9,7 @@ namespace Kata.LoanPrediction.Unity.Common.Models
     /// <summary>
     /// Represents the context of a loan.
     /// </summary>
+  	[Serializable]
     public class LoanContext
     {
         /// <summary>

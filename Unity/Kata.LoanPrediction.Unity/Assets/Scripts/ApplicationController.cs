@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using Kata.LoanPrediction.Unity.Common.Calculator;
 using Kata.LoanPrediction.Unity.Common.Models;
 
 //TODO: save input in user prefs or serialization
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 public class ApplicationController : MonoBehaviour
 {
@@ -17,18 +20,49 @@ public class ApplicationController : MonoBehaviour
 	public InputPanelController InputPanelController = null;
 	public GameObject InputPanel = null;
 	public Text DebugText = null;
+	private object applicationSaveStateLock = null;
+	private object applicationLoadStateLock = null;
+	public string SaveStateFilename = "Kata.LoanPrediction.Unity.State.save";
+	private LoanContext defaultState = null;
+	public Material RedWoodenSignMaterial = null;
 	
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	private void Awake()
 	{
+		defaultState = BuildDefaultState();
+		applicationSaveStateLock = new object();
+		applicationLoadStateLock = new object();
 		InputPanelController.BuildRequested += HandleBuildRequested;
 		TowerBuilder.ClearTower();
 		ShowInputPanel();
+		TryLoadSavedState();
+	}
+	
+	/// <summary>
+	/// Builds the default state.
+	/// </summary>
+	/// <returns>The default state.</returns>
+	private LoanContext BuildDefaultState()
+	{
+		LoanContext result = new LoanContext();
+		result.Balance = 200000.00d;
+		result.ExtraRepaymentAmount = 1000.00d;
+		result.ExtraRepaymentDay = 18;
+		result.InterestRate = 5.50d;
+		result.MinRepaymentAmount = 1500.00d;
+		result.MinRepaymentDay = 1;
+		result.StartDate = DateTime.Now;
+		result.TargetEndDate = DateTime.Now.AddYears(25);
+		result.TodaysDate = DateTime.Now;
+		return(result);
 	}
 
 	private void HandleBuildRequested (LoanContext context)
 	{
 		DebugText.text = string.Empty;
-		
+		TrySaveState(context);
 		//LoanContext context = new LoanContext (DateTime.Now, new DateTime (2007, 03, 01), new DateTime (2010, 10, 01), 186000d, 5.74d, 1280d, 1, 2000d, 18);
 		LoanCalculator calculator = new LoanCalculator (context);
 		LoanCalculationOutput output = calculator.Calculate ();
@@ -59,6 +93,11 @@ public class ApplicationController : MonoBehaviour
 			}
 			
 			sign.SetTransactionsText (transactions);
+			
+			if(context.TargetEndDate.Year == group.Key.Year && context.TargetEndDate.Month == group.Key.Month)
+			{
+				sign.ChangMaterial(RedWoodenSignMaterial);
+			}
 			currentLevel++;
 		}
 		CameraController.MaxY = levels.Last().transform.position.y - 5;	
@@ -113,4 +152,54 @@ public class ApplicationController : MonoBehaviour
 	{
 		InputPanel.SetActive(false);
 	}
+	
+	/// <summary>
+	/// Tries to load saved state.
+	/// </summary>
+	private void TryLoadSavedState ()
+	{
+		lock (applicationLoadStateLock) {
+			try {
+				string savedStateFilename = Path.Combine (Application.persistentDataPath, SaveStateFilename);
+				if (!File.Exists (savedStateFilename)) {
+					InputPanelController.InitialiseFrom(defaultState);
+					return;
+				}
+				SavedState savedState = null;
+				BinaryFormatter formatter = new BinaryFormatter ();
+				using (FileStream fs = File.Open(savedStateFilename, FileMode.Open)) {
+					savedState = (SavedState)formatter.Deserialize (fs);
+					fs.Close ();
+				}
+				InputPanelController.InitialiseFrom(savedState.State);
+			} catch (Exception ex) {
+				// todo: do something with this - msg or something
+			}
+		}
+	}
+	
+	/// <summary>
+	/// Tries to save the state.
+	/// </summary>
+	private void TrySaveState (LoanContext state)
+	{
+		lock (applicationSaveStateLock) {
+			try {
+				string savegameFilename = Path.Combine (Application.persistentDataPath, SaveStateFilename);
+				SavedState saveState = new SavedState ();
+				saveState.SavedDate = DateTime.Now;
+				saveState.State = state;
+				BinaryFormatter formatter = new BinaryFormatter ();
+				using (FileStream fs = File.Open(savegameFilename, FileMode.OpenOrCreate)) {
+					fs.SetLength (0);
+					formatter.Serialize (fs, saveState);
+					fs.Close ();
+				}
+			} catch (Exception ex) {
+				// todo: do something with this - msg or something
+			}
+		}
+	}
+
+	
 }

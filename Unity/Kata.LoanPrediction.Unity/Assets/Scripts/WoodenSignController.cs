@@ -22,4 +22,9 @@ public class WoodenSignController : MonoBehaviour {
 		if(TransactionsText != null && text != null)
 			TransactionsText.text = text;
 	}
+	
+	public void ChangMaterial(Material target)
+	{
+		gameObject.GetComponent<MeshRenderer> ().material = target;
+	}
 }

@@ -56,7 +56,9 @@
      <Compile Include="Assets\Scripts\Common\Models\LoanContext.cs" />
      <Compile Include="Assets\Scripts\Common\Models\LoanTransaction.cs" />
      <Compile Include="Assets\Scripts\Common\Output\LoanCalculationOutputStreamWriter.cs" />
+     <Compile Include="Assets\Scripts\InputFieldNavigator.cs" />
      <Compile Include="Assets\Scripts\InputPanelController.cs" />
+     <Compile Include="Assets\Scripts\SavedState.cs" />
      <Compile Include="Assets\Scripts\TowerBuilder.cs" />
      <Compile Include="Assets\Scripts\WoodenSignController.cs" />
  <Reference Include="UnityEngine.UI">
