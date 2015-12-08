@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace Kata.LoanPrediction.Unity.Common.Models
 {
     /// <summary>
@@ -67,5 +66,6 @@ namespace Kata.LoanPrediction.Unity.Common.Models
         /// The target end date missed in days.
         /// </value>
         public int TargetEndDateMissedInDays { get; set; }
+        
     }
 }

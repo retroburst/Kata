@@ -18,6 +18,7 @@ public class ApplicationController : MonoBehaviour
 	public TowerBuilder TowerBuilder = null;
 	public CameraController CameraController = null;
 	public InputPanelController InputPanelController = null;
+	public MessagePanelController MessagePanelController = null;
 	public GameObject InputPanel = null;
 	public Text DebugText = null;
 	private object applicationSaveStateLock = null;
@@ -25,6 +26,7 @@ public class ApplicationController : MonoBehaviour
 	public string SaveStateFilename = "Kata.LoanPrediction.Unity.State.save";
 	private LoanContext defaultState = null;
 	public Material RedWoodenSignMaterial = null;
+	public GameObject MessagePanel = null;
 	
 	/// <summary>
 	/// Awake this instance.
@@ -63,9 +65,17 @@ public class ApplicationController : MonoBehaviour
 	{
 		DebugText.text = string.Empty;
 		TrySaveState(context);
-		//LoanContext context = new LoanContext (DateTime.Now, new DateTime (2007, 03, 01), new DateTime (2010, 10, 01), 186000d, 5.74d, 1280d, 1, 2000d, 18);
 		LoanCalculator calculator = new LoanCalculator (context);
-		LoanCalculationOutput output = calculator.Calculate ();
+		LoanCalculationOutput output = null;
+		try {
+			output = calculator.Calculate ();
+		} catch (Exception ex) {
+			MessagePanelController.SetMessage(ex.Message);
+			Debug.LogError(ex.Message);
+			Debug.Log(ex.StackTrace);
+			ShowMessagePanel();
+			return;
+		}
 		
 		int currentMonth = 0;
 		var groupedByMonthYear = output.Transactions.GroupBy (x => new { Month = x.Date.Month, Year = x.Date.Year });
@@ -151,6 +161,16 @@ public class ApplicationController : MonoBehaviour
 	public void HideInputPanel()
 	{
 		InputPanel.SetActive(false);
+	}
+	
+	public void ShowMessagePanel()
+	{
+		MessagePanel.SetActive(true);
+	}
+	
+	public void HideMessagePanel()
+	{
+		MessagePanel.SetActive(false);
 	}
 	
 	/// <summary>

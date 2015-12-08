@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\Common\Output\LoanCalculationOutputStreamWriter.cs" />
      <Compile Include="Assets\Scripts\InputFieldNavigator.cs" />
      <Compile Include="Assets\Scripts\InputPanelController.cs" />
+     <Compile Include="Assets\Scripts\MessagePanelController.cs" />
      <Compile Include="Assets\Scripts\SavedState.cs" />
      <Compile Include="Assets\Scripts\TowerBuilder.cs" />
      <Compile Include="Assets\Scripts\WoodenSignController.cs" />

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace Kata.LoanPrediction.Unity.Common.Calculator
 {
     /// <summary>
@@ -68,6 +67,11 @@ namespace Kata.LoanPrediction.Unity.Common.Calculator
                     monthlyInterest += (monthlyInterest * daysToMonthStart);
                     firstIteration = false;
                 }
+                // if we have reached the max date of DateTime, let's throw back an error
+                if((currentDate.Ticks + TimeSpan.TicksPerDay) >= DateTime.MaxValue.Ticks)
+                {
+					throw new Exception(string.Format("Calculations for your loan got to the end-of-time date {0} and it is still not paid off. Looks like you're situation is hopeless - sorry to say.", currentDate));
+                }
                 // move date forward
                 DateTime nextDate = currentDate.AddDays(1);
                 // if end of month
@@ -110,10 +114,13 @@ namespace Kata.LoanPrediction.Unity.Common.Calculator
         /// <param name="result">The result.</param>
         private double ProcessExtraRepayment(double balance, double extraRepaymentAmount, DateTime currentDate, LoanCalculationOutput result)
         {
-            // add extra repay transaction (if amount is more than 0)
-            balance -= extraRepaymentAmount;
-            LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.ExtraRepayment, extraRepaymentAmount, 0.0d, balance);
-            result.Transactions.Add(transaction);
+			if(balance >= extraRepaymentAmount)
+			{
+	            // add extra repay transaction (if amount is more than 0)
+	            balance -= extraRepaymentAmount;
+	            LoanTransaction transaction = new LoanTransaction(currentDate, TransactionType.ExtraRepayment, extraRepaymentAmount, 0.0d, balance);
+	            result.Transactions.Add(transaction);
+            }
             return (balance);
         }
 
