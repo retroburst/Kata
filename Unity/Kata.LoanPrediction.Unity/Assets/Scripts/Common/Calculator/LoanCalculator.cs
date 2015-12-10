@@ -70,7 +70,7 @@ namespace Kata.LoanPrediction.Unity.Common.Calculator
                 // if we have reached the max date of DateTime, let's throw back an error
                 if((currentDate.Ticks + TimeSpan.TicksPerDay) >= DateTime.MaxValue.Ticks)
                 {
-					throw new Exception(string.Format("Calculations for your loan got to the end-of-time date {0} and it is still not paid off. Looks like you're situation is hopeless - sorry to say.", currentDate));
+					throw new Exception(string.Format("Calculations for your loan got to the end-of-time date {0}, and it is still not paid off. Looks like your situation is hopeless - sorry to say.", currentDate.ToShortDateString()));
                 }
                 // move date forward
                 DateTime nextDate = currentDate.AddDays(1);
