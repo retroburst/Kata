@@ -5,15 +5,17 @@ using System.Collections;
 /// <summary>
 /// Manages the message panel.
 /// </summary>
-public class MessagePanelController : MonoBehaviour {
+public class MessagePanelController : MonoBehaviour
+{
 	public Text MessageText = null;
 	public GameObject MessagePanel = null;
+	public Button OkButton = null;
 
 	/// <summary>
 	/// Sets the message.
 	/// </summary>
 	/// <param name="message">Message.</param>
-	public void SetMessage(string message)
+	public void SetMessage (string message)
 	{
 		MessageText.text = message;
 	}
@@ -21,25 +23,25 @@ public class MessagePanelController : MonoBehaviour {
 	/// <summary>
 	/// Shows the message panel.
 	/// </summary>
-	public void ShowMessagePanel()
+	public void ShowMessagePanel ()
 	{
-		MessagePanel.SetActive(true);
+		MessagePanel.SetActive (true);
+		OkButton.Select();
 	}
 
 	/// <summary>
 	/// Hides the message panel.
 	/// </summary>
-	public void HideMessagePanel()
+	public void HideMessagePanel ()
 	{
-		MessagePanel.SetActive(false);
+		MessagePanel.SetActive (false);
 	}
 
 	/// <summary>
 	/// Is the panel active in the hirachy.
 	/// </summary>
 	/// <returns><c>true</c>, if in hierachy was actived, <c>false</c> otherwise.</returns>
-	public bool PanelActiveInHierachy
-	{
+	public bool PanelActiveInHierachy {
 		get{ return (MessagePanel.activeInHierarchy); }
 	}
 

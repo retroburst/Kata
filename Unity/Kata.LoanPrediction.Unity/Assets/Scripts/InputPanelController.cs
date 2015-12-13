@@ -36,6 +36,16 @@ public class InputPanelController : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Update this instance.
+	/// </summary>
+//	private void Update()
+//	{
+//		if (Input.GetKeyUp (KeyCode.Return) && InputPanel.activeInHierarchy && (!MessagePanelController.PanelActiveInHierachy)) {
+//			RequestBuild();
+//		}
+//	}
+
+	/// <summary>
 	/// Initialises from a given context.
 	/// </summary>
 	/// <param name="context">Context.</param>

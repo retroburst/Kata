@@ -17,6 +17,8 @@ namespace Kata.LoanPrediction.Unity.Common.Models
         public LoanCalculationOutput()
         {
             Transactions = new List<LoanTransaction>();
+            Failure = false;
+            FailureMessage = string.Empty;
         }
 
         /// <summary>
@@ -66,6 +68,19 @@ namespace Kata.LoanPrediction.Unity.Common.Models
         /// The target end date missed in days.
         /// </value>
         public int TargetEndDateMissedInDays { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this
+        /// <see cref="Kata.LoanPrediction.Unity.Common.Models.LoanCalculationOutput"/> is failure.
+        /// </summary>
+        /// <value><c>true</c> if failure; otherwise, <c>false</c>.</value>
+        public bool Failure {get; set;}
+
+        /// <summary>
+        /// Gets or sets the failure message.
+        /// </summary>
+        /// <value>The failure message.</value>
+        public string FailureMessage { get; set; }
         
     }
 }

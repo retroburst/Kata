@@ -16,44 +16,44 @@ public class InputFieldNavigator : MonoBehaviour
 	/// <summary>
 	/// Initialise this instance.
 	/// </summary>
-	public void Initialise()
+	public void Initialise ()
 	{
-		Fields[0].Select();
-		InputField input = Fields[0].gameObject.GetComponent<InputField>();
-		if(input != null) input.ActivateInputField();
+		Fields [0].Select ();
+		InputField input = Fields [0].gameObject.GetComponent<InputField> ();
+		if (input != null)
+			input.ActivateInputField ();
 	}
 
 	/// <summary>
 	/// Awake this instance.
 	/// </summary>
-	private void Awake()
+	private void Awake ()
 	{
 		eventSystem = EventSystem.current;	
 	}
-	
+
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	private void Update()
+	private void Update ()
 	{
-		if (Input.GetKeyDown(KeyCode.Tab))
-		{
+		if (Input.GetKeyDown (KeyCode.Tab)) {
 			Selectable next = null;
 			GameObject current = eventSystem.currentSelectedGameObject;
-			for(int i=0; i < Fields.Length; i++)
-			{
-				if(Fields[i].gameObject == current) 
-				{
-					if(i+1 < Fields.Length) next = Fields[i+1];
-					else next = Fields[0];
+			for (int i = 0; i < Fields.Length; i++) {
+				if (Fields [i].gameObject == current) {
+					if (i + 1 < Fields.Length)
+						next = Fields [i + 1];
+					else
+						next = Fields [0];
 					break;
 				}
 			}
-			if(next != null)
-			{
-				next.Select();
-				InputField input = next.gameObject.GetComponent<InputField>();
-				if(input != null) input.ActivateInputField();
+			if (next != null) {
+				next.Select ();
+				InputField input = next.gameObject.GetComponent<InputField> ();
+				if (input != null)
+					input.ActivateInputField ();
 			}
 		}
 	}

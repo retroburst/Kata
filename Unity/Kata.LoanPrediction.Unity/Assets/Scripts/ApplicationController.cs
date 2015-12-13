@@ -11,6 +11,9 @@ using Kata.LoanPrediction.Unity.Common.Calculator;
 using Kata.LoanPrediction.Unity.Common.Models;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Runtime.Serialization;
+
+// TODO: UI looks horrible in full screen webgl mode
 
 /// <summary>
 /// Manages the application process flow.
@@ -31,27 +34,27 @@ public class ApplicationController : MonoBehaviour
 	/// <summary>
 	/// Awake this instance.
 	/// </summary>
-	private void Awake()
+	private void Awake ()
 	{
-		CultureInfo enAU = new System.Globalization.CultureInfo("en-AU");
+		CultureInfo enAU = new System.Globalization.CultureInfo ("en-AU");
 		Thread.CurrentThread.CurrentCulture = enAU;
 		Thread.CurrentThread.CurrentUICulture = enAU;
-		defaultState = BuildDefaultLoanContext();
-		applicationSaveStateLock = new object();
-		applicationLoadStateLock = new object();
+		defaultState = BuildDefaultLoanContext ();
+		applicationSaveStateLock = new object ();
+		applicationLoadStateLock = new object ();
 		InputPanelController.BuildRequested += HandleBuildRequested;
-		TowerBuilder.ClearTower();
-		InputPanelController.ShowInputPanel();
-		TryLoadSavedState();
+		TowerBuilder.ClearTower ();
+		InputPanelController.ShowInputPanel ();
+		TryLoadSavedState ();
 	}
-	
+
 	/// <summary>
 	/// Builds the default loan context.
 	/// </summary>
 	/// <returns>The default loan context.</returns>
-	private LoanContext BuildDefaultLoanContext()
+	private LoanContext BuildDefaultLoanContext ()
 	{
-		LoanContext result = new LoanContext();
+		LoanContext result = new LoanContext ();
 		result.Balance = 200000.00d;
 		result.ExtraRepaymentAmount = 1000.00d;
 		result.ExtraRepaymentDay = 18;
@@ -59,7 +62,7 @@ public class ApplicationController : MonoBehaviour
 		result.MinRepaymentAmount = 1500.00d;
 		result.MinRepaymentDay = 1;
 		result.StartDate = DateTime.Now;
-		result.TargetEndDate = DateTime.Now.AddYears(25);
+		result.TargetEndDate = DateTime.Now.AddYears (8);
 		result.TodaysDate = DateTime.Now;
 		return(result);
 	}
@@ -71,16 +74,14 @@ public class ApplicationController : MonoBehaviour
 	private void HandleBuildRequested (LoanContext context)
 	{
 		DebugText.text = string.Empty;
-		TrySaveState(context);
+		TrySaveState (context);
 		LoanCalculator calculator = new LoanCalculator (context);
 		LoanCalculationOutput output = null;
-		try {
-			output = calculator.Calculate ();
-		} catch (Exception ex) {
-			MessagePanelController.SetMessage(ex.Message);
-			Debug.LogError(ex.Message);
-			Debug.Log(ex.StackTrace);
-			MessagePanelController.ShowMessagePanel();
+		output = calculator.Calculate ();
+		if (output.Failure) {
+			MessagePanelController.SetMessage (output.FailureMessage);
+			Debug.LogError (output.FailureMessage);
+			MessagePanelController.ShowMessagePanel ();
 			return;
 		}
 		var groupedByMonthYear = output.Transactions.GroupBy (x => new { Month = x.Date.Month, Year = x.Date.Year });
@@ -90,14 +91,14 @@ public class ApplicationController : MonoBehaviour
 		foreach (var group in groupedByMonthYear) {
 			int year = group.Key.Year;
 			int month = group.Key.Month;
-			IEnumerable<LoanTransaction> groupedTransactions = group.ToList();
-			LoanTransaction lastTransaction = group.Last();
+			IEnumerable<LoanTransaction> groupedTransactions = group.ToList ();
+			LoanTransaction lastTransaction = group.Last ();
 			BuildSignTextForTowerLevel (context, currentLevel, year, month, groupedTransactions, lastTransaction, levels [currentLevel]);
 			currentLevel++;
 		}
-		CameraController.MaxY = levels.Last().transform.position.y - 5;	
-		InputPanelController.HideInputPanel();
-		DebugText.text = string.Format("Tower Levels: {0} / Total Interest: {1} / Loan Ends: {2}", towerLevels, output.TotalInterestPaid.ToString("c"), output.LoanEndsDate.ToShortDateString());
+		CameraController.MaxY = levels.Last ().transform.position.y - 5;	
+		InputPanelController.HideInputPanel ();
+		DebugText.text = string.Format ("Tower Levels: {0} / Total Interest: {1} / Loan Ends: {2}", towerLevels, output.TotalInterestPaid.ToString ("c"), output.LoanEndsDate.ToShortDateString ());
 	}
 
 	/// <summary>
@@ -115,8 +116,8 @@ public class ApplicationController : MonoBehaviour
 		DateTime timePoint = new DateTime (year, month, 1);
 		string date = timePoint.ToString ("MMM yyyy");
 		string balance = lastTransaction.Balance.ToString ("c0");
-		WoodenSignController sign = level.transform.FindChild ("WoodenSign").GetComponent<WoodenSignController> ();
-		sign.SetMonthBalanceText (string.Format ("{0}\n{1}", date, balance));
+		WoodenSignController signController = level.transform.FindChild (Constants.CHILD_WOODEN_SIGN).GetComponent<WoodenSignController> ();
+		signController.SetMonthBalanceText (string.Format ("{0}\n{1}", date, balance));
 		string transactions = string.Empty;
 		foreach (LoanTransaction tx in groupedTransactions) {
 			transactions += ConvertTransactionType (tx.Type);
@@ -124,9 +125,9 @@ public class ApplicationController : MonoBehaviour
 			transactions += tx.Debit > 0 ? tx.Debit.ToString ("c0") : tx.Credit.ToString ("c0");
 			transactions += "\n";
 		}
-		sign.SetTransactionsText (transactions);
+		signController.SetTransactionsText (transactions);
 		if (context.TargetEndDate.Year == year && context.TargetEndDate.Month == month) {
-			sign.ChangMaterial (RedWoodenSignMaterial);
+			signController.ChangMaterial (RedWoodenSignMaterial);
 		}
 	}
 
@@ -150,15 +151,14 @@ public class ApplicationController : MonoBehaviour
 			return("Unknown");
 		}
 	}
-	
+
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
 	private void Update ()
 	{
-		if(Input.GetKeyUp(KeyCode.Escape) && !InputPanelController.PanelActiveInHierachy)
-		{
-			InputPanelController.ShowInputPanel();
+		if (Input.GetKeyUp (KeyCode.Escape) && !InputPanelController.PanelActiveInHierachy) {
+			InputPanelController.ShowInputPanel ();
 		}
 	}
 
@@ -168,26 +168,33 @@ public class ApplicationController : MonoBehaviour
 	private void TryLoadSavedState ()
 	{
 		lock (applicationLoadStateLock) {
+			string savedStateFilename = Path.Combine (Application.persistentDataPath, SaveStateFilename);
 			try {
-				string savedStateFilename = Path.Combine (Application.persistentDataPath, SaveStateFilename);
 				if (!File.Exists (savedStateFilename)) {
-					InputPanelController.InitialiseFrom(defaultState);
+					InputPanelController.InitialiseFrom (defaultState);
 					return;
 				}
 				SavedState savedState = null;
 				BinaryFormatter formatter = new BinaryFormatter ();
-				using (FileStream fs = File.Open(savedStateFilename, FileMode.Open)) {
+				using (FileStream fs = File.Open (savedStateFilename, FileMode.Open)) {
 					savedState = (SavedState)formatter.Deserialize (fs);
 					fs.Close ();
 				}
-				InputPanelController.InitialiseFrom(savedState.Context);
+				InputPanelController.InitialiseFrom (savedState.Context);
+			} catch (SerializationException sx) {
+				if (File.Exists (savedStateFilename))
+					File.Delete (savedStateFilename);
+				InputPanelController.InitialiseFrom (defaultState);
+				MessagePanelController.SetMessage (string.Format ("Failed to load saved state: {0}", sx.Message));
+				MessagePanelController.ShowMessagePanel ();
 			} catch (Exception ex) {
-				MessagePanelController.SetMessage(string.Format("Failed to load saved state: {0}", ex.Message));
-				MessagePanelController.ShowMessagePanel();
+				InputPanelController.InitialiseFrom (defaultState);
+				MessagePanelController.SetMessage (string.Format ("Failed to load saved state: {0}", ex.Message));
+				MessagePanelController.ShowMessagePanel ();
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Tries to save the state.
 	/// </summary>
@@ -200,14 +207,14 @@ public class ApplicationController : MonoBehaviour
 				saveState.SavedDate = DateTime.Now;
 				saveState.Context = state;
 				BinaryFormatter formatter = new BinaryFormatter ();
-				using (FileStream fs = File.Open(savegameFilename, FileMode.OpenOrCreate)) {
+				using (FileStream fs = File.Open (savegameFilename, FileMode.OpenOrCreate)) {
 					fs.SetLength (0);
 					formatter.Serialize (fs, saveState);
 					fs.Close ();
 				}
 			} catch (Exception ex) {
-				MessagePanelController.SetMessage(string.Format("Failed to save state: {0}", ex.Message));
-				MessagePanelController.ShowMessagePanel();
+				MessagePanelController.SetMessage (string.Format ("Failed to save state: {0}", ex.Message));
+				MessagePanelController.ShowMessagePanel ();
 			}
 		}
 	}
