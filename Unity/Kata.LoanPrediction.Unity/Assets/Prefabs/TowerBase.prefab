@@ -95,8 +95,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 140756}
-  m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106709}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: -33.487198, y: 2.43, z: -17.015976}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 471228}
@@ -108,9 +108,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 153378}
-  m_LocalRotation: {x: 0, y: -.984807789, z: 0, w: .173647985}
-  m_LocalPosition: {x: 0, y: .100000001, z: -.449999988}
-  m_LocalScale: {x: .0500000007, y: .0500000007, z: .0500000007}
+  m_LocalRotation: {x: 0, y: -0.9848078, z: 0, w: 0.17364798}
+  m_LocalPosition: {x: 0, y: 0.1, z: -0.45}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 471228}
   m_RootOrder: 0
@@ -121,8 +121,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 187748}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.1500001}
-  m_LocalScale: {x: .0500000007, y: .800000012, z: 2.79999995}
+  m_LocalPosition: {x: 0, y: 0, z: 2.15}
+  m_LocalScale: {x: 0.05, y: 0.8, z: 2.8}
   m_Children:
   - {fileID: 465546}
   - {fileID: 495264}
@@ -136,8 +136,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -.410714418}
-  m_LocalScale: {x: .200000003, y: .0625, z: .357142866}
+  m_LocalPosition: {x: 0, y: 0, z: -0.41071442}
+  m_LocalScale: {x: 0.2, y: 0.0625, z: 0.35714287}
   m_Children: []
   m_Father: {fileID: 471228}
   m_RootOrder: 2
@@ -147,9 +147,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 188660}
-  m_LocalRotation: {x: 0, y: -.984807789, z: 0, w: .173647985}
-  m_LocalPosition: {x: 0, y: .400000006, z: .150000006}
-  m_LocalScale: {x: .0500000007, y: .0500000007, z: .0500000007}
+  m_LocalRotation: {x: 0, y: -0.9848078, z: 0, w: 0.17364798}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0.15}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 471228}
   m_RootOrder: 1
@@ -163,7 +163,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1063140b6a14c4ccbbccd24eddfdbfab, type: 3}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -171,8 +171,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -195,8 +197,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -219,8 +223,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -243,8 +249,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -259,7 +267,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6cce749ece09540daa84c7ee72bf40c7, type: 3}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -267,8 +275,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -339,17 +349,17 @@ TextMesh:
   m_GameObject: {fileID: 153378}
   m_Text: 'Nov 2015
 
-    $69,404,545.23'
+    $2,000,000'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
   m_Anchor: 3
   m_Alignment: 0
   m_TabSize: 2
-  m_FontSize: 50
-  m_FontStyle: 0
+  m_FontSize: 55
+  m_FontStyle: 1
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: 6cce749ece09540daa84c7ee72bf40c7, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -364,12 +374,6 @@ TextMesh:
 
     Min Repay -$1200
 
-    Extra Repay -$2000
-
-    Interest +$3200
-
-    Min Repay -$1200
-
     Extra Repay -$2000'
   m_OffsetZ: 0
   m_CharacterSize: 1
@@ -378,9 +382,9 @@ TextMesh:
   m_Alignment: 0
   m_TabSize: 2
   m_FontSize: 20
-  m_FontStyle: 0
+  m_FontStyle: 1
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: 1063140b6a14c4ccbbccd24eddfdbfab, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080

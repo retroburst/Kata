@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Tower
+  - TowerBase
+  - TowerWall
+  - TowerRoof
   layers:
   - Default
   - TransparentFX

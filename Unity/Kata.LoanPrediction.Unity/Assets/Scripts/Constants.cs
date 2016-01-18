@@ -17,7 +17,9 @@ public class Constants
 	public const string CHILD_MONTH_TRANSACTIONS_TEXT = "TransactionsText";
 	public const string CHILD_WOODEN_SIGN = "WoodenSign";
 
-	public const string TAG_TOWER = "Tower";
+	public const string TAG_TOWER_BASE = "TowerBase";
+	public const string TAG_TOWER_ROOF = "TowerRoof";
+	public const string TAG_TOWER_WALL = "TowerWall";
 
 	public const string AXIS_VERTICAL = "Vertical";
 }

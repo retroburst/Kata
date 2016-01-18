@@ -13,8 +13,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Runtime.Serialization;
 
-// TODO: UI looks horrible in full screen webgl mode
-
 /// <summary>
 /// Manages the application process flow.
 /// </summary>
@@ -79,9 +77,8 @@ public class ApplicationController : MonoBehaviour
 		LoanCalculationOutput output = null;
 		output = calculator.Calculate ();
 		if (output.Failure) {
-			MessagePanelController.SetMessage (output.FailureMessage);
 			Debug.LogError (output.FailureMessage);
-			MessagePanelController.ShowMessagePanel ();
+			InputPanelController.SetErrorText(output.FailureMessage);
 			return;
 		}
 		var groupedByMonthYear = output.Transactions.GroupBy (x => new { Month = x.Date.Month, Year = x.Date.Year });
@@ -121,13 +118,15 @@ public class ApplicationController : MonoBehaviour
 		string transactions = string.Empty;
 		foreach (LoanTransaction tx in groupedTransactions) {
 			transactions += ConvertTransactionType (tx.Type);
-			transactions += tx.Debit > 0 ? " +" : " -";
+			transactions += tx.Debit > 0 ? " -" : " +";
 			transactions += tx.Debit > 0 ? tx.Debit.ToString ("c0") : tx.Credit.ToString ("c0");
 			transactions += "\n";
 		}
 		signController.SetTransactionsText (transactions);
 		if (context.TargetEndDate.Year == year && context.TargetEndDate.Month == month) {
 			signController.ChangMaterial (RedWoodenSignMaterial);
+		} else {
+			signController.ResetMaterial();
 		}
 	}
 

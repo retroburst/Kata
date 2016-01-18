@@ -23,8 +23,9 @@ public class InputPanelController : MonoBehaviour
 	public InputField LoanMinRepaymentAmountField = null;
 	public InputField LoanExtraRepaymentDayField = null;
 	public InputField LoanExtraRepaymentAmountField = null;
+	public Color ErrorRed;
+	public Text ErrorText = null;
 	public GameObject InputPanel = null;
-	public MessagePanelController MessagePanelController = null;
 	private InputFieldNavigator navigator = null;
 
 	/// <summary>
@@ -38,12 +39,12 @@ public class InputPanelController : MonoBehaviour
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-//	private void Update()
-//	{
-//		if (Input.GetKeyUp (KeyCode.Return) && InputPanel.activeInHierarchy && (!MessagePanelController.PanelActiveInHierachy)) {
-//			RequestBuild();
-//		}
-//	}
+	private void Update()
+	{
+		if (Input.GetKeyUp (KeyCode.Return) && InputPanel.activeInHierarchy) {
+			RequestBuild();
+		}
+	}
 
 	/// <summary>
 	/// Initialises from a given context.
@@ -52,7 +53,7 @@ public class InputPanelController : MonoBehaviour
 	public void InitialiseFrom (LoanContext context)
 	{
 		LoanStartDateField.text = context.StartDate.ToShortDateString ();
-		LoanTargetEndDateField.text = context.TargetEndDate.ToShortDateString ();
+		if(context.TargetEndDate != DateTime.MinValue) LoanTargetEndDateField.text = context.TargetEndDate.ToShortDateString ();
 		LoanBalanceField.text = context.Balance.ToString ();
 		LoanInterestRateField.text = context.InterestRate.ToString ();
 		LoanMinRepaymentDayField.text = context.MinRepaymentDay.ToString ();
@@ -79,6 +80,7 @@ public class InputPanelController : MonoBehaviour
 		ValidateLoanMinRepaymentAmount (context, results);
 		ValidateLoanExtraRepaymentDay (context, results);
 		ValidateLoanExtraRepaymentAmount (context, results);
+		context.TodaysDate = DateTime.Now;
 		return(results.All (x => x));
 	}
 
@@ -223,7 +225,7 @@ public class InputPanelController : MonoBehaviour
 		if (valid) {
 			field.transform.FindChild ("Label").GetComponent<Text> ().color = Color.white;
 		} else {
-			field.transform.FindChild ("Label").GetComponent<Text> ().color = Color.red;
+			field.transform.FindChild ("Label").GetComponent<Text> ().color = ErrorRed;
 		}
 	}
 
@@ -234,12 +236,17 @@ public class InputPanelController : MonoBehaviour
 	{
 		LoanContext context = null;
 		if (!ValidateInput (out context)) {
-			MessagePanelController.SetMessage ("Some values input are invalid, please review the fields marked with red.");
-			MessagePanelController.ShowMessagePanel ();
+			ErrorText.text = "Some values input are invalid, please review the fields marked with red.";
 			return;
 		}
+		else
+		{
+			ErrorText.text = string.Empty;
+		}
 		if (BuildRequested != null)
+		{
 			BuildRequested (context);
+		}
 	}
 
 	/// <summary>
@@ -256,6 +263,15 @@ public class InputPanelController : MonoBehaviour
 	public void HideInputPanel ()
 	{
 		InputPanel.SetActive (false);
+	}
+
+	/// <summary>
+	/// Sets the error text.
+	/// </summary>
+	/// <param name="text">Text.</param>
+	public void SetErrorText(string text)
+	{
+		ErrorText.text = text;
 	}
 
 	/// <summary>

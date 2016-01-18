@@ -8,6 +8,7 @@ public class WoodenSignController : MonoBehaviour
 {
 	private TextMesh MonthBalanceText = null;
 	private TextMesh TransactionsText = null;
+	private Material originalMaterial = null;
 
 	/// <summary>
 	/// Awake this instance.
@@ -16,6 +17,7 @@ public class WoodenSignController : MonoBehaviour
 	{
 		MonthBalanceText = gameObject.transform.FindChild (Constants.CHILD_MONTH_BALANCE_TEXT).GetComponent<TextMesh> ();
 		TransactionsText = gameObject.transform.FindChild (Constants.CHILD_MONTH_TRANSACTIONS_TEXT).GetComponent<TextMesh> ();
+		originalMaterial = gameObject.GetComponent<MeshRenderer> ().material;
 	}
 
 	/// <summary>
@@ -46,4 +48,16 @@ public class WoodenSignController : MonoBehaviour
 	{
 		gameObject.GetComponent<MeshRenderer> ().material = target;
 	}
+
+	/// <summary>
+	/// Resets the material.
+	/// </summary>
+	public void ResetMaterial()
+	{
+		if(gameObject.GetComponent<MeshRenderer> ().material != originalMaterial)
+		{
+			gameObject.GetComponent<MeshRenderer> ().material = originalMaterial;
+		}
+	}
+
 }

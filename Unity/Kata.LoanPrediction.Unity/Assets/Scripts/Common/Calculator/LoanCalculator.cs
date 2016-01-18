@@ -71,7 +71,7 @@ namespace Kata.LoanPrediction.Unity.Common.Calculator
                 if((currentDate.Ticks + TimeSpan.TicksPerDay) >= DateTime.MaxValue.Ticks)
                 {
                 	result.Failure = true;
-					result.FailureMessage = string.Format("Calculations for your loan got to the end-of-time date {0}, and it is still not paid off. Looks like your situation is hopeless - sorry to say.", currentDate.ToShortDateString());
+					result.FailureMessage = string.Format("Calculations for your loan got to the end-of-time date {0}...and still not paid off. Your situation, sorry to say, is hopeless.", currentDate.ToShortDateString());
 					return (result);
                 }
                 // move date forward
