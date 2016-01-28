@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kata Loan Prediction C# MVC</title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+<link href="/Content/site.css" rel="stylesheet"/>
+
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kata Loan Prediction C# MVC</span>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        
+
+
+
+
+<p><br /></p>
+<div class="jumbotron">
+    <h1>Predict.</h1>
+    <p>
+        Find out when your loan will end, how much interest you'll pay, what difference an extra repayment might make.
+        Sometimes you need to time when your loan will end - if you pay it off quickly you will want to avoid
+        unnecessary fees for early repayment by dragging it out some.
+        This is a code kata in C# using MVC, it is a practice solution of a common programming problem.
+    </p>
+</div>
+
+<form action="/Home/CalculateLoan" method="post">    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="StartDate">Start Date</label>
+            <div class="col-sm-4 form-inline">
+                <input class="form-control combodate" data-format="DD-MM-YYYY" data-template="D MMM YYYY" data-val="true" data-val-date="The field Start Date must be a date." data-val-required="The Start Date field is required." id="StartDate" name="StartDate" type="text" value="28/01/2016 11:49:31 AM" />
+            </div>
+            <div class="col-sm-5 form-inline pull-left">
+                <span class="field-validation-valid" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="TargetEndDate">Target End Date</label>
+            <div class="col-sm-4 form-inline">
+                <input class="form-control combodate" data-format="DD-MM-YYYY" data-template="D MMM YYYY" data-val="true" data-val-date="The field Target End Date must be a date." data-val-required="The Target End Date field is required." id="TargetEndDate" name="TargetEndDate" type="text" value="1/01/0001 12:00:00 AM" />
+            </div>
+            <div class="col-sm-5 form-inline pull-left">
+                <span class="field-validation-valid" data-valmsg-for="TargetEndDate" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="Balance">Balance</label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input class="form-control" data-val="true" data-val-number="The field Balance must be a number." data-val-required="The Balance field is required." id="Balance" name="Balance" type="text" value="0" />
+                </div>
+            </div>
+            <div class="col-sm-7 pull-left">
+                <span class="field-validation-valid" data-valmsg-for="Balance" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="InterestRate">Interest Rate</label>
+            <div class="col-sm-2">
+                <input class="form-control" data-val="true" data-val-number="The field Interest Rate must be a number." data-val-required="The Interest Rate field is required." id="InterestRate" name="InterestRate" type="text" value="0" />
+            </div>
+            <div class="col-sm-7 pull-left">
+                <span class="field-validation-valid" data-valmsg-for="InterestRate" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="MinRepaymentAmount">Minimum Repayment Amount</label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Amount must be a number." data-val-required="The Minimum Repayment Amount field is required." id="MinRepaymentAmount" name="MinRepaymentAmount" type="text" value="0" />
+                </div>
+            </div>
+            <div class="col-sm-7 pull-left">
+                <span class="field-validation-valid" data-valmsg-for="MinRepaymentAmount" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="MinRepaymentDay">Minimum Repayment Day</label>
+            <div class="col-sm-2">
+                <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Day must be a number." data-val-required="The Minimum Repayment Day field is required." id="MinRepaymentDay" name="MinRepaymentDay" type="text" value="1" />
+            </div>
+            <div class="col-sm-7 pull-left">
+                <span class="field-validation-valid" data-valmsg-for="MinRepaymentDay" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="ExtraRepaymentAmount">Extra Repayment Amount</label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Amount must be a number." data-val-required="The Extra Repayment Amount field is required." id="ExtraRepaymentAmount" name="ExtraRepaymentAmount" type="text" value="0" />
+                </div>
+            </div>
+            <div class="col-sm-7 pull-left">
+                <span class="field-validation-valid" data-valmsg-for="ExtraRepaymentAmount" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="ExtraRepaymentDay">Extra Repayment Day</label>
+            <div class="col-sm-2">
+                <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Day must be a number." data-val-required="The Extra Repayment Day field is required." id="ExtraRepaymentDay" name="ExtraRepaymentDay" type="text" value="1" />
+            </div>
+            <div class="col-sm-7 pull-left">
+                <span class="field-validation-valid" data-valmsg-for="ExtraRepaymentDay" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3 control-label"></div>
+            <div class="col-sm-9">
+                <input type="submit" value="Calculate" class="btn btn-primary btn-lg" />
+            </div>
+        </div>
+
+    </div>
+</form>
+        <hr />
+        <footer>
+            <p>MIT licensed software; retroburst (Andrew D).</p>
+        </footer>
+    </div>
+
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+
+    <script src="/Scripts/jquery.validate.js"></script>
+<script src="/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <script src="/Scripts/combodate.js"></script>
+<script src="/Scripts/moment.js"></script>
+
+    <script src="/Scripts/bootstrap.js"></script>
+<script src="/Scripts/respond.js"></script>
+
+    <script src="/scripts/Kata.LoanPrediction.CSharp.js"></script>
+
+    
+
+<!-- Visual Studio Browser Link -->
+<script type="application/json" id="__browserLink_initializationData">
+    {"appName":"Chrome","requestId":"47e3fcd4555c4b9387be5869fac97a4b"}
+</script>
+<script type="text/javascript" src="http://localhost:50353/416275e6f9174e45abc5087a8511fd44/browserLink" async="async"></script>
+<!-- End Browser Link -->
+
+</body>
+</html>

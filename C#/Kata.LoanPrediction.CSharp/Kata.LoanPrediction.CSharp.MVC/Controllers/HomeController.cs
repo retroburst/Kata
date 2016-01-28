@@ -9,6 +9,10 @@ using Kata.LoanPrediction.CSharp.Common.Models;
 
 namespace Kata.LoanPrediction.CSharp.MVC.Controllers
 {
+    //TODO: extra repayment info should be optional - in core model and MVC models - defaults for extra should be removed
+    //TODO: default dates in model are not showing in the combodate fields on initial load
+    //TODO: mandatory field marks e.g. (*)
+
     public class HomeController : Controller
     {
         public ActionResult Index()
