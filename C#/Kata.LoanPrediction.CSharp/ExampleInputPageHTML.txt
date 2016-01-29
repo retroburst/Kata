@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kata Loan Prediction C# MVC</title>
     <link href="/Content/bootstrap.css" rel="stylesheet"/>
-<link href="/Content/site.css" rel="stylesheet"/>
+<link href="/Content/Site.css" rel="stylesheet"/>
 
     <script src="/Scripts/modernizr-2.6.2.js"></script>
 
@@ -49,18 +49,18 @@
 
 <form action="/Home/CalculateLoan" method="post">    <div class="form-horizontal">
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="StartDate">Start Date</label>
+            <label class="col-sm-3 control-label required-field-label" for="StartDate">Start Date</label>
             <div class="col-sm-4 form-inline">
-                <input class="form-control combodate" data-format="DD-MM-YYYY" data-template="D MMM YYYY" data-val="true" data-val-date="The field Start Date must be a date." data-val-required="The Start Date field is required." id="StartDate" name="StartDate" type="text" value="28/01/2016 11:49:31 AM" />
+                <input Value="29-01-2016" class="form-control combodate" data-format="DD-MM-YYYY" data-template="D MMM YYYY" data-val="true" data-val-date="The field Start Date must be a date." data-val-required="The Start Date field is required." id="StartDate" name="StartDate" type="text" value="29/01/2016 6:39:21 PM" />
             </div>
             <div class="col-sm-5 form-inline pull-left">
                 <span class="field-validation-valid" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="TargetEndDate">Target End Date</label>
+            <label class="col-sm-3 control-label required-field-label" for="TargetEndDate">Target End Date</label>
             <div class="col-sm-4 form-inline">
-                <input class="form-control combodate" data-format="DD-MM-YYYY" data-template="D MMM YYYY" data-val="true" data-val-date="The field Target End Date must be a date." data-val-required="The Target End Date field is required." id="TargetEndDate" name="TargetEndDate" type="text" value="1/01/0001 12:00:00 AM" />
+                <input Value="29-01-2041" class="form-control combodate" data-format="DD-MM-YYYY" data-template="D MMM YYYY" data-val="true" data-val-date="The field Target End Date must be a date." data-val-required="The Target End Date field is required." id="TargetEndDate" name="TargetEndDate" type="text" value="29/01/2041 6:39:21 PM" />
             </div>
             <div class="col-sm-5 form-inline pull-left">
                 <span class="field-validation-valid" data-valmsg-for="TargetEndDate" data-valmsg-replace="true"></span>
@@ -68,11 +68,11 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="Balance">Balance</label>
+            <label class="col-sm-3 control-label required-field-label" for="Balance">Balance</label>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input class="form-control" data-val="true" data-val-number="The field Balance must be a number." data-val-required="The Balance field is required." id="Balance" name="Balance" type="text" value="0" />
+                    <input class="form-control" data-val="true" data-val-number="The field Balance must be a number." data-val-required="The Balance field is required." id="Balance" name="Balance" type="text" value="250000" />
                 </div>
             </div>
             <div class="col-sm-7 pull-left">
@@ -82,9 +82,12 @@
 
 
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="InterestRate">Interest Rate</label>
+            <label class="col-sm-3 control-label required-field-label" for="InterestRate">Interest Rate</label>
             <div class="col-sm-2">
-                <input class="form-control" data-val="true" data-val-number="The field Interest Rate must be a number." data-val-required="The Interest Rate field is required." id="InterestRate" name="InterestRate" type="text" value="0" />
+                <div class="input-group">
+                    <input class="form-control" data-val="true" data-val-number="The field Interest Rate must be a number." data-val-required="The Interest Rate field is required." id="InterestRate" name="InterestRate" type="text" value="5" />
+                    <span class="input-group-addon">%</span>
+                </div>
             </div>
             <div class="col-sm-7 pull-left">
                 <span class="field-validation-valid" data-valmsg-for="InterestRate" data-valmsg-replace="true"></span>
@@ -92,11 +95,11 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="MinRepaymentAmount">Minimum Repayment Amount</label>
+            <label class="col-sm-3 control-label required-field-label" for="MinRepaymentAmount">Minimum Repayment Amount</label>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Amount must be a number." data-val-required="The Minimum Repayment Amount field is required." id="MinRepaymentAmount" name="MinRepaymentAmount" type="text" value="0" />
+                    <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Amount must be a number." data-val-required="The Minimum Repayment Amount field is required." id="MinRepaymentAmount" name="MinRepaymentAmount" type="text" value="2000" />
                 </div>
             </div>
             <div class="col-sm-7 pull-left">
@@ -105,7 +108,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="MinRepaymentDay">Minimum Repayment Day</label>
+            <label class="col-sm-3 control-label required-field-label" for="MinRepaymentDay">Minimum Repayment Day</label>
             <div class="col-sm-2">
                 <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Day must be a number." data-val-required="The Minimum Repayment Day field is required." id="MinRepaymentDay" name="MinRepaymentDay" type="text" value="1" />
             </div>
@@ -119,7 +122,7 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Amount must be a number." data-val-required="The Extra Repayment Amount field is required." id="ExtraRepaymentAmount" name="ExtraRepaymentAmount" type="text" value="0" />
+                    <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Amount must be a number." id="ExtraRepaymentAmount" name="ExtraRepaymentAmount" type="text" value="1000" />
                 </div>
             </div>
             <div class="col-sm-7 pull-left">
@@ -130,7 +133,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label" for="ExtraRepaymentDay">Extra Repayment Day</label>
             <div class="col-sm-2">
-                <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Day must be a number." data-val-required="The Extra Repayment Day field is required." id="ExtraRepaymentDay" name="ExtraRepaymentDay" type="text" value="1" />
+                <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Day must be a number." id="ExtraRepaymentDay" name="ExtraRepaymentDay" type="text" value="20" />
             </div>
             <div class="col-sm-7 pull-left">
                 <span class="field-validation-valid" data-valmsg-for="ExtraRepaymentDay" data-valmsg-replace="true"></span>
@@ -169,9 +172,9 @@
 
 <!-- Visual Studio Browser Link -->
 <script type="application/json" id="__browserLink_initializationData">
-    {"appName":"Chrome","requestId":"47e3fcd4555c4b9387be5869fac97a4b"}
+    {"appName":"Chrome","requestId":"11280f58d3fa4c86baddd0812e9e0ae3"}
 </script>
-<script type="text/javascript" src="http://localhost:50353/416275e6f9174e45abc5087a8511fd44/browserLink" async="async"></script>
+<script type="text/javascript" src="http://localhost:56650/22dbd97620f3429aaf125b8cba364c00/browserLink" async="async"></script>
 <!-- End Browser Link -->
 
 </body>
