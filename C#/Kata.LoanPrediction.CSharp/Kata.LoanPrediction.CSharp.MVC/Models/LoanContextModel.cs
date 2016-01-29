@@ -21,9 +21,12 @@ namespace Kata.LoanPrediction.CSharp.MVC.Models
         {
             TodaysDate = DateTime.Now;
             StartDate = DateTime.Now;
-            ExtraRepaymentAmount = 0.00d;
-            ExtraRepaymentDay = 1;
-            MinRepaymentAmount = 0.00d;
+            TargetEndDate = DateTime.Now.AddYears(25);
+            Balance = 250000.00;
+            InterestRate = 5.00;
+            ExtraRepaymentAmount = 1000.00d;
+            ExtraRepaymentDay = 20;
+            MinRepaymentAmount = 2000.00d;
             MinRepaymentDay = 1;
         }
 
@@ -102,8 +105,7 @@ namespace Kata.LoanPrediction.CSharp.MVC.Models
         /// The extra repayment amount.
         /// </value>
         [Display(Name = "Extra Repayment Amount")]
-        [Required]
-        public double ExtraRepaymentAmount { get; set; }
+        public double? ExtraRepaymentAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the extra repayment day.
@@ -112,8 +114,7 @@ namespace Kata.LoanPrediction.CSharp.MVC.Models
         /// The extra repayment day.
         /// </value>
         [Display(Name = "Extra Repayment Day")]
-        [Required]
-        public int ExtraRepaymentDay { get; set; }
+        public int? ExtraRepaymentDay { get; set; }
 
         /// <summary>
         /// Converts this model to a loan context 
@@ -122,7 +123,10 @@ namespace Kata.LoanPrediction.CSharp.MVC.Models
         /// <returns></returns>
         public LoanContext ToLoanContext()
         {
-            LoanContext result = new LoanContext(TodaysDate, StartDate, TargetEndDate, Balance, InterestRate, MinRepaymentAmount, MinRepaymentDay, ExtraRepaymentAmount, ExtraRepaymentDay);
+            LoanContext result = new LoanContext(TodaysDate, StartDate, TargetEndDate, 
+                Balance, InterestRate, MinRepaymentAmount, MinRepaymentDay, 
+                ExtraRepaymentAmount.HasValue ? ExtraRepaymentAmount.Value : 0.00d,
+                ExtraRepaymentDay.HasValue ? ExtraRepaymentDay.Value : 0);
             return (result);
         }
 

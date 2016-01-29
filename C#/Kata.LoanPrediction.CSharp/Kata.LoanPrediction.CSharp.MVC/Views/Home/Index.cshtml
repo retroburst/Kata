@@ -1,4 +1,5 @@
 ﻿@using Kata.LoanPrediction.CSharp.MVC.Models
+@using Kata.LoanPrediction.CSharp.MVC.Application
 
 @model LoanContextModel
 
@@ -21,18 +22,18 @@
 {
     <div class="form-horizontal">
         <div class="form-group">
-            @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-3 control-label" })
+            @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-3 control-label required-field-label" })
             <div class="col-sm-4 form-inline">
-                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
+                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY", @Value = RazorViewHelpers.FormatDateForCombodate(Model.StartDate) })
             </div>
             <div class="col-sm-5 form-inline pull-left">
                 @Html.ValidationMessageFor(m => m.StartDate)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.TargetEndDate, new { @class = "col-sm-3 control-label" })
+            @Html.LabelFor(m => m.TargetEndDate, new { @class = "col-sm-3 control-label required-field-label" })
             <div class="col-sm-4 form-inline">
-                @Html.TextBoxFor(m => m.TargetEndDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY" })
+                @Html.TextBoxFor(m => m.TargetEndDate, new { @class = "form-control combodate", data_format = "DD-MM-YYYY", data_template = "D MMM YYYY", @Value = RazorViewHelpers.FormatDateForCombodate(Model.TargetEndDate) })
             </div>
             <div class="col-sm-5 form-inline pull-left">
                 @Html.ValidationMessageFor(m => m.TargetEndDate)
@@ -40,7 +41,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.Balance, new { @class = "col-sm-3 control-label" })
+            @Html.LabelFor(m => m.Balance, new { @class = "col-sm-3 control-label required-field-label" })
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
@@ -54,9 +55,12 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(m => m.InterestRate, new { @class = "col-sm-3 control-label" })
+            @Html.LabelFor(m => m.InterestRate, new { @class = "col-sm-3 control-label required-field-label" })
             <div class="col-sm-2">
-                @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control" })
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control" })
+                    <span class="input-group-addon">%</span>
+                </div>
             </div>
             <div class="col-sm-7 pull-left">
                 @Html.ValidationMessageFor(m => m.InterestRate)
@@ -64,7 +68,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.MinRepaymentAmount, new { @class = "col-sm-3 control-label" })
+            @Html.LabelFor(m => m.MinRepaymentAmount, new { @class = "col-sm-3 control-label required-field-label" })
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
@@ -77,7 +81,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.MinRepaymentDay, new { @class = "col-sm-3 control-label" })
+            @Html.LabelFor(m => m.MinRepaymentDay, new { @class = "col-sm-3 control-label required-field-label" })
             <div class="col-sm-2">
                 @Html.TextBoxFor(m => m.MinRepaymentDay, new { @class = "form-control" })
             </div>

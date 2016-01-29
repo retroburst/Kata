@@ -37,11 +37,30 @@
     @foreach (LoanTransaction transaction in Model.Output.Transactions)
     {
         <tr>
-            <td>@RazorViewHelpers.FormatDate(transaction.Date)</td>
+            @{
+                string targetBadgeDisplay = "none";
+                if (transaction.Date.Year == Model.Context.TargetEndDate.Year
+                    && transaction.Date.Month == Model.Context.TargetEndDate.Month)
+                {
+                    targetBadgeDisplay = "inherit";
+                }
+            }
+            <td>@RazorViewHelpers.FormatDate(transaction.Date)<span class="label label-danger" style="display:@targetBadgeDisplay">Target End</span></td>
             <td>@RazorViewHelpers.FormatTransactionType(transaction.Type)</td>
-            <td class="success">@RazorViewHelpers.FormatCurrency(transaction.Credit)</td>
-            <td class="danger">@RazorViewHelpers.FormatCurrency(transaction.Debit)</td>
-            <td>@RazorViewHelpers.FormatCurrency(transaction.Balance)</td>
+            <td class="success"><p class="text-right">@RazorViewHelpers.FormatCurrency(transaction.Credit)</p></td>
+            <td class="danger"><p class="text-right">@RazorViewHelpers.FormatCurrency(transaction.Debit)</p></td>
+            <td><p class="text-right">@RazorViewHelpers.FormatCurrency(transaction.Balance)</p></td>
         </tr>
     }
 </table>
+
+<div class="well">
+    <span class="parameter-display">Start Date <span class="label label-primary">@RazorViewHelpers.FormatDate(Model.Context.StartDate)</span></span>
+    <span class="parameter-display">Target End Date <span class="label label-primary">@RazorViewHelpers.FormatDate(Model.Context.TargetEndDate)</span></span>
+    <span class="parameter-display">Balance <span class="label label-primary">@RazorViewHelpers.FormatCurrency(Model.Context.Balance)</span></span>
+    <span class="parameter-display">Interest Rate <span class="label label-primary">@RazorViewHelpers.FormatInterestRate(Model.Context.InterestRate)</span></span>
+    <span class="parameter-display">Min. Repay Amount <span class="label label-primary">@RazorViewHelpers.FormatCurrency(Model.Context.MinRepaymentAmount)</span></span>
+    <span class="parameter-display">Min. Repay Day <span class="label label-primary">@RazorViewHelpers.FormatDay(Model.Context.MinRepaymentDay)</span></span>
+    <span class="parameter-display">Extra Repay Amount <span class="label label-primary">@RazorViewHelpers.FormatCurrency(Model.Context.ExtraRepaymentAmount)</span></span>
+    <span class="parameter-display">Extra Repay Day <span class="label label-primary">@RazorViewHelpers.FormatDay(Model.Context.ExtraRepaymentDay)</span></span>
+</div>

@@ -128,6 +128,7 @@
     <Compile Include="Models\LoanCalculationResultsModel.cs" />
     <Compile Include="Models\LoanContextModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Application\Constants.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

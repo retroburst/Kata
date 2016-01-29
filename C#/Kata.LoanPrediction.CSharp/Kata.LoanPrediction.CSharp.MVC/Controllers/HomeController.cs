@@ -9,17 +9,28 @@ using Kata.LoanPrediction.CSharp.Common.Models;
 
 namespace Kata.LoanPrediction.CSharp.MVC.Controllers
 {
-    //TODO: extra repayment info should be optional - in core model and MVC models - defaults for extra should be removed
-    //TODO: default dates in model are not showing in the combodate fields on initial load
-    //TODO: mandatory field marks e.g. (*)
+    //TODO: store last used values on form per user (IP Address)
+    //TODO: comment the code and refactor / make pretty
 
+    /// <summary>
+    /// Home controller, used by default index routes.
+    /// </summary>
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Returns the index - initial page.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View(new LoanContextModel());
         }
 
+        /// <summary>
+        /// Calculate loan action.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public ActionResult CalculateLoan(LoanContextModel model)
         {
             if (ModelState.IsValid)

@@ -1,18 +1,16 @@
 ﻿jQuery.validator.setDefaults({
     highlight: function (element, errorClass, validClass) {
         if (element.type === 'radio') {
-            this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+            this.findByName(element.name).addClass(errorClass);
         } else {
-            $(element).addClass(errorClass).removeClass(validClass);
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            $(element).closest('.form-group').addClass('has-error');
         }
     },
     unhighlight: function (element, errorClass, validClass) {
         if (element.type === 'radio') {
-            this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+            this.findByName(element.name).removeClass(errorClass);
         } else {
-            $(element).removeClass(errorClass).addClass(validClass);
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            $(element).closest('.form-group').removeClass('has-error');
         }
     }
 });
