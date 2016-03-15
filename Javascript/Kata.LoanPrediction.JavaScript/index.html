@@ -3,10 +3,157 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Kata Loan Prediction - JavaScript</title>
-            <link href="bootstrap.slate.min.css" rel="stylesheet"/>
-            <link href="site.css" rel="stylesheet"/>
-            </head>
+        <title>Kata Loan Prediction - JavaScript</title>
+        <link href="bootstrap.slate.min.css" rel="stylesheet"/>
+        <link href="site.css" rel="stylesheet"/>
+        <script id="input-form-template" type="text/x-handlebars-template">
+                <form>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label required-field-label" for="StartDate">Start Date</label>
+                            <div class="col-sm-4 form-inline">
+                                <input class="form-control combodate" data-template="D MMM YYYY" data-val="true" data-val-date="The field Start Date must be a date." data-val-required="The Start Date field is required." id="StartDate" name="StartDate" type="text" value="{{startDate}}" />
+                            </div>
+                            <div class="col-sm-5 form-inline pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label required-field-label" for="TargetEndDate">Target End Date</label>
+                            <div class="col-sm-4 form-inline">
+                                <input class="form-control combodate" data-template="D MMM YYYY" data-val="true" data-val-date="The field Target End Date must be a date." data-val-required="The Target End Date field is required." id="TargetEndDate" name="TargetEndDate" type="text" value="{{targetEndDate}}" />
+                            </div>
+                            <div class="col-sm-5 form-inline pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="TargetEndDate" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label required-field-label" for="Balance">Balance</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon currency-symbol">{{currencySymbol}}</span>
+                                    <input class="form-control" data-val="true" data-val-number="The field Balance must be a number." data-val-required="The Balance field is required." id="Balance" name="Balance" type="text" value="{{balance}}" />
+                                </div>
+                            </div>
+                            <div class="col-sm-7 pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="Balance" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label required-field-label" for="InterestRate">Interest Rate</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input class="form-control" data-val="true" data-val-number="The field Interest Rate must be a number." data-val-required="The Interest Rate field is required." id="InterestRate" name="InterestRate" type="text" value="{{interestRate}}" />
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-7 pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="InterestRate" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label required-field-label" for="MinRepaymentAmount">Minimum Repayment Amount</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon currency-symbol">{{currencySymbol}}</span>
+                                    <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Amount must be a number." data-val-required="The Minimum Repayment Amount field is required." id="MinRepaymentAmount" name="MinRepaymentAmount" type="text" value="{{minRepaymentAmount}}" />
+                                </div>
+                            </div>
+                            <div class="col-sm-7 pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="MinRepaymentAmount" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label required-field-label" for="MinRepaymentDay">Minimum Repayment Day</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Day must be a number." data-val-required="The Minimum Repayment Day field is required." id="MinRepaymentDay" name="MinRepaymentDay" type="text" value="{{minRepaymentDay}}" />
+                            </div>
+                            <div class="col-sm-7 pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="MinRepaymentDay" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="ExtraRepaymentAmount">Extra Repayment Amount</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon currency-symbol">{{currencySymbol}}</span>
+                                    <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Amount must be a number." id="ExtraRepaymentAmount" name="ExtraRepaymentAmount" type="text" value="{{extraRepaymentAmount}}" />
+                                </div>
+                            </div>
+                            <div class="col-sm-7 pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="ExtraRepaymentAmount" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="ExtraRepaymentDay">Extra Repayment Day</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Day must be a number." id="ExtraRepaymentDay" name="ExtraRepaymentDay" type="text" value="{{extraRepaymentDay}}" />
+                            </div>
+                            <div class="col-sm-7 pull-left">
+                                <span class="field-validation-valid" data-valmsg-for="ExtraRepaymentDay" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-3 control-label"></div>
+                            <div class="col-sm-9">
+                                <input id="CalculateButton" value="Calculate" class="btn btn-primary btn-lg" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </script>
+        <script id="results-template" type="text/x-handlebars-template">
+                <div class="jumbotron">
+                    <h1>Results.</h1>
+                    <p>
+                    Loan ends on {{output.loanEndsDate}}<br />
+                    Total interest paid from {{output.interestStartDate}} was {{output.totalInterestPaid}}<br />
+                    Target end date {{context.targetEndDate}} was missed by <u>{{output.targetEndDateMissedInDays}}</u> days!
+                    </p>
+                </div>
+                
+                <table id="resultsTable" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Credit</th>
+                            <th>Debit</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {{#each output.transactions}}
+                       <tr>
+                            <td>{{date}}<span class="label label-danger" style="display:none">Target End</span></td>
+                            <td>{{type.description}}</td>
+                            <td class="success"><p class="text-right">{{credit}}</p></td>
+                            <td class="danger"><p class="text-right">{{debit}}</p></td>
+                            <td><p class="text-right">{{balance}}</p></td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+                <div class="well">
+                    <span class="parameter-display">Start Date <span class="label label-primary">29/01/2016</span></span>
+                    <span class="parameter-display">Target End Date <span class="label label-primary">29/01/2041</span></span>
+                    <span class="parameter-display">Balance <span class="label label-primary">$250,000.00</span></span>
+                    <span class="parameter-display">Interest Rate <span class="label label-primary">5.00%</span></span>
+                    <span class="parameter-display">Min. Repay Amount <span class="label label-primary">$2,000.00</span></span>
+                    <span class="parameter-display">Min. Repay Day <span class="label label-primary">1</span></span>
+                    <span class="parameter-display">Extra Repay Amount <span class="label label-primary">$1,000.00</span></span>
+                    <span class="parameter-display">Extra Repay Day <span class="label label-primary">20</span></span>
+                </div>
+        </script>
+    </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
@@ -40,152 +187,12 @@
                     </p>
                 </div>
                 
-                
-                <form id="mainForm">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label required-field-label" for="StartDate">Start Date</label>
-                            <div class="col-sm-4 form-inline">
-                                <input class="form-control combodate" data-template="D MMM YYYY" data-val="true" data-val-date="The field Start Date must be a date." data-val-required="The Start Date field is required." id="StartDate" name="StartDate" type="text" />
-                            </div>
-                            <div class="col-sm-5 form-inline pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="StartDate" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label required-field-label" for="TargetEndDate">Target End Date</label>
-                            <div class="col-sm-4 form-inline">
-                                <input class="form-control combodate" data-template="D MMM YYYY" data-val="true" data-val-date="The field Target End Date must be a date." data-val-required="The Target End Date field is required." id="TargetEndDate" name="TargetEndDate" type="text" />
-                            </div>
-                            <div class="col-sm-5 form-inline pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="TargetEndDate" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label required-field-label" for="Balance">Balance</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <span class="input-group-addon currency-symbol">$</span>
-                                    <input class="form-control" data-val="true" data-val-number="The field Balance must be a number." data-val-required="The Balance field is required." id="Balance" name="Balance" type="text" />
-                                </div>
-                            </div>
-                            <div class="col-sm-7 pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="Balance" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        
-                        
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label required-field-label" for="InterestRate">Interest Rate</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input class="form-control" data-val="true" data-val-number="The field Interest Rate must be a number." data-val-required="The Interest Rate field is required." id="InterestRate" name="InterestRate" type="text" />
-                                    <span class="input-group-addon">%</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-7 pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="InterestRate" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label required-field-label" for="MinRepaymentAmount">Minimum Repayment Amount</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <span class="input-group-addon currency-symbol">$</span>
-                                    <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Amount must be a number." data-val-required="The Minimum Repayment Amount field is required." id="MinRepaymentAmount" name="MinRepaymentAmount" type="text" />
-                                </div>
-                            </div>
-                            <div class="col-sm-7 pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="MinRepaymentAmount" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label required-field-label" for="MinRepaymentDay">Minimum Repayment Day</label>
-                            <div class="col-sm-2">
-                                <input class="form-control" data-val="true" data-val-number="The field Minimum Repayment Day must be a number." data-val-required="The Minimum Repayment Day field is required." id="MinRepaymentDay" name="MinRepaymentDay" type="text" />
-                            </div>
-                            <div class="col-sm-7 pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="MinRepaymentDay" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="ExtraRepaymentAmount">Extra Repayment Amount</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <span class="input-group-addon currency-symbol">$</span>
-                                    <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Amount must be a number." id="ExtraRepaymentAmount" name="ExtraRepaymentAmount" type="text" />
-                                </div>
-                            </div>
-                            <div class="col-sm-7 pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="ExtraRepaymentAmount" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="ExtraRepaymentDay">Extra Repayment Day</label>
-                            <div class="col-sm-2">
-                                <input class="form-control" data-val="true" data-val-number="The field Extra Repayment Day must be a number." id="ExtraRepaymentDay" name="ExtraRepaymentDay" type="text" />
-                            </div>
-                            <div class="col-sm-7 pull-left">
-                                <span class="field-validation-valid" data-valmsg-for="ExtraRepaymentDay" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="col-sm-3 control-label"></div>
-                            <div class="col-sm-9">
-                                <input id="CalculateButton" value="Calculate" class="btn btn-primary btn-lg" />
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div id="inputForm">
+
+                </div>
             </div>
             
             <div id="results">
-                <div class="jumbotron">
-                    <h1>Results.</h1>
-                    <p>
-                    Loan ends on <span id="ResultLoanEndsDate"></span><br />
-                    Total interest paid from <span id="ResultInterestCalculateStartDate"></span> is <span id="ResultTotalInterest"></span><br />
-                    Target end date <span id="ResultTargetEndDate"></span> was missed by <u>5994</u> days!
-                    </p>
-                </div>
-                
-                <table id="resultsTable" class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Credit</th>
-                            <th>Debit</th>
-                            <th>Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            
-                            <td>31/01/2016<span class="label label-danger" style="display:none">Target End</span></td>
-                            <td>Interest Charged</td>
-                            <td class="success"><p class="text-right">$0.00</p></td>
-                            <td class="danger"><p class="text-right">$1,061.64</p></td>
-                            <td><p class="text-right">$251,061.64</p></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="well">
-                    <span class="parameter-display">Start Date <span class="label label-primary">29/01/2016</span></span>
-                    <span class="parameter-display">Target End Date <span class="label label-primary">29/01/2041</span></span>
-                    <span class="parameter-display">Balance <span class="label label-primary">$250,000.00</span></span>
-                    <span class="parameter-display">Interest Rate <span class="label label-primary">5.00%</span></span>
-                    <span class="parameter-display">Min. Repay Amount <span class="label label-primary">$2,000.00</span></span>
-                    <span class="parameter-display">Min. Repay Day <span class="label label-primary">1</span></span>
-                    <span class="parameter-display">Extra Repay Amount <span class="label label-primary">$1,000.00</span></span>
-                    <span class="parameter-display">Extra Repay Day <span class="label label-primary">20</span></span>
-                </div>
             </div>
             
         <hr />
@@ -201,6 +208,7 @@
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="bower_components/nedb/browser-version/out/nedb.min.js"></script>
         <script src="bower_components/accounting/accounting.min.js"></script>
+        <script src="bower_components/handlebars/handlebars.min.js"></script>
         <script src="kata.loan.prediction.js"></script>
         <script>
             /*
@@ -228,7 +236,10 @@
              $("div.validation-summary-errors").has("li:visible").addClass("alert alert-block alert-danger");
              
              });*/
-        
+        var templates = {
+            inputFormTemplate : Handlebars.compile($("#input-form-template").html()),
+            resultsTemplate : Handlebars.compile($("#results-template").html())
+        };
         
         var defaultSettings = {
             startDate : moment(),
@@ -238,7 +249,8 @@
             minRepaymentAmount : 2000,
             minRepaymentDay : 1,
             extraRepaymentAmount : 1000,
-            extraRepaymentDay : 20
+            extraRepaymentDay : 20,
+            currencySymbol : '$'
         };
         
         // init form
@@ -248,7 +260,25 @@
             // intial view setup
             $('#input').show();
             $('#results').hide();
+            
+            
+            $('#inputForm').empty();
+            $('#inputForm').append(templates.inputFormTemplate(initialSettings));
+            
+            $('#CalculateButton').click(function(e){
+                calculateLoan();
+            });
+            
+            $('.combodate').combodate(
+                {
+                minYear: 1975,
+                maxYear: 2050,
+                customClass: 'form-control',
+                format: null
+                });
+            
             // initial settings
+            /*
             $('#StartDate').combodate('setValue', initialSettings.startDate);
             $('#TargetEndDate').combodate('setValue', initialSettings.targetEndDate);
             $('#Balance').val(initialSettings.balance);
@@ -257,7 +287,7 @@
             $('#MinRepaymentDay').val(initialSettings.minRepaymentDay);
             $('#ExtraRepaymentAmount').val(initialSettings.extraRepaymentAmount);
             $('#ExtraRepaymentDay').val(initialSettings.extraRepaymentDay);
-            
+            */
         };
         
         var calculateLoan = function calculateLoan(){
@@ -292,7 +322,9 @@
             console.log(output);
             
             // clear table
-            $('#resultsTable').empty();
+            $('#results').empty();
+            $('#results').append(templates.resultsTemplate({ context : context, output : output }));
+            /*
             // insert rows
             for(var i=0; i < output.transactions.length; i++){
                 var t = output.transactions[i];
@@ -305,6 +337,9 @@
                 + '</tr>'
                 $('#resultsTable').append(row);
             }
+            */
+             
+             
             // show results
             // hide input
             $('#results').show();
@@ -327,7 +362,7 @@
             });
             
             // set currency symbols to current setting in accounting.js
-            $('.currency-symbol').html(accounting.settings.currency.symbol);
+            //$('.currency-symbol').html(accounting.settings.currency.symbol);
 
             
             
