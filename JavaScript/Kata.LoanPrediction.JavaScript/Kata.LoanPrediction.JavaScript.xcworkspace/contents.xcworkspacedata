@@ -2,7 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:site.css">
+      location = "group:css">
+   </FileRef>
+   <FileRef
+      location = "group:fonts">
+   </FileRef>
+   <FileRef
+      location = "group:scripts">
    </FileRef>
    <FileRef
       location = "group:index.html">
@@ -12,9 +18,6 @@
    </FileRef>
    <FileRef
       location = "group:ExampleDataTablePageHTML.txt">
-   </FileRef>
-   <FileRef
-      location = "group:kata.loan.prediction.js">
    </FileRef>
    <FileRef
       location = "group:ExampleInputPageHTML.txt">
