@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div id="input">
+            <div id="inputContainer">
                 <div class="jumbotron">
                     <h1>Predict.</h1>
                     <p>
@@ -31,10 +31,10 @@
                     This is a code kata in JavaScript that runs entirely in the browser.
                     </p>
                 </div>
-                <div id="inputForm">
+                <div id="inputFormContainer">
                 </div>
             </div>
-            <div id="results">
+            <div id="resultsContainer">
             </div>
         <hr />
         <footer>
@@ -50,10 +50,17 @@
         <script src="scripts/nedb.min.js"></script>
         <script src="scripts/accounting.min.js"></script>
         <script src="scripts/handlebars.min.js"></script>
+        <script src="scripts/validate.min.js"></script>
+        <script src="scripts/string.min.js"></script>
         <script src="scripts/kata.loan.prediction.js"></script>
         <script>
+        // TODO: defaults - last input settings from nedb
+        // TODO: validation on related fields (custom validator) e.g. target end date after strat date
+        // TODO: refactor - move code into seperate js files like the kata app code
+        // TODO: update bower.json with dependencies and remove bower_components from git
         var dateFormat = "DD/MM/YYYY";
         var templates = null;
+        var validateConstraints = null;
         var defaultSettings = {
             startDate : moment(),
             targetEndDate : moment().add(25, 'year'),
@@ -64,6 +71,39 @@
             extraRepaymentAmount : 1000,
             extraRepaymentDay : 20,
             currencySymbol : accounting.settings.currency.symbol
+        };
+        
+        var joinErrorMessages = function(messages){
+            messages = messages || [];
+            var result = messages.join('. ');
+            if(!S(result).endsWith('.')){
+                result += '.';
+            }
+            return(result);
+        };
+        
+        var showValidationErros = function showValidationErros(errors){
+            errors = errors || {};
+            for (var property in errors) {
+                console.log("Property");
+                console.log(property);
+                if (errors.hasOwnProperty(property)) {
+                    var input = $('#' + property);
+                    console.log(input);
+                    if(input){
+                        var group = input.closest('.form-group');
+                        if(group){
+                            group.addClass('has-error');
+                            group.find('.validation-message').text(joinErrorMessages(errors[property]));
+                        }
+                    }
+                }
+            }
+        };
+        
+        var clearValidationErrors = function clearValidationErrors(){
+            $('.validation-message').empty();
+            $('.form-group').removeClass('has-error');
         };
         
         var initHandlebars = function initHandlebars(){
@@ -119,16 +159,31 @@
         
         // init form
         var initInputForm = function initInputForm(){
-            // TODO: defaults from proto or nedb
             var initialSettings = defaultSettings || storedSettings;
             // intial view setup
-            $('#input').show();
-            $('#results').hide();
-            $('#inputForm').empty();
-            $('#inputForm').append(templates.inputFormTemplate(initialSettings));
+            $('#inputContainer').show();
+            $('#resultsContainer').hide();
+            $('#inputFormContainer').empty();
+            $('#inputFormContainer').append(templates.inputFormTemplate(initialSettings));
             
             $('#calculateButton').click(function(e){
-                initResults();
+                clearValidationErrors();
+                var attributes = {};
+                attributes.balance = $('#balance').val();
+                attributes.interestRate = $('#interestRate').val();
+                attributes.minRepaymentAmount = $('#minRepaymentAmount').val();
+                attributes.minRepaymentDay = $('#minRepaymentDay').val();
+                attributes.extraRepaymentAmount = $('#extraRepaymentAmount').val();
+                attributes.extraRepaymentDay = $('#extraRepaymentDay').val();
+                attributes.startDate = $('#startDate').val();
+                attributes.targetEndDate = $('#targetEndDate').val();
+                var errors = validate(attributes, validateConstraints);
+                console.log(errors);
+                if(!errors){
+                    initResults();
+                } else {
+                    showValidationErros(errors);
+                }
             });
             
             $('.combodate').combodate(
@@ -152,15 +207,13 @@
             context.startDate = moment($('#startDate').val(), dateFormat).toDate();
             context.targetEndDate = moment($('#targetEndDate').val(), dateFormat).toDate();
             var output = kataLoanPredictionApp.calculator.calculate(context);
-            
             // clear table
-            $('#results').empty();
-            $('#results').append(templates.resultsTemplate({ context : context, output : output }));
-
+            $('#resultsContainer').empty();
+            $('#resultsContainer').append(templates.resultsTemplate({ context : context, output : output }));
             // show results
             // hide input
-            $('#results').show();
-            $('#input').hide();
+            $('#resultsContainer').show();
+            $('#inputContainer').hide();
             
             $('.start-over-button').click(function(e){
                 initInputForm();
@@ -169,25 +222,104 @@
             $("html, body").animate({ scrollTop: 0 }, "slow");
         };
         
+        var initValidate = function initValidate(){
+            // Before using it we must add the parse and format functions
+            // Here is a sample implementation using moment.js
+            validate.extend(validate.validators.datetime, {
+                // The value is guaranteed not to be null or undefined but otherwise it
+                // could be anything.
+                parse: function(value, options) {
+                    return +moment.utc(value, dateFormat);
+                },
+                // Input is a unix timestamp
+                format: function(value, options) {
+                    var format = options.dateOnly ? dateFormat : dateFormat + " hh:mm:ss";
+                    return moment.utc(value).format(format);
+                }
+            });
+            
+            // These are the constraints used to validate the form
+            var constraints = {
+                startDate: {
+                    presence: true,
+                    datetime: {
+                        dateOnly: true
+                    }
+                },
+                targetEndDate: {
+                    presence: true,
+                    datetime: {
+                        dateOnly: true
+                    }
+                },
+                balance: {
+                    presence: true,
+                    numericality: {
+                        onlyInteger: false,
+                        greaterThan: 0
+                    }
+                },
+                interestRate: {
+                    presence: true,
+                    numericality: {
+                        onlyInteger: false,
+                        greaterThan: 0
+                    }
+                },
+                minRepaymentAmount: {
+                    presence: true,
+                    numericality: {
+                        onlyInteger: false,
+                        greaterThan: 0
+                    }
+                },
+                minRepaymentDay: {
+                    presence: true,
+                    numericality: {
+                        onlyInteger: true,
+                        greaterThan: 0
+                    }
+                },
+                extraRepaymentAmount: {
+                    presence: false,
+                    numericality: {
+                        onlyInteger: false,
+                        greaterThan: 0
+                    }
+                },
+                extraRepaymentDay: {
+                    presence: false,
+                    numericality: {
+                        onlyInteger: true,
+                        greaterThan: 0
+                    }
+                }
+            };
+            return(constraints);
+        };
+        
         $(document).ready(function () {
             // init handlebars
             templates = initHandlebars();
+            validateConstraints = initValidate();
             initInputForm();
         });
         </script>
         <script id="input-form-template" type="text/x-handlebars-template">
-            <form class="well">
+            <form class="well" id="inputForm">
                 <div class="form-group">
                     <label for="startDate" class="control-label required-field-label">Start Date</label>
                     <div class="form-inline">
                         <input type="text" id="startDate" name="startDate" data-template="D MMM YYYY" class="form-control combodate" value="{{formatDateForComboDate startDate}}"/>
                     </div>
+                    <p class="help-block validation-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="startDate" class="control-label required-field-label">Target End Date</label>
                     <div class="form-inline">
                         <input type="text" id="targetEndDate" name="targetEndDate" data-template="D MMM YYYY" class="form-control combodate" value="{{formatDateForComboDate targetEndDate}}"/>
                     </div>
+                    <p class="help-block validation-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="balance" class="control-label required-field-label">Balance</label>
@@ -195,6 +327,7 @@
                         <span class="input-group-addon">{{currencySymbol}}</span>
                         <input class="form-control" id="balance" name="balance" type="text" value="{{balance}}"/>
                     </div>
+                    <p class="help-block validation-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="interestRate" class="control-label required-field-label">Interest Rate</label>
@@ -202,6 +335,7 @@
                         <span class="input-group-addon">%</span>
                         <input class="form-control" id="interestRate" name="interestRate" type="text" value="{{formatDecimal interestRate}}">
                     </div>
+                    <p class="help-block validation-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="minRepaymentAmount" class="control-label required-field-label">Min. Repayment Amount</label>
@@ -209,6 +343,7 @@
                         <span class="input-group-addon">{{currencySymbol}}</span>
                         <input class="form-control" id="minRepaymentAmount" name="minRepaymentAmount" type="text" value="{{minRepaymentAmount}}"/>
                     </div>
+                    <p class="help-block validation-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="minRepaymentDay" class="control-label required-field-label">Min. Repayment Day</label>
@@ -216,6 +351,7 @@
                         <span class="input-group-addon">_</span>
                         <input class="form-control" id="minRepaymentDay" name="minRepaymentDay" type="text" value="{{minRepaymentDay}}"/>
                     </div>
+                    <p class="help-block validation-message"></p>
                 </div>
                 <div class="form-group">
                     <label for="extraRepaymentAmount" class="control-label">Extra Repayment Amount</label>
@@ -223,6 +359,7 @@
                         <span class="input-group-addon">{{currencySymbol}}</span>
                         <input class="form-control" id="extraRepaymentAmount" name="extraRepaymentAmount" type="text" value="{{extraRepaymentAmount}}"/>
                     </div>
+                    <p class="help-block"></p>
                 </div>
                 <div class="form-group">
                     <label for="extraRepaymentDay" class="control-label">Extra Repayment Day</label>
@@ -230,6 +367,7 @@
                         <span class="input-group-addon">_</span>
                         <input class="form-control" id="extraRepaymentDay" name="extraRepaymentDay" type="text" value="{{extraRepaymentDay}}"/>
                     </div>
+                    <p class="help-block validation-message"></p>
                 </div>
                 <div class="form-group">
                     <button type="button" id="calculateButton" class="btn btn-primary btn-lg">Calculate</button>
