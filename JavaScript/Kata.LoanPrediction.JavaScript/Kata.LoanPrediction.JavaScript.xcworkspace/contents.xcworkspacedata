@@ -16,10 +16,4 @@
    <FileRef
       location = "group:bower_components">
    </FileRef>
-   <FileRef
-      location = "group:ExampleDataTablePageHTML.txt">
-   </FileRef>
-   <FileRef
-      location = "group:ExampleInputPageHTML.txt">
-   </FileRef>
 </Workspace>

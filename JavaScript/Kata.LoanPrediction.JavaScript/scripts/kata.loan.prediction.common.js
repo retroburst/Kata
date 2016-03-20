@@ -1,4 +1,4 @@
-var kataLoanPredictionApp = function() {
+var kataLoanPredictionCommon = function() {
 
     ///////////////////////////////////////////////////////
     // models
@@ -217,7 +217,7 @@ var kataLoanPredictionApp = function() {
     }();
 
     ///////////////////////////////////////////////////////
-    // returns public interface to the app
+    // returns public interface
     return ({
         calculator: kataLoanPredictionCalculator,
         models: kataLoanPredictionModels,
@@ -225,19 +225,3 @@ var kataLoanPredictionApp = function() {
         enums: kataLoanPredicitionEnums
     });
 }();
-
-/*
-var context = new kataLoanPredictionApp.models.loanContext();
-context.balance = 30000.00;
-context.interestRate = 5.25;
-context.minRepaymentAmount = 1500.00;
-context.minRepaymentDay = 1;
-context.extraRepaymentAmount = 1000.00;
-context.extraRepaymentDay = 18;
-context.startDate = new Date(2007, 03, 01);
-context.targetEndDate = new Date(2010, 10, 01);
-console.log(context);
-                
-var output = kataLoanPredictionApp.calculator.calculate(context);
-console.log(output);
- */
