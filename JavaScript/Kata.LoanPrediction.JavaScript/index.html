@@ -42,6 +42,7 @@
         </footer>
         </div>
         <script src="scripts/jquery.min.js"></script>
+        <script src="scripts/loglevel.min.js"></script>
         <script src="scripts/moment.js"></script>
         <script src="scripts/combodate.js"></script>
         <script src="scripts/bootstrap.min.js"></script>
@@ -53,10 +54,7 @@
         <script src="scripts/kata.loan.prediction.common.js"></script>
         <script src="scripts/kata.loan.prediction.view.js"></script>
         <script>
-        // TODO: defaults - last input settings from nedb
-        // TODO: validation on related fields (custom validator) e.g. target end date after strat date
-        // TODO: refactor - move code into seperate js files like the kata app code
-        // TODO: update bower.json with dependencies and remove bower_components from git
+        // TODO: refactor and prettify
         $(document).ready(function () {
             kataLoanPredictionView.initView();
         });
@@ -169,9 +167,9 @@
                         {{/if}}
                        </td>
                             <td>{{type.description}}</td>
-                            <td class="success"><p class="text-right">{{formatMoney credit}}</p></td>
-                            <td class="danger"><p class="text-right">{{formatMoney debit}}</p></td>
-                            <td><p class="text-right">{{formatMoney balance}}</p></td>
+                            <td class="success"><p class="text-right">{{formatMoneyShort credit}}</p></td>
+                            <td class="danger"><p class="text-right">{{formatMoneyShort debit}}</p></td>
+                            <td><p class="text-right">{{formatMoneyShort balance}}</p></td>
                         </tr>
                     {{/each}}
                     </tbody>

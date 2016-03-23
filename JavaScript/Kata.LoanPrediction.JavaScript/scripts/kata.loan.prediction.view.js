@@ -1,4 +1,5 @@
-var kataLoanPredictionView = function() {
+var kataLoanPredictionView = function() {        
+    var db = new Nedb({ filename: 'Kata.LoanPrediction.JavaScript.store', autoload: true });
     var templates = null;
     var validateConstraints = null;
     var defaultLoanContextSettings = {
@@ -39,11 +40,8 @@ var kataLoanPredictionView = function() {
     var showValidationErros = function showValidationErros(errors){
         errors = errors || {};
         for (var property in errors) {
-            console.log("Property");
-            console.log(property);
             if (errors.hasOwnProperty(property)) {
                 var input = $('#' + property);
-                console.log(input);
                 if(input){
                     var group = input.closest('.form-group');
                     if(group){
@@ -74,6 +72,12 @@ var kataLoanPredictionView = function() {
         Handlebars.registerHelper('formatMoney', function(amount) {
             if(!isNaN(amount)){
                 return(accounting.formatMoney(amount));
+            }
+        });
+        
+        Handlebars.registerHelper('formatMoneyShort', function(amount) {
+            if(!isNaN(amount)){
+                return(accounting.formatMoney(amount, { precision: 0 }));
             }
         });
         
@@ -132,9 +136,59 @@ var kataLoanPredictionView = function() {
         return(attributes);
     };
     
+    var storeLoanContextInDatabase = function storeLoanContextInDatabase(loanContext, callback){
+        db.find({}, function (err, docs) {
+            if(err){
+                log.error(err);
+                if(callback) callback(loanContext);
+            } else if(docs.length > 0){
+                db.update({}, loanContext, {}, function (err, numReplaced) {
+                    if(err) {
+                        log.error(err);
+                    }
+                    if(callback) callback(loanContext);
+                });
+            } else {
+                db.insert(loanContext, function (err) {
+                    if(err) {
+                        log.error(err);
+                    }
+                    if(callback) callback(loanContext);
+                });
+            }
+        });
+    };
+    
+    var retrieveLoanContextFromDatabase = function retrieveLoanContextFromDatabase(callback){
+        db.find({}, function (err, docs) {
+            if(docs.length > 0){
+                if(callback) callback(docs[0]);
+            } else {
+                if(err) {
+                    log.error(err);
+                }
+                if(callback) callback(null);
+            }
+        });
+    };
+    
+    var buildLoanContextFromInput = function buildLoanContextFromInput(callback){
+        var context = new kataLoanPredictionCommon.models.loanContext();
+        context.balance = parseFloat($('#balance').val());
+        context.interestRate = parseFloat($('#interestRate').val());
+        context.minRepaymentAmount = parseFloat($('#minRepaymentAmount').val());
+        context.minRepaymentDay = parseInt($('#minRepaymentDay').val());
+        context.extraRepaymentAmount = parseFloat($('#extraRepaymentAmount').val());
+        context.extraRepaymentDay = parseInt($('#extraRepaymentDay').val());
+        context.startDate = moment($('#startDate').val(), kataLoanPredictionViewConstants.get("DATE_FORMAT")).toDate();
+        context.targetEndDate = moment($('#targetEndDate').val(), kataLoanPredictionViewConstants.get("DATE_FORMAT")).toDate();
+        // stores the context for later use by input form
+        storeLoanContextInDatabase(context, callback);
+    };
+    
     // init form
-    var initInputForm = function initInputForm(){
-        var initialSettings = defaultLoanContextSettings || storedSettings;
+    var initInputForm = function initInputForm(storedLoanContextSettings){
+        var initialSettings =  storedLoanContextSettings || defaultLoanContextSettings;
         // intial view setup
         $('#inputContainer').show();
         $('#resultsContainer').hide();
@@ -145,16 +199,15 @@ var kataLoanPredictionView = function() {
             clearValidationErrors();
             var attributes = buildAttributes();
             var errors = validate(attributes, validateConstraints);
-            console.log(errors);
             if(!errors){
-                initResults();
+                buildLoanContextFromInput(initResults);
             } else {
                 showValidationErros(errors);
             }
         });
         
         $('.combodate').combodate(
-            {
+        {
             minYear: 1975,
             maxYear: 2050,
             customClass: 'form-control combodate-inline',
@@ -162,17 +215,8 @@ var kataLoanPredictionView = function() {
         });
     };
     
-    var initResults = function initResults(){
-        // calculate
-        var context = new kataLoanPredictionCommon.models.loanContext();
-        context.balance = parseFloat($('#balance').val());
-        context.interestRate = parseFloat($('#interestRate').val());
-        context.minRepaymentAmount = parseFloat($('#minRepaymentAmount').val());
-        context.minRepaymentDay = parseInt($('#minRepaymentDay').val());
-        context.extraRepaymentAmount = parseFloat($('#extraRepaymentAmount').val());
-        context.extraRepaymentDay = parseInt($('#extraRepaymentDay').val());
-        context.startDate = moment($('#startDate').val(), kataLoanPredictionViewConstants.get("DATE_FORMAT")).toDate();
-        context.targetEndDate = moment($('#targetEndDate').val(), kataLoanPredictionViewConstants.get("DATE_FORMAT")).toDate();
+    var initResults = function initResults(context){
+        // calculate the loan
         var output = kataLoanPredictionCommon.calculator.calculate(context);
         // clear table
         $('#resultsContainer').empty();
@@ -183,7 +227,7 @@ var kataLoanPredictionView = function() {
         $('#inputContainer').hide();
         
         $('.start-over-button').click(function(e){
-            initInputForm();
+            retrieveLoanContextFromDatabase(initInputForm);
         });
         
         $("html, body").animate({ scrollTop: 0 }, "slow");
@@ -207,17 +251,27 @@ var kataLoanPredictionView = function() {
         
         // These are the constraints used to validate the form
         var constraints = {
-            startDate: {
-                presence: true,
-                datetime: {
-                    dateOnly: true
-                }
+            startDate: function(value, attributes, attributeName, options, constraints) {
+                var subConstraints = {
+                    presence: true,
+                    datetime: {
+                        dateOnly: true,
+                        latest: attributes.targetEndDate,
+                        message: 'Start Date must not be after the Target End Date.'
+                    }
+                };
+                return(subConstraints);
             },
-            targetEndDate: {
-                presence: true,
-                datetime: {
-                    dateOnly: true
-                }
+            targetEndDate: function(value, attributes, attributeName, options, constraints) {
+                var subConstraints = {
+                    presence: true,
+                    datetime: {
+                        dateOnly: true,
+                        earliest: attributes.startDate,
+                        message: 'Target End Date must not be before the Start Date.'
+                    }
+                };
+                return(subConstraints);
             },
             balance: {
                 presence: true,
@@ -247,19 +301,33 @@ var kataLoanPredictionView = function() {
                     greaterThan: 0
                 }
             },
-            extraRepaymentAmount: {
-                presence: false,
-                numericality: {
-                    onlyInteger: false,
-                    greaterThan: 0
+            extraRepaymentAmount: function(value, attributes, attributeName, options, constraints) {
+                var subConstraints =
+                {
+                    presence: false,
+                    numericality: {
+                        onlyInteger: true,
+                        greaterThan: 0
+                    }
+                };
+                if(attributes.extraRepaymentDay){
+                    subConstraints.presence = true;
                 }
+                return(subConstraints);
             },
-            extraRepaymentDay: {
-                presence: false,
-                numericality: {
-                    onlyInteger: true,
-                    greaterThan: 0
+            extraRepaymentDay: function(value, attributes, attributeName, options, constraints) {
+                var subConstraints =
+                {
+                    presence: false,
+                    numericality: {
+                        onlyInteger: true,
+                        greaterThan: 0
+                    }
+                };
+                if(attributes.extraRepaymentAmount){
+                    subConstraints.presence = true;
                 }
+                return(subConstraints);
             }
         };
         return(constraints);
@@ -269,7 +337,7 @@ var kataLoanPredictionView = function() {
         // init handlebars
         templates = initHandlebars();
         validateConstraints = initValidate();
-        initInputForm();
+        retrieveLoanContextFromDatabase(initInputForm);
     };
     
     ///////////////////////////////////////////////////////
