@@ -119,6 +119,19 @@ var kataLoanPredictionView = function() {
         return(templates);
     };
     
+    var buildAttributes = function buildAttributes(){
+        var attributes = {};
+        attributes.balance = $('#balance').val();
+        attributes.interestRate = $('#interestRate').val();
+        attributes.minRepaymentAmount = $('#minRepaymentAmount').val();
+        attributes.minRepaymentDay = $('#minRepaymentDay').val();
+        attributes.extraRepaymentAmount = $('#extraRepaymentAmount').val();
+        attributes.extraRepaymentDay = $('#extraRepaymentDay').val();
+        attributes.startDate = $('#startDate').val();
+        attributes.targetEndDate = $('#targetEndDate').val();
+        return(attributes);
+    };
+    
     // init form
     var initInputForm = function initInputForm(){
         var initialSettings = defaultLoanContextSettings || storedSettings;
@@ -130,15 +143,7 @@ var kataLoanPredictionView = function() {
         
         $('#calculateButton').click(function(e){
             clearValidationErrors();
-            var attributes = {};
-            attributes.balance = $('#balance').val();
-            attributes.interestRate = $('#interestRate').val();
-            attributes.minRepaymentAmount = $('#minRepaymentAmount').val();
-            attributes.minRepaymentDay = $('#minRepaymentDay').val();
-            attributes.extraRepaymentAmount = $('#extraRepaymentAmount').val();
-            attributes.extraRepaymentDay = $('#extraRepaymentDay').val();
-            attributes.startDate = $('#startDate').val();
-            attributes.targetEndDate = $('#targetEndDate').val();
+            var attributes = buildAttributes();
             var errors = validate(attributes, validateConstraints);
             console.log(errors);
             if(!errors){
