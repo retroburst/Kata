@@ -10,8 +10,7 @@ var kataLoanPredictionView = function() {
         minRepaymentAmount : 2000,
         minRepaymentDay : 1,
         extraRepaymentAmount : 1000,
-        extraRepaymentDay : 20,
-        currencySymbol : accounting.settings.currency.symbol
+        extraRepaymentDay : 20
     };
     
     ///////////////////////////////////////////////////////
@@ -189,6 +188,9 @@ var kataLoanPredictionView = function() {
     // init form
     var initInputForm = function initInputForm(storedLoanContextSettings){
         var initialSettings =  storedLoanContextSettings || defaultLoanContextSettings;
+        if(!initialSettings.currencySymbol){
+            initialSettings.currencySymbol = accounting.settings.currency.symbol;
+        }
         // intial view setup
         $('#inputContainer').show();
         $('#resultsContainer').hide();
@@ -204,6 +206,10 @@ var kataLoanPredictionView = function() {
             } else {
                 showValidationErros(errors);
             }
+        });
+        
+        $('#resetDefault').click(function(e){
+            initInputForm(defaultLoanContextSettings);
         });
         
         $('.combodate').combodate(
