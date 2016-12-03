@@ -32,7 +32,7 @@ LoanTransaction::LoanTransaction(dateTime date, string type, double credit, doub
     this->date = date;
     this->type = type;
     this->credit = credit;
-    this-> debit = debit;
+    this->debit = debit;
     this->balance = balance;
 }
 

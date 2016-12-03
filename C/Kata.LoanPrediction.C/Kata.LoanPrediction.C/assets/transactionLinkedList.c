@@ -71,9 +71,10 @@ void freeAllNodes(transactionNode *root, transactionNode *head)
  */
 static bool checkAllocation(transactionNode *target)
 {
-    if(target != NULL) return (true);
-    else {
+    if(target != NULL) {
+        return (true);
+    } else {
         printf("Out of memory, could not allocate for transactionNode.");
-        return(true);
+        return(false);
     }
 }

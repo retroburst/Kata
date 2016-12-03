@@ -16,13 +16,13 @@
             startingLineNumber = "407"
             endingLineNumber = "407"
             landmarkName = "buildOutputFilename()"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Kata.LoanPrediction.C/main.c"
@@ -32,13 +32,13 @@
             startingLineNumber = "193"
             endingLineNumber = "193"
             landmarkName = "calculateLoan()"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Kata.LoanPrediction.C/main.c"
@@ -48,7 +48,7 @@
             startingLineNumber = "195"
             endingLineNumber = "195"
             landmarkName = "calculateLoan()"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

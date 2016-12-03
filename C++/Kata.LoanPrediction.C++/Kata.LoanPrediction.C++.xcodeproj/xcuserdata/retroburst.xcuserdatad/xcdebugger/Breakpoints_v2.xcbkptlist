@@ -16,7 +16,7 @@
             startingLineNumber = "46"
             endingLineNumber = "46"
             landmarkName = "main(int argc, const char * argv[])"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -32,7 +32,7 @@
             startingLineNumber = "45"
             endingLineNumber = "45"
             landmarkName = "main(int argc, const char * argv[])"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -64,7 +64,7 @@
             startingLineNumber = "58"
             endingLineNumber = "58"
             landmarkName = "main(int argc, const char * argv[])"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -110,7 +110,7 @@
             startingLineNumber = "82"
             endingLineNumber = "82"
             landmarkName = "processArguments(int argc, const char* argv[], LoanContext *context)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
